@@ -13,6 +13,7 @@ import 'features/alert/presentation/cubit/alert_cubit.dart';
 import 'features/connection/presentation/cubit/my_connection_cubit.dart';
 
 void main() async {
+  //Created By Malek
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
