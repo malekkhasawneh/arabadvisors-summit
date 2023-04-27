@@ -22,6 +22,7 @@ class ChatContainer extends StatefulWidget {
       required this.name,
       required this.company,
       required this.image,
+      required this.height,
       required this.chatId})
       : super(key: key);
   TextEditingController messageController;
@@ -30,6 +31,7 @@ class ChatContainer extends StatefulWidget {
   final String name;
   final String company;
   final String image;
+  final double height;
 
   @override
   State<ChatContainer> createState() => _ChatContainerState();
@@ -94,7 +96,6 @@ class _ChatContainerState extends State<ChatContainer> {
         builder: (context, state) {
       return Container(
         width: screenWidth * 0.9,
-        height: screenHeight * 0.7,
         padding: EdgeInsets.symmetric(vertical: screenHeight * 0.005),
         decoration: BoxDecoration(
           color: AppColors.white,
@@ -110,8 +111,8 @@ class _ChatContainerState extends State<ChatContainer> {
                 color: AppColors.grey,
               ),
               Container(
-                margin: const EdgeInsets.only(top: 5),
-                height: 335,
+                margin: const EdgeInsets.symmetric(vertical: 5),
+                height: widget.height,
                 width: screenWidth * 0.88,
                 child: loading
                     ? const Center(

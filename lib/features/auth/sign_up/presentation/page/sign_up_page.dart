@@ -53,6 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void initState() {
+    BlocProvider.of<SignUpCubit>(context).setCountryCode = '';
     getAllCountry();
     getAllCompany();
     getAllIndustry();

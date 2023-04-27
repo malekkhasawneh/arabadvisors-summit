@@ -113,11 +113,7 @@ class ContactUs extends StatelessWidget {
                                           );
 
                                           String url = params.toString();
-                                          if (await canLaunch(url)) {
-                                            await launch(url);
-                                          } else {
-                                            throw 'Could not launch $url';
-                                          }
+                                          await launch(url);
                                         },
                                         child: const Text(
                                             AppStrings.contactPhone)))
@@ -162,11 +158,7 @@ class ContactUs extends StatelessWidget {
                                           );
 
                                           String url = params.toString();
-                                          if (await canLaunch(url)) {
-                                            await launch(url);
-                                          } else {
-                                            throw 'Could not launch $url';
-                                          }
+                                          await launch(url);
                                         },
                                         child: const Text(
                                             AppStrings.contactUsEmail)))
@@ -191,13 +183,8 @@ class ContactUs extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () async {
-                if (await canLaunch(
-                    'https://www.google.com/maps?q=31.967433,35.905494')) {
-                  await launch(
-                      'https://www.google.com/maps?q=31.967433,35.905494');
-                } else {
-                  throw 'Could not launch https://www.google.com/maps?q=31.967433,35.905494';
-                }
+                await launch(
+                    'https://www.google.com/maps?q=31.967433,35.905494');
               },
               child: Container(
                 width: screenWidth * 0.9,

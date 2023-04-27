@@ -222,8 +222,8 @@ class _MyConnectionPageState extends State<MyConnectionPage> {
                                         userName: allFriends[index].name,
                                         companyName: allFriends[index].company,
                                         imagePath: allFriends[index].image,
-                                        acceptButton: () {
-                                          Navigator.push(
+                                        acceptButton: () async {
+                                          bool refresh = await Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (_) => MessagesPage(
@@ -237,6 +237,18 @@ class _MyConnectionPageState extends State<MyConnectionPage> {
                                               ),
                                             ),
                                           );
+                                          if (refresh) {
+                                         await   ConnectionsRepository
+                                                    .getAllFriends()
+                                                .then(
+                                              (value) => setState(
+                                                () {
+                                                  allFriends = value;
+                                                  loading = false;
+                                                },
+                                              ),
+                                            );
+                                          }
                                         },
                                       );
                                     }),

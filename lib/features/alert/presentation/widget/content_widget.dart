@@ -78,8 +78,8 @@ class _ContentWidgetState extends State<ContentWidget> {
                             companyName: chatList[index].company,
                             userName: chatList[index].name,
                             imagePath: chatList[index].image,
-                            acceptButton: () {
-                              Navigator.push(
+                            acceptButton: () async {
+                              bool refresh = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (_) => MessagesPage(
@@ -91,6 +91,12 @@ class _ContentWidgetState extends State<ContentWidget> {
                                   ),
                                 ),
                               );
+                              if (refresh) {
+                                await ConnectionsRepository.getAllChats()
+                                    .then((value) => setState(() {
+                                          chatList = value;
+                                        }));
+                              }
                             },
                             lastMessage: chatList[index].lastMessage,
                             isRed: chatList[index].read,
