@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "17461628256",
+    "project_id": "arabadvisor-s-summit-c7176",
+    "storage_bucket": "arabadvisor-s-summit-c7176.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17461628256:android:aa341f6dcece59cd8e2205",
+        "android_client_info": {
+          "package_name": "com.example.provision"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "17461628256-acgt1fiekpub88b0oahefe9ktaf0phi1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiN89jDUYjNkKdh9j2f2Z-j78dvMWkO8A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "17461628256-acgt1fiekpub88b0oahefe9ktaf0phi1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
