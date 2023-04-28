@@ -140,4 +140,30 @@ class HomeRepository {
       return false;
     }
   }
+
+  Future<void> sendNotifications({
+    required String title,
+    required String body,
+    required String token,
+  }) async {
+    await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization':
+              'key=AAAABBDLTWA:APA91bFvM82OF_i2e9QGBy71stCT7XTjZ0nh4ERrHIZxlMhiOFGQDP6rg2pUN6-VI75GDsZfb-qy735DfJexQTRCAyN_m8J7w6u_VzItbpihkfKd0O8HSGyQ7SbhAdH8ilTDEFq96swB'
+        },
+        body: json.encode(
+          {
+            'notification': {
+              'title': title,
+              'body': body,
+            },
+            'priority': 'high',
+            'data': {
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+            },
+            'to': token,
+          },
+        ));
+  }
 }
