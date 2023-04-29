@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:provision/features/home/data/model/all_events.dart';
 import 'package:provision/features/home/data/model/feed_back_model.dart';
@@ -141,7 +142,7 @@ class HomeRepository {
     }
   }
 
-  Future<void> sendNotifications({
+  static Future<void> sendNotifications({
     required String title,
     required String body,
     required String token,
@@ -150,7 +151,7 @@ class HomeRepository {
         headers: {
           'Content-Type': 'application/json',
           'Authorization':
-              'key=AAAABBDLTWA:APA91bFvM82OF_i2e9QGBy71stCT7XTjZ0nh4ERrHIZxlMhiOFGQDP6rg2pUN6-VI75GDsZfb-qy735DfJexQTRCAyN_m8J7w6u_VzItbpihkfKd0O8HSGyQ7SbhAdH8ilTDEFq96swB'
+              'key=AAAAF9IH93Y:APA91bFrxtj9uS39MeRhE7Y39tfE0DMmHPynZUWNmG9kKNGOZ5-hXAkpe-knXOBTLQMbrY8CAYP9mMx-rD3U_-XpLrl4ak5UIKbcs-rloTbr5scRVQ4W5xGde6NUaStUqCa14rWIDPlN'
         },
         body: json.encode(
           {
@@ -165,5 +166,45 @@ class HomeRepository {
             'to': token,
           },
         ));
+  }
+
+  static Future<bool> saveToken() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final post = await http.post(
+      Uri.parse(
+          'https://vmi1258605.contaboserver.net/agg/api/v1/firebase/saveToken'),
+      headers: requestHeaders(token: preferences.getString('token') ?? ''),
+      body: json.encode(
+        {
+          'userId': preferences.getInt('id'),
+          "token": await FirebaseMessaging.instance.getToken()
+        },
+      ),
+    );
+    if (post.statusCode == 200) {
+      log('======================================= Success');
+      return true;
+    } else {
+      log('======================================= Failed');
+
+      return false;
+    }
+  }
+
+  static Future<String> getToken({
+    required int userId,
+  }) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final get = await http.get(
+      Uri.parse(
+          'https://vmi1258605.contaboserver.net/agg/api/v1/firebase/findToken?userId=$userId'),
+      headers: requestHeaders(token: preferences.getString('token') ?? ''),
+    );
+    if (get.statusCode == 200) {
+      final data = json.decode(get.body);
+      return data['ftoken'];
+    } else {
+      throw Exception();
+    }
   }
 }

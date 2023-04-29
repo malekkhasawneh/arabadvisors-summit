@@ -8,6 +8,7 @@ import 'package:provision/features/event/data/repository/events_repository.dart'
 
 import '../../../connection/data/model/chats_model.dart';
 import '../../../connection/presentation/page/messages_page.dart';
+import '../../../home/data/repository/home_repository.dart';
 import '../../../meetings/presentation/page/meeting_page.dart';
 import '../../data/model/notifications_model.dart';
 import '../cubit/alert_cubit.dart';
@@ -147,6 +148,17 @@ class _ContentWidgetState extends State<ContentWidget> {
                                       friendId: notifications[index].objectId)
                                   .then((value) {
                                 if (value) {
+                                  EventsRepository.showMyProfile().then((userInfo) {
+                                    HomeRepository.getToken(
+                                        userId: notifications[index].objectId)
+                                        .then((value) {
+                                      HomeRepository.sendNotifications(
+                                          title: 'Connection Request',
+                                          body:
+                                          '${userInfo.name} accept your connection request',
+                                          token: value);
+                                    });
+                                  });
                                   return AlertRepository.getAllNotifications()
                                       .then((value) => setState(() {
                                             notifications = value;

@@ -19,7 +19,11 @@ import 'features/connection/presentation/cubit/my_connection_cubit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+  FirebaseMessaging.onMessage.listen((event) {
+    log('======================================== Message ${event.notification!.title}');
+  });
+  FirebaseMessaging.instance.getToken().then(
+      (value) => log('================================== the token =  $value'));
   runApp(const MyApp());
 }
 

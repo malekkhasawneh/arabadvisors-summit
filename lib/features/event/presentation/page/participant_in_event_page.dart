@@ -6,6 +6,7 @@ import 'package:provision/features/event/data/repository/events_repository.dart'
 import 'package:provision/features/event/presentation/cubit/event_cubit.dart';
 import 'package:provision/features/event/presentation/page/user_profile_page.dart';
 
+import '../../../home/data/repository/home_repository.dart';
 import '../../data/model/get_all_participants_model.dart';
 import '../widget/user_info_widget.dart';
 
@@ -266,16 +267,36 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                                                           index]
                                                                       .id)
                                                           .then(
-                                                        (value) => EventsRepository
-                                                                .getAllParticipant()
-                                                            .then(
-                                                          (value) => setState(
-                                                            () {
-                                                              allParticipant =
-                                                                  value;
-                                                            },
-                                                          ),
-                                                        ),
+                                                        (value) {
+                                                          EventsRepository
+                                                                  .showMyProfile()
+                                                              .then((userInfo) {
+                                                            HomeRepository.getToken(
+                                                                    userId:
+                                                                        allParticipant[index]
+                                                                            .id)
+                                                                .then((value) {
+                                                              HomeRepository
+                                                                  .sendNotifications(
+                                                                      title:
+                                                                          'Connection Request',
+                                                                      body:
+                                                                          '${userInfo.name} send you connection request',
+                                                                      token:
+                                                                          value);
+                                                            });
+                                                          });
+                                                          return EventsRepository
+                                                                  .getAllParticipant()
+                                                              .then(
+                                                            (value) => setState(
+                                                              () {
+                                                                allParticipant =
+                                                                    value;
+                                                              },
+                                                            ),
+                                                          );
+                                                        },
                                                       );
                                                     }
                                                   },
@@ -286,15 +307,32 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                                           allParticipant[index]
                                                               .id)
                                               .then(
-                                            (value) => EventsRepository
-                                                    .getAllParticipant()
-                                                .then(
-                                              (value) => setState(
-                                                () {
-                                                  allParticipant = value;
-                                                },
-                                              ),
-                                            ),
+                                            (value) {
+                                              EventsRepository.showMyProfile()
+                                                  .then((userInfo) {
+                                                HomeRepository.getToken(
+                                                        userId: allParticipant[
+                                                                index]
+                                                            .id)
+                                                    .then((value) {
+                                                  HomeRepository.sendNotifications(
+                                                      title:
+                                                          'Connection Request',
+                                                      body:
+                                                          '${userInfo.name} accept your connection request',
+                                                      token: value);
+                                                });
+                                              });
+                                              return EventsRepository
+                                                      .getAllParticipant()
+                                                  .then(
+                                                (value) => setState(
+                                                  () {
+                                                    allParticipant = value;
+                                                  },
+                                                ),
+                                              );
+                                            },
                                           );
                                         },
                                         declineFriend: () async {

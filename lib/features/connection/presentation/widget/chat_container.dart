@@ -8,6 +8,7 @@ import 'package:provision/core/resources/app_colors.dart';
 import 'package:provision/core/resources/images.dart';
 import 'package:provision/features/event/data/model/get_all_participants_model.dart';
 import 'package:provision/features/event/data/repository/events_repository.dart';
+import 'package:provision/features/home/data/repository/home_repository.dart';
 
 import '../../../../core/resources/app_strings.dart';
 import '../../data/model/messages_model.dart';
@@ -313,6 +314,13 @@ class _ChatContainerState extends State<ChatContainer> {
                             friendId: widget.friendId)
                         .then((value) {
                       if (value) {
+                        HomeRepository.getToken(userId: widget.friendId)
+                            .then((value) {
+                          HomeRepository.sendNotifications(
+                              title: participantsModel!.name,
+                              body: widget.messageController.text,
+                              token: value);
+                        });
                         ConnectionsRepository.getMessages(chatId: widget.chatId)
                             .then(
                           (value) => setState(
@@ -323,6 +331,7 @@ class _ChatContainerState extends State<ChatContainer> {
                             },
                           ),
                         );
+
                       } else {
                         widget.messageController.clear();
                         ScaffoldMessenger.of(context).showSnackBar(

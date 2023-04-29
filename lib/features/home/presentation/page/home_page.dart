@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provision/features/event/data/model/get_all_participants_model.dart';
+import 'package:provision/features/event/data/repository/events_repository.dart';
 import 'package:provision/features/home/data/repository/home_repository.dart';
 import 'package:provision/features/home/presentation/widget/times_drop_down.dart';
 
@@ -28,13 +29,22 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    HomeRepository.getTimes().then((value) => setState(() {
+    HomeRepository.getTimes().then(
+      (value) => setState(
+        () {
           timeList = value;
-        }));
-    HomeRepository.getEventsDetails().then((value) => setState(() {
+        },
+      ),
+    );
+    HomeRepository.getEventsDetails().then(
+      (value) => setState(
+        () {
           eventList = value;
           loading = false;
-        }));
+        },
+      ),
+    );
+    HomeRepository.saveToken();
     super.initState();
   }
 
@@ -59,224 +69,234 @@ class _HomePageState extends State<HomePage> {
         ),
         child: loading
             ? const Center(
-          child: CircularProgressIndicator(
-            color: AppColors.orange,
-          ),
-        )
+                child: CircularProgressIndicator(
+                  color: AppColors.orange,
+                ),
+              )
             : eventList.isEmpty
-            ? const Center(
-          child: Text(AppStrings.noData),
-        )
-            : Container(
-          margin: EdgeInsets.only(
-              top: safePadding,
-              left: screenWidth * 0.05,
-              right: screenWidth * 0.05,
-              bottom: 0),
-          width: screenWidth * 0.9,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: screenWidth * 0.8,
-                child: const Text(
-                  AppStrings.homeTitle,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.white,
-                    fontSize: 22,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  border:
-                  Border.all(color: AppColors.grey, width: 1),
-                  borderRadius: BorderRadius.circular(
-                    10,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      width: screenWidth * 0.9,
-                      child: const Text(
-                        AppStrings.eventsTitle,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.blue,
-                          fontSize: 18,
+                ? const Center(
+                    child: Text(AppStrings.noData),
+                  )
+                : Container(
+                    margin: EdgeInsets.only(
+                        top: safePadding,
+                        left: screenWidth * 0.05,
+                        right: screenWidth * 0.05,
+                        bottom: 0),
+                    width: screenWidth * 0.9,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: screenWidth * 0.8,
+                          child: const Text(
+                            AppStrings.homeTitle,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.white,
+                              fontSize: 22,
+                            ),
+                          ),
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(
-                      child: Column(
-                        children: [
-                          ...eventList.map((event) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) =>
-                                            SessionDescription(
-                                              eventDetails: event,
-                                            )));
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.only(
-                                    top: 3,
-                                    left: 5,
-                                    right: 5,
-                                    bottom: 3),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            border: Border.all(color: AppColors.grey, width: 1),
+                            borderRadius: BorderRadius.circular(
+                              10,
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(bottom: 10),
                                 width: screenWidth * 0.9,
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.circular(7),
-                                  color: AppColors.homeCardColor,
+                                child: const Text(
+                                  AppStrings.eventsTitle,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.blue,
+                                    fontSize: 18,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
+                              ),
+                              SizedBox(
                                 child: Column(
                                   children: [
-                                    Text(
-                                      event.time,
-                                      style: const TextStyle(
-                                        color: AppColors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets
-                                          .symmetric(
-                                        horizontal: 4,
-                                      ),
-                                      child: Text(
-                                        event.title,
-                                        style: const TextStyle(
-                                            color: AppColors.white,
-                                            fontSize: 14),
-                                        overflow:
-                                        TextOverflow.ellipsis,
-                                      ),
-                                    ),
+                                    ...eventList.map((event) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      SessionDescription(
+                                                        eventDetails: event,
+                                                      )));
+                                        },
+                                        child: Container(
+                                          margin: const EdgeInsets.only(
+                                              top: 3,
+                                              left: 5,
+                                              right: 5,
+                                              bottom: 3),
+                                          width: screenWidth * 0.9,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(7),
+                                            color: AppColors.homeCardColor,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                event.time,
+                                                style: const TextStyle(
+                                                  color: AppColors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 4,
+                                                ),
+                                                child: Text(
+                                                  event.title,
+                                                  style: const TextStyle(
+                                                      color: AppColors.white,
+                                                      fontSize: 14),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }).toList()
                                   ],
                                 ),
                               ),
-                            );
-                          }).toList()
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Center(
-                child: Container(
-                  margin: const EdgeInsets.only(top: 15),
-                  width: screenWidth * 0.9,
-                  child: const Text(
-                    AppStrings.reserve,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.white,
-                      fontSize: 22,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              TimesDropDown(
-                controller: timeController,
-                labelName: AppStrings.homeTime,
-                timesList: timeList,
-              ),
-              TitleAndInputForSignUpWidget(
-                controller: participantNameController,
-                labelName: AppStrings.invite,
-                suffix: const Icon(
-                  Icons.add,
-                  size: 15,
-                  color: AppColors.orange,
-                ),
-                onTap: () async {
-                  AllParticipantsModel participant =
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const InviteParticipant(),
-                    ),
-                  );
-                  if (participant != null) {
-                    setState(() {
-                      participantId = participant.id;
-                      participantNameController.text =
-                          participant.name;
-                    });
-                  } else {
-                    setState(() {
-                      participantId = 0;
-                      participantNameController.text = '';
-                    });
-                  }
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 9),
-                child: Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.orange,
-                    ),
-                    onPressed: () {
-                      if (timeController.text.isEmpty ||
-                          participantId == 0) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'Please make sure to fill out the fields'),
+                            ],
                           ),
-                        );
-                      } else {
-                        HomeRepository.scheduleMeeting(
-                            timeId: timeList
-                                .firstWhere((element) =>
-                            element.roomTime ==
-                                timeController.text)
-                                .id,
-                            friendId: participantId)
-                            .then((value) {
-                          if (value) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  AppStrings.reservedSuccess,
-                                ),
+                        ),
+                        Center(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 15),
+                            width: screenWidth * 0.9,
+                            child: const Text(
+                              AppStrings.reserve,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.white,
+                                fontSize: 22,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        TimesDropDown(
+                          controller: timeController,
+                          labelName: AppStrings.homeTime,
+                          timesList: timeList,
+                        ),
+                        TitleAndInputForSignUpWidget(
+                          controller: participantNameController,
+                          labelName: AppStrings.invite,
+                          suffix: const Icon(
+                            Icons.add,
+                            size: 15,
+                            color: AppColors.orange,
+                          ),
+                          onTap: () async {
+                            AllParticipantsModel participant =
+                                await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const InviteParticipant(),
                               ),
                             );
-                          }
-                        });
-                      }
-                    },
-                    child: const Text(
-                      AppStrings.reserved,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                            if (participant != null) {
+                              setState(() {
+                                participantId = participant.id;
+                                participantNameController.text =
+                                    participant.name;
+                              });
+                            } else {
+                              setState(() {
+                                participantId = 0;
+                                participantNameController.text = '';
+                              });
+                            }
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 9),
+                          child: Center(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.orange,
+                              ),
+                              onPressed: () {
+                                if (timeController.text.isEmpty ||
+                                    participantId == 0) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Please make sure to fill out the fields'),
+                                    ),
+                                  );
+                                } else {
+                                  HomeRepository.scheduleMeeting(
+                                          timeId: timeList
+                                              .firstWhere((element) =>
+                                                  element.roomTime ==
+                                                  timeController.text)
+                                              .id,
+                                          friendId: participantId)
+                                      .then((value) {
+                                    if (value) {
+                                    EventsRepository.showMyProfile().then((userInfo) {
+                                      HomeRepository.getToken(
+                                          userId: participantId)
+                                          .then((value) {
+                                        HomeRepository.sendNotifications(
+                                            title: 'Meeting Request',
+                                            body:
+                                            '${userInfo.name} send you meeting request',
+                                            token: value);
+                                      });
+                                    });
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            AppStrings.reservedSuccess,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  });
+                                }
+                              },
+                              child: const Text(
+                                AppStrings.reserved,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

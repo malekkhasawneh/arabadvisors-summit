@@ -167,6 +167,7 @@ class _SignInPageState extends State<SignInPage> {
       if (response['admin'] == true) {
         await preferences.setInt('id', response['id']);
         await preferences.setString('token', response['token']);
+
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) => AdminHomePage()));
@@ -182,6 +183,7 @@ class _SignInPageState extends State<SignInPage> {
         await preferences.setInt('id', response['id']);
         await preferences.setString('token', response['token']);
         await preferences.setString('loginDate', DateTime.now().toString());
+
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
