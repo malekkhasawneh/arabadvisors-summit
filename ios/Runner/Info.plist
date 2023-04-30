@@ -10,6 +10,8 @@
     <dict>
        <key>NSAllowsArbitraryLoads</key><true/>
     </dict>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>To allow you to upload photos from your library to our app to set it as profile photo.</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
