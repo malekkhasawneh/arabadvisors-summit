@@ -175,7 +175,7 @@ class _SignInPageState extends State<SignInPage> {
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Invalid Email Or Password'),
+            content: Text('Invalid Email or Password'),
           ),
         );
       } else if (response['statusCode'] == 2 && response['admin'] == false) {
@@ -193,13 +193,13 @@ class _SignInPageState extends State<SignInPage> {
         if (response['message'].toLowerCase() == 'pending') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Your Registration status is still in pending'),
+              content: Text('Your registration is still in pending'),
             ),
           );
         } else if (response['message'].toLowerCase() == 'rejected') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Your Registration status is rejected'),
+              content: Text('Your registration is rejected'),
             ),
           );
         }

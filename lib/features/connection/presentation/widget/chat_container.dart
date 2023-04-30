@@ -336,7 +336,7 @@ class _ChatContainerState extends State<ChatContainer> {
                         widget.messageController.clear();
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                                content: Text('Failed To Send Message')));
+                                content: Text('Send failed')));
                       }
                     });
                   },

@@ -96,6 +96,6 @@ class AppStrings {
   static const String invite = 'Invite Participant';
   static const String homeTime = 'Time';
   static const String reserved = 'Reserved';
-  static const String reservedSuccess = 'Reservation successful';
+  static const String reservedSuccess = 'Successfully reserved';
   static const String inviteTitle = 'Invite Participant from my Connection';
 }

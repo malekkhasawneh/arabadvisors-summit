@@ -356,7 +356,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(
-                'Password Change Successfully',
+                'Password has been changed Successfully',
               ),
             ),
           );
