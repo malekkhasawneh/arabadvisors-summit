@@ -23,6 +23,7 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
   List<AllParticipantsModel> allParticipant = [];
   bool loading = true;
   TextEditingController searchController = TextEditingController();
+  String searchText = '';
 
   @override
   void initState() {
@@ -101,11 +102,18 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                           if (value.isEmpty) {
                             BlocProvider.of<EventCubit>(context)
                                 .setShowDeleteButton = false;
+                            setState(() {
+                              searchText = '';
+                            });
                           } else {
                             BlocProvider.of<EventCubit>(context)
                                 .setShowDeleteButton = true;
+                            setState(() {
+                              searchText = value;
+                            });
                           }
-                          EventsRepository.searchParticipant(context,searchText: value)
+                          EventsRepository.searchParticipant(context,
+                                  searchText: value)
                               .then((value) => setState(() {
                                     allParticipant = value;
                                   }));
@@ -118,9 +126,11 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                     BlocProvider.of<EventCubit>(context)
                                         .setShowDeleteButton = false;
                                     setState(() {
+                                      searchText = '';
                                       searchController.clear();
                                     });
-                                    EventsRepository.getAllParticipant(context).then(
+                                    EventsRepository.getAllParticipant(context)
+                                        .then(
                                       (value) => setState(
                                         () {
                                           allParticipant = value;
@@ -219,21 +229,36 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                                 ? () {
                                                     EventsRepository
                                                             .removeFriendRequest(
-                                                        context, friendId:
+                                                                context,
+                                                                friendId:
                                                                     allParticipant[
                                                                             index]
                                                                         .id)
                                                         .then(
-                                                      (value) => EventsRepository
-                                                              .getAllParticipant(context)
-                                                          .then(
-                                                        (value) => setState(
-                                                          () {
-                                                            allParticipant =
-                                                                value;
-                                                          },
-                                                        ),
-                                                      ),
+                                                      (value) => searchText
+                                                              .isNotEmpty
+                                                          ? EventsRepository
+                                                                  .searchParticipant(
+                                                                      context,
+                                                                      searchText:
+                                                                          searchText)
+                                                              .then((value) =>
+                                                                  setState(() {
+                                                                    allParticipant =
+                                                                        value;
+                                                                  }))
+                                                          : EventsRepository
+                                                                  .getAllParticipant(
+                                                                      context)
+                                                              .then(
+                                                              (value) =>
+                                                                  setState(
+                                                                () {
+                                                                  allParticipant =
+                                                                      value;
+                                                                },
+                                                              ),
+                                                            ),
                                                     );
                                                   }
                                                 : () async {
@@ -241,27 +266,44 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                                             .connectionStatus ==
                                                         'SENT') {
                                                       EventsRepository.removeFriendRequest(
-                                                          context,     friendId:
+                                                              context,
+                                                              friendId:
                                                                   allParticipant[
                                                                           index]
                                                                       .id)
                                                           .then(
-                                                        (value) => EventsRepository
-                                                                .getAllParticipant(context)
-                                                            .then(
-                                                          (value) => setState(
-                                                            () {
-                                                              allParticipant =
-                                                                  value;
-                                                            },
-                                                          ),
-                                                        ),
+                                                        (value) => searchText
+                                                                .isNotEmpty
+                                                            ? EventsRepository
+                                                                    .searchParticipant(
+                                                                        context,
+                                                                        searchText:
+                                                                            searchText)
+                                                                .then((value) =>
+                                                                    setState(
+                                                                        () {
+                                                                      allParticipant =
+                                                                          value;
+                                                                    }))
+                                                            : EventsRepository
+                                                                    .getAllParticipant(
+                                                                        context)
+                                                                .then(
+                                                                (value) =>
+                                                                    setState(
+                                                                  () {
+                                                                    allParticipant =
+                                                                        value;
+                                                                  },
+                                                                ),
+                                                              ),
                                                       );
                                                     } else if (allParticipant[
                                                                 index]
                                                             .connectionStatus ==
                                                         'NOT_CONNECTED') {
-                                                      EventsRepository.sendFriendRequest(context: context,
+                                                      EventsRepository.sendFriendRequest(
+                                                              context: context,
                                                               friendId:
                                                                   allParticipant[
                                                                           index]
@@ -269,16 +311,19 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                                           .then(
                                                         (value) {
                                                           EventsRepository
-                                                                  .showMyProfile(context)
+                                                                  .showMyProfile(
+                                                                      context)
                                                               .then((userInfo) {
                                                             HomeRepository.getToken(
-                                                                context,               userId:
+                                                                    context,
+                                                                    userId:
                                                                         allParticipant[index]
                                                                             .id)
                                                                 .then((value) {
                                                               HomeRepository
                                                                   .sendNotifications(
-                                                                  context,             title:
+                                                                      context,
+                                                                      title:
                                                                           'Connection Request',
                                                                       body:
                                                                           '${userInfo.name} send you connection request',
@@ -286,70 +331,113 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                                                           value);
                                                             });
                                                           });
-                                                          return EventsRepository
-                                                                  .getAllParticipant(context)
-                                                              .then(
-                                                            (value) => setState(
-                                                              () {
-                                                                allParticipant =
-                                                                    value;
-                                                              },
-                                                            ),
-                                                          );
+                                                          return searchText
+                                                                  .isNotEmpty
+                                                              ? EventsRepository.searchParticipant(
+                                                                      context,
+                                                                      searchText:
+                                                                          searchText)
+                                                                  .then((value) =>
+                                                                      setState(
+                                                                          () {
+                                                                        allParticipant =
+                                                                            value;
+                                                                      }))
+                                                              : EventsRepository
+                                                                      .getAllParticipant(
+                                                                          context)
+                                                                  .then(
+                                                                  (value) =>
+                                                                      setState(
+                                                                    () {
+                                                                      allParticipant =
+                                                                          value;
+                                                                    },
+                                                                  ),
+                                                                );
                                                         },
                                                       );
                                                     }
                                                   },
                                         acceptFriend: () async {
                                           await EventsRepository
-                                                  .acceptFriendRequest(
-                                              context,    friendId:
+                                                  .acceptFriendRequest(context,
+                                                      friendId:
                                                           allParticipant[index]
                                                               .id)
                                               .then(
                                             (value) {
-                                              EventsRepository.showMyProfile(context)
+                                              EventsRepository.showMyProfile(
+                                                      context)
                                                   .then((userInfo) {
-                                                HomeRepository.getToken(
-                                                    context,       userId: allParticipant[
+                                                HomeRepository.getToken(context,
+                                                        userId: allParticipant[
                                                                 index]
                                                             .id)
                                                     .then((value) {
                                                   HomeRepository.sendNotifications(
-                                                      context,     title:
+                                                      context,
+                                                      title:
                                                           'Connection Request',
                                                       body:
                                                           '${userInfo.name} accept your connection request',
                                                       token: value);
                                                 });
                                               });
-                                              return EventsRepository
-                                                      .getAllParticipant(context)
-                                                  .then(
-                                                (value) => setState(
-                                                  () {
-                                                    allParticipant = value;
-                                                  },
-                                                ),
-                                              );
+                                              return searchText.isNotEmpty
+                                                  ? EventsRepository
+                                                          .searchParticipant(
+                                                              context,
+                                                              searchText:
+                                                                  searchText)
+                                                      .then((value) =>
+                                                          setState(() {
+                                                            allParticipant =
+                                                                value;
+                                                          }))
+                                                  : EventsRepository
+                                                          .getAllParticipant(
+                                                              context)
+                                                      .then(
+                                                      (value) => setState(
+                                                        () {
+                                                          allParticipant =
+                                                              value;
+                                                        },
+                                                      ),
+                                                    );
                                             },
                                           );
                                         },
                                         declineFriend: () async {
                                           await EventsRepository
-                                                  .rejectFriendRequest(
-                                              context,     friendId:
+                                                  .rejectFriendRequest(context,
+                                                      friendId:
                                                           allParticipant[index]
                                                               .id)
-                                              .then((value) => EventsRepository
-                                                          .getAllParticipant(context)
+                                              .then((value) => searchText
+                                                      .isNotEmpty
+                                                  ? EventsRepository
+                                                          .searchParticipant(
+                                                              context,
+                                                              searchText:
+                                                                  searchText)
+                                                      .then((value) =>
+                                                          setState(() {
+                                                            allParticipant =
+                                                                value;
+                                                          }))
+                                                  : EventsRepository
+                                                          .getAllParticipant(
+                                                              context)
                                                       .then(
-                                                    (value) => setState(
-                                                      () {
-                                                        allParticipant = value;
-                                                      },
-                                                    ),
-                                                  ));
+                                                      (value) => setState(
+                                                        () {
+                                                          allParticipant =
+                                                              value;
+                                                        },
+                                                      ),
+                                                    ));
                                         },
                                         buttonText:
                                             // ignore: unrelated_type_equality_checks
@@ -378,15 +466,30 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                             setState(() {
                                               loading = true;
                                             });
-                                            EventsRepository.getAllParticipant(context)
-                                                .then(
-                                              (value) => setState(
-                                                () {
-                                                  allParticipant = value;
-                                                  loading = false;
-                                                },
-                                              ),
-                                            );
+                                            searchText.isNotEmpty
+                                                // ignore: use_build_context_synchronously
+                                                ? EventsRepository
+                                                        .searchParticipant(
+                                                            context,
+                                                            searchText:
+                                                                searchText)
+                                                    .then(
+                                                        (value) => setState(() {
+                                                              allParticipant =
+                                                                  value;
+                                                            }))
+                                                // ignore: use_build_context_synchronously
+                                                : EventsRepository
+                                                        .getAllParticipant(
+                                                            context)
+                                                    .then(
+                                                    (value) => setState(
+                                                      () {
+                                                        allParticipant = value;
+                                                        loading = false;
+                                                      },
+                                                    ),
+                                                  );
                                           }
                                         },
                                       );

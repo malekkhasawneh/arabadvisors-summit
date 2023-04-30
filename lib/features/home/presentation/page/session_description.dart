@@ -31,11 +31,13 @@ class _SessionDescriptionState extends State<SessionDescription> {
         .then((value) => setState(() {
               speakerInfo = value;
               loading = false;
+            if(value.image.isNotEmpty){
               EventsRepository.getImageDetails(
                   context,  imageUrl: value.image.split('/').last)
                   .then((value) => setState(() {
-                        _imageData = value;
-                      }));
+                _imageData = value;
+              }));
+            }
             }));
     super.initState();
   }

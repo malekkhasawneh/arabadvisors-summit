@@ -11,6 +11,7 @@ class CountryDropDown extends StatefulWidget {
   CountryDropDown({
     Key? key,
     required this.controller,
+    required this.numberController,
     required this.labelName,
     required this.isError,
     this.isFromEdit = false,
@@ -23,6 +24,7 @@ class CountryDropDown extends StatefulWidget {
   final List<GetAllCountryModel> allCountriesList;
   final bool isError;
   final bool isFromEdit;
+  final TextEditingController numberController;
 
   @override
   State<CountryDropDown> createState() => _CountryDropDownState();
@@ -70,12 +72,14 @@ class _CountryDropDownState extends State<CountryDropDown> {
                     .allCountriesList
                     .firstWhere((element) => element.name == val)
                     .countryCode;
+                widget.numberController.clear();
               });
             },
             mode: Mode.BOTTOM_SHEET,
             showSelectedItems: true,
             items: [...widget.allCountriesList.map((e) => e.name).toList()],
             dropdownSearchDecoration: InputDecoration(
+
               hintText: widget.isFromEdit ? widget.hintText : AppStrings.select,
               hintStyle: !widget.isFromEdit
                   ? const TextStyle(
@@ -95,23 +99,33 @@ class _CountryDropDownState extends State<CountryDropDown> {
               autofocus: true,
               controller: widget.controller,
               cursorColor: AppColors.orange,
-              decoration: const InputDecoration(
+              decoration:  InputDecoration(      suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.controller.clear();
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.clear,
+                    size: 15,
+                    color: AppColors.orange,
+                  )),
                 hintText: AppStrings.select,
-                hintStyle: TextStyle(
+                hintStyle: const TextStyle(
                     color: AppColors.orange,
                     fontSize: 12,
                     fontWeight: FontWeight.bold),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: AppColors.orange,
                   ),
                 ),
-                border: OutlineInputBorder(
+                border: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: AppColors.orange,
                   ),
                 ),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: AppColors.orange,
                   ),

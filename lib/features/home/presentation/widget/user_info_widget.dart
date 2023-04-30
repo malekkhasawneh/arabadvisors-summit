@@ -30,10 +30,13 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
 
   @override
   void initState() {
-    EventsRepository.getImageDetails(context,imageUrl: widget.imagePath.split('/').last)
-        .then((value) => setState(() {
-              _imageData = value;
-            }));
+    if (widget.imagePath.isNotEmpty) {
+      EventsRepository.getImageDetails(context,
+              imageUrl: widget.imagePath.split('/').last)
+          .then((value) => setState(() {
+                _imageData = value;
+              }));
+    }
     super.initState();
   }
 
@@ -61,28 +64,27 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
                   borderRadius: BorderRadius.circular(100),
                   child: _imageData != null
                       ? Container(
-                    width: 45,
-                    height: 45,
-                    decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(100),
-                        ),
-                        image: DecorationImage(
-                            image: MemoryImage(_imageData!),
-                            fit: BoxFit.fill)),
-                  )
+                          width: 45,
+                          height: 45,
+                          decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(100),
+                              ),
+                              image: DecorationImage(
+                                  image: MemoryImage(_imageData!),
+                                  fit: BoxFit.fill)),
+                        )
                       : Container(
-                    width: 45,
-                    height: 45,
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(100),
+                          width: 45,
+                          height: 45,
+                          decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(100),
+                              ),
+                              image: DecorationImage(
+                                  image: AssetImage(Images.defaultUserImage),
+                                  fit: BoxFit.fill)),
                         ),
-                        image: DecorationImage(
-                            image: AssetImage(
-                                Images.defaultUserImage),
-                            fit: BoxFit.fill)),
-                  ),
                 ),
               ),
               title: Text(

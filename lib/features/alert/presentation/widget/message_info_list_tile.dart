@@ -44,10 +44,13 @@ class _MessageInfoListTileState extends State<MessageInfoListTile> {
 
   @override
   void initState() {
-    EventsRepository.getImageDetails(context,imageUrl: widget.imagePath.split('/').last)
-        .then((value) => setState(() {
-              _imageData = value;
-            }));
+  if(widget.imagePath.isNotEmpty){
+    EventsRepository.getImageDetails(context,
+              imageUrl: widget.imagePath.split('/').last)
+          .then((value) => setState(() {
+                _imageData = value;
+              }));
+    }
     super.initState();
   }
 

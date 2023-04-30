@@ -23,18 +23,21 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
 
   @override
   void initState() {
-    EventsRepository.getImageDetails(
-        context,    imageUrl: widget.meetingsModel.inviterImage.split('/').last)
-        .then((value) => setState(() {
-              _inviterImageData = value;
-              loading = false;
-            }));
-    EventsRepository.getImageDetails(
-        context,  imageUrl: widget.meetingsModel.invitedImage.split('/').last)
-        .then((value) => setState(() {
-              _invitedImageData = value;
-              loading = false;
-            }));
+    if (widget.meetingsModel.inviterImage.isNotEmpty) {
+      EventsRepository.getImageDetails(context,
+              imageUrl: widget.meetingsModel.inviterImage.split('/').last)
+          .then((value) => setState(() {
+                _inviterImageData = value;
+                loading = false;
+              }));
+    }
+    if (widget.meetingsModel.invitedImage.isNotEmpty) {
+      EventsRepository.getImageDetails(context,
+              imageUrl: widget.meetingsModel.invitedImage.split('/').last)
+          .then((value) => setState(() {
+                _invitedImageData = value;
+              }));
+    }
     super.initState();
   }
 
@@ -221,7 +224,8 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                                       Radius.circular(100),
                                     ),
                                     image: DecorationImage(
-                                        image: MemoryImage(_inviterImageData!),
+                                        image: MemoryImage(
+                                            _inviterImageData ?? Uint8List(5)),
                                         fit: BoxFit.fill)),
                               )
                             : Container(

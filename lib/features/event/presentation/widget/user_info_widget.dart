@@ -39,10 +39,12 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
 
   @override
   void initState() {
+  if(widget.imagePath.isNotEmpty){
     EventsRepository.getImageDetails(context,imageUrl: widget.imagePath.split('/').last)
         .then((value) => setState(() {
-              _imageData = value;
-            }));
+      _imageData = value;
+    }));
+  }
     super.initState();
   }
 

@@ -38,12 +38,15 @@ class _MeetingPageState extends State<MeetingPage> {
           timesList = value;
         }));
     widget.isViewOneMeeting
-        ? MeetingsRepository.getMeetingById(context,meetingId: widget.meetingId)
+        ? MeetingsRepository.getMeetingById(context,
+                meetingId: widget.meetingId)
             .then((value) => setState(() {
                   meetingsList.add(value);
                   loading = false;
                 }))
-        : MeetingsRepository.getAllMeetings(context,).then(
+        : MeetingsRepository.getAllMeetings(
+            context,
+          ).then(
             (value) => setState(
               () {
                 meetingsList = value;
@@ -149,12 +152,12 @@ class _MeetingPageState extends State<MeetingPage> {
                                         timesList: timesList,
                                         userId: widget.userId,
                                         refreshMeetingsList: () {
-                                          MeetingsRepository.getAllMeetings(context,)
-                                              .then(
+                                          MeetingsRepository.getAllMeetings(
+                                            context,
+                                          ).then(
                                             (value) => setState(
                                               () {
                                                 meetingsList = value;
-                                                loading = false;
                                               },
                                             ),
                                           );

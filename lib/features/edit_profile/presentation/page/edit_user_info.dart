@@ -192,6 +192,7 @@ class _EditUserInfoState extends State<EditUserInfo> {
                                   isError: errorCountry,
                                   isFromEdit: true,
                                   hintText: countryController.text,
+                                  numberController: numberController,
                                 ),
                                 TextFieldCustomWidget(
                                   controller: numberController,

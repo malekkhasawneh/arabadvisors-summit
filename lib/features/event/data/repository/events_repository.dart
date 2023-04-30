@@ -291,29 +291,6 @@ class EventsRepository {
     }
   }
 
-  static upload(File imageFile, BuildContext context) async {
-    if (await HomeRepository.checkIsConnected()) {
-      var stream = http.ByteStream(imageFile.openRead());
-      var length = await imageFile.length();
-      var uri = Uri.parse(
-          "https://vmi1258605.contaboserver.net/agg/api/v1/participant/upload_image");
-      var request = http.MultipartRequest("POST", uri);
-      var multipartFile = http.MultipartFile('file', stream, length,
-          filename: basename(imageFile.path));
-      request.files.add(multipartFile);
-      var response = await request.send();
-      print(response.statusCode);
-      response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
-      });
-    } else {
-      // ignore: use_build_context_synchronously
-      Navigator.push(context,
-          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
-      throw Exception();
-    }
-  }
-
   static Future<Uint8List> getImageDetails(BuildContext context,
       {required String imageUrl}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
