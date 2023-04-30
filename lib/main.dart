@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,12 @@ void main() async {
     criticalAlert: true,
     provisional: true,
   );
+  await FirebaseMessaging.instance.getToken().then((value) {
+    log('================================== Token ${value}++++');
+  });
+  FirebaseMessaging.onMessage.listen((event) {
+    log('======================================== Message');
+  });
   runApp(const MyApp());
 }
 
