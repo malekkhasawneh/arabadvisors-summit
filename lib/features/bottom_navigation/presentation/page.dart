@@ -47,7 +47,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return SafeArea(
+    return SafeArea(bottom: false,
       child: WillPopScope(
         onWillPop: () async {
           return false;
@@ -372,7 +372,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
             goToContactUs: contactUs,
           )[currentIndex],
           bottomNavigationBar: SizedBox(
-            height: 55,
+            height: 55 + MediaQuery.of(context).padding.bottom,
             child: BottomNavigationBar(
               backgroundColor: AppColors.skyBlue.withOpacity(0.6),
               iconSize: screenWidth * 0.007,
