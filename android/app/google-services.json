@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "102307985270",
-    "project_id": "arabadvisor-s-summit-aa9a1",
-    "storage_bucket": "arabadvisor-s-summit-aa9a1.appspot.com"
+    "project_number": "892324903840",
+    "project_id": "arabadvisor-s-summit-9551d",
+    "storage_bucket": "arabadvisor-s-summit-9551d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:102307985270:android:18f6bd9f49c59620506c57",
+        "mobilesdk_app_id": "1:892324903840:android:7499ff46c3d5650b6cc2c5",
         "android_client_info": {
           "package_name": "com.provision.arabadvisorssummit"
         }
       },
       "oauth_client": [
         {
-          "client_id": "102307985270-ljslf0ej0k9pb9r3lrj93h25tf2qc3ds.apps.googleusercontent.com",
+          "client_id": "892324903840-s9104aj04j2sotsep6ld14qe0u24bge1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAeZwl8B5bPzGwELYNfIMwiK3LO7uUHpDg"
+          "current_key": "AIzaSyBn29ZKFftXZzjSRzewZrMwdW_ikE_kIZo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "102307985270-ljslf0ej0k9pb9r3lrj93h25tf2qc3ds.apps.googleusercontent.com",
+              "client_id": "892324903840-s9104aj04j2sotsep6ld14qe0u24bge1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
