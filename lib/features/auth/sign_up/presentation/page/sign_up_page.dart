@@ -180,10 +180,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                             .getShowPassword;
                                   },
                                   icon: Icon(
-                                      BlocProvider.of<SignUpCubit>(context)
-                                              .getShowPassword
-                                          ? Icons.visibility_off
-                                          : Icons.visibility),
+                                    BlocProvider.of<SignUpCubit>(context)
+                                            .getShowPassword
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color: AppColors.orange,
+                                  ),
                                 ),
                                 passwordStrength: true,
                                 validator: (value) {
@@ -222,7 +224,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                       BlocProvider.of<SignUpCubit>(context)
                                               .getShowConfirmPassword
                                           ? Icons.visibility_off
-                                          : Icons.visibility),
+                                          : Icons.visibility,
+                                      color: AppColors.orange),
                                 ),
                                 validator: (value) {
                                   if (value != passwordController.text) {

@@ -32,16 +32,18 @@ class _MeetingPageState extends State<MeetingPage> {
 
   @override
   void initState() {
-    HomeRepository.getTimes().then((value) => setState(() {
+    HomeRepository.getTimes(
+      context,
+    ).then((value) => setState(() {
           timesList = value;
         }));
     widget.isViewOneMeeting
-        ? MeetingsRepository.getMeetingById(meetingId: widget.meetingId)
+        ? MeetingsRepository.getMeetingById(context,meetingId: widget.meetingId)
             .then((value) => setState(() {
                   meetingsList.add(value);
                   loading = false;
                 }))
-        : MeetingsRepository.getAllMeetings().then(
+        : MeetingsRepository.getAllMeetings(context,).then(
             (value) => setState(
               () {
                 meetingsList = value;
@@ -147,7 +149,7 @@ class _MeetingPageState extends State<MeetingPage> {
                                         timesList: timesList,
                                         userId: widget.userId,
                                         refreshMeetingsList: () {
-                                          MeetingsRepository.getAllMeetings()
+                                          MeetingsRepository.getAllMeetings(context,)
                                               .then(
                                             (value) => setState(
                                               () {

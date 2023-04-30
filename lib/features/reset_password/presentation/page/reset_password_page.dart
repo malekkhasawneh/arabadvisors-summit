@@ -8,8 +8,10 @@ import 'package:provision/core/resources/app_strings.dart';
 import 'package:provision/core/resources/dimentions.dart';
 import 'package:provision/core/resources/network_constants.dart';
 import 'package:provision/core/resources/utilities.dart';
+import 'package:provision/features/home/data/repository/home_repository.dart';
 
 import '../../../../core/resources/app_colors.dart';
+import '../../../../core/widgets/no_internet_widget.dart';
 import '../cubit/reset_password_cubit.dart';
 import '../widget/reset_password_button.dart';
 import '../widget/text_filed_widget.dart';
@@ -77,18 +79,19 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                           top: defaultAppBarHeight + 22,
                           left: Utilities.screenWidth! / 5 + 22),
                       width: Utilities.screenWidth! * 0.6,
-                      child:  Text(
+                      child: Text(
                         AppStrings.resetPasswordTitle,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: AppColors.white,
-                          fontSize: Utilities.screenWidth!*0.062,
+                          fontSize: Utilities.screenWidth! * 0.062,
                         ),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          top: defaultAppBarHeight, left: Utilities.screenWidth! * 0.075),
+                          top: defaultAppBarHeight,
+                          left: Utilities.screenWidth! * 0.075),
                       child: Form(
                         key: _formKey,
                         child: Column(
@@ -231,44 +234,51 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     };
-    final request = await http.post(
-      Uri.parse(
-          '${NetworkConstants.resetPasswordEndPoint}?email=${emailController.text}'),
-      body: jsonEncode({'email': emailController.text}),
-      headers: requestHeaders,
-    );
-    log('================================ here ${request.statusCode}');
-    if (request.statusCode == 200) {
-      var decoded = jsonDecode(request.body);
-      if (decoded['statusCode'] == 2) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'OTP has been sent to your email',
+    if (await HomeRepository.checkIsConnected()) {
+      final request = await http.post(
+        Uri.parse(
+            '${NetworkConstants.resetPasswordEndPoint}?email=${emailController.text}'),
+        body: jsonEncode({'email': emailController.text}),
+        headers: requestHeaders,
+      );
+      log('================================ here ${request.statusCode}');
+      if (request.statusCode == 200) {
+        var decoded = jsonDecode(request.body);
+        if (decoded['statusCode'] == 2) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'OTP has been sent to your email',
+              ),
             ),
-          ),
-        );
-        setState(() {
-          _showOtp = true;
-          canEditEmail = false;
-          iLoading = false;
-        });
+          );
+          setState(() {
+            _showOtp = true;
+            canEditEmail = false;
+            iLoading = false;
+          });
+        } else {
+          setState(() {
+            iLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Invalid Email',
+              ),
+            ),
+          );
+        }
       } else {
         setState(() {
           iLoading = false;
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Invalid Email',
-            ),
-          ),
-        );
       }
     } else {
-      setState(() {
-        iLoading = false;
-      });
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
+      throw Exception();
     }
   }
 
@@ -277,40 +287,47 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     };
-    final request = await http.post(
-      Uri.parse(
-          'https://vmi1258605.contaboserver.net/agg/api/v1/auth/verifyToken?email=${emailController.text}&token=${otpController.text}'),
-      body: jsonEncode(
-          {'email': emailController.text, "token": otpController.text}),
-      headers: requestHeaders,
-    );
-    log('================================ here ${request.body}');
-    if (request.body == 'Invalid token') {
-      setState(() {
-        iLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Invalid OTP',
-          ),
-        ),
+    if (await HomeRepository.checkIsConnected()) {
+      final request = await http.post(
+        Uri.parse(
+            'https://vmi1258605.contaboserver.net/agg/api/v1/auth/verifyToken?email=${emailController.text}&token=${otpController.text}'),
+        body: jsonEncode(
+            {'email': emailController.text, "token": otpController.text}),
+        headers: requestHeaders,
       );
-    } else {
-      if (request.statusCode == 200) {
-        var decoded = jsonDecode(request.body);
-        if (decoded['statusCode'] == 2) {
-          setState(() {
-            _showpassword = true;
-            canEditOtp = false;
-            iLoading = false;
-          });
-        }
-      } else {
+      log('================================ here ${request.body}');
+      if (request.body == 'Invalid token') {
         setState(() {
           iLoading = false;
         });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Invalid OTP',
+            ),
+          ),
+        );
+      } else {
+        if (request.statusCode == 200) {
+          var decoded = jsonDecode(request.body);
+          if (decoded['statusCode'] == 2) {
+            setState(() {
+              _showpassword = true;
+              canEditOtp = false;
+              iLoading = false;
+            });
+          }
+        } else {
+          setState(() {
+            iLoading = false;
+          });
+        }
       }
+    } else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
+      throw Exception();
     }
   }
 
@@ -319,60 +336,67 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     };
-    final request = await http.post(
-      Uri.parse(
-          'https://vmi1258605.contaboserver.net/agg/api/v1/auth/changePassword?email=${emailController.text}&password=${confirmPasswordController.text}'),
-      body: jsonEncode({
-        'email': emailController.text,
-        "password": confirmPasswordController.text
-      }),
-      headers: requestHeaders,
-    );
-    log('================================ here ${request.statusCode}');
-    if (request.statusCode == 200) {
-      var decoded = jsonDecode(request.body);
-      if (decoded['statusCode'] == 2) {
-        setState(() {
-          iLoading = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Password Change Successfully',
+    if (await HomeRepository.checkIsConnected()) {
+      final request = await http.post(
+        Uri.parse(
+            'https://vmi1258605.contaboserver.net/agg/api/v1/auth/changePassword?email=${emailController.text}&password=${confirmPasswordController.text}'),
+        body: jsonEncode({
+          'email': emailController.text,
+          "password": confirmPasswordController.text
+        }),
+        headers: requestHeaders,
+      );
+      log('================================ here ${request.statusCode}');
+      if (request.statusCode == 200) {
+        var decoded = jsonDecode(request.body);
+        if (decoded['statusCode'] == 2) {
+          setState(() {
+            iLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Password Change Successfully',
+              ),
             ),
-          ),
-        );
-        await Future.delayed(const Duration(seconds: 3)).then((_) {
-          Navigator.pop(context);
-        });
-        log('=================================== Success');
-      } else if (decoded['statusCode'] == 1) {
-        setState(() {
-          iLoading = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              decoded['message'],
+          );
+          await Future.delayed(const Duration(seconds: 3)).then((_) {
+            Navigator.pop(context);
+          });
+          log('=================================== Success');
+        } else if (decoded['statusCode'] == 1) {
+          setState(() {
+            iLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                decoded['message'],
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          setState(() {
+            iLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Something Wrong',
+              ),
+            ),
+          );
+        }
       } else {
         setState(() {
           iLoading = false;
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Something Wrong',
-            ),
-          ),
-        );
       }
     } else {
-      setState(() {
-        iLoading = false;
-      });
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
+      throw Exception();
     }
   }
 }

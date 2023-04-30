@@ -27,7 +27,7 @@ class _MyConnectionPageState extends State<MyConnectionPage> {
   void initState() {
     BlocProvider.of<MyConnectionCubit>(context).setShowClearSearch = false;
 
-    ConnectionsRepository.getAllFriends().then(
+    ConnectionsRepository.getAllFriends(context: context).then(
       (value) => setState(
         () {
           allFriends = value;
@@ -113,7 +113,8 @@ class _MyConnectionPageState extends State<MyConnectionPage> {
                             BlocProvider.of<MyConnectionCubit>(context)
                                 .setShowClearSearch = true;
                           }
-                          ConnectionsRepository.getAllFriends(searchText: value)
+                          ConnectionsRepository.getAllFriends(
+                                  searchText: value, context: context)
                               .then(
                             (value) => setState(
                               () {
@@ -132,7 +133,9 @@ class _MyConnectionPageState extends State<MyConnectionPage> {
                                     setState(() {
                                       searchController.clear();
                                     });
-                                    ConnectionsRepository.getAllFriends().then(
+                                    ConnectionsRepository.getAllFriends(
+                                            context: context)
+                                        .then(
                                       (value) => setState(
                                         () {
                                           allFriends = value;
@@ -238,8 +241,10 @@ class _MyConnectionPageState extends State<MyConnectionPage> {
                                             ),
                                           );
                                           if (refresh) {
-                                         await   ConnectionsRepository
-                                                    .getAllFriends()
+                                            // ignore: use_build_context_synchronously
+                                            await ConnectionsRepository
+                                                    .getAllFriends(
+                                                        context: context)
                                                 .then(
                                               (value) => setState(
                                                 () {

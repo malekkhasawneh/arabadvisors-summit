@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provision/core/widgets/no_internet_widget.dart';
 import 'package:provision/features/event/data/model/get_all_participants_model.dart';
 import 'package:provision/features/event/data/repository/events_repository.dart';
 import 'package:provision/features/home/data/repository/home_repository.dart';
@@ -29,14 +30,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    HomeRepository.getTimes().then(
+    HomeRepository.getTimes( context,).then(
       (value) => setState(
         () {
           timeList = value;
         },
       ),
     );
-    HomeRepository.getEventsDetails().then(
+    HomeRepository.getEventsDetails( context,).then(
       (value) => setState(
         () {
           eventList = value;
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
     );
-    HomeRepository.saveToken();
+    HomeRepository.saveToken( context,);
     super.initState();
   }
 
@@ -253,32 +254,46 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   );
                                 } else {
-                                  HomeRepository.scheduleMeeting(
-                                          timeId: timeList
-                                              .firstWhere((element) =>
-                                                  element.roomTime ==
-                                                  timeController.text)
-                                              .id,
-                                          friendId: participantId)
+                                  HomeRepository.checkIsConnected()
                                       .then((value) {
                                     if (value) {
-                                    EventsRepository.showMyProfile().then((userInfo) {
-                                      HomeRepository.getToken(
-                                          userId: participantId)
+                                      HomeRepository.scheduleMeeting(
+                                          context, timeId: timeList
+                                                  .firstWhere((element) =>
+                                                      element.roomTime ==
+                                                      timeController.text)
+                                                  .id,
+                                              friendId: participantId)
                                           .then((value) {
-                                        HomeRepository.sendNotifications(
-                                            title: 'Meeting Request',
-                                            body:
-                                            '${userInfo.name} send you meeting request',
-                                            token: value);
+                                        if (value) {
+                                          EventsRepository.showMyProfile(context)
+                                              .then((userInfo) {
+                                            HomeRepository.getToken(
+                                                context,      userId: participantId)
+                                                .then((value) {
+                                              HomeRepository.sendNotifications(
+                                                  context,   title: 'Meeting Request',
+                                                  body:
+                                                      '${userInfo.name} send you meeting request',
+                                                  token: value);
+                                            });
+                                          });
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                AppStrings.reservedSuccess,
+                                              ),
+                                            ),
+                                          );
+                                        }
                                       });
-                                    });
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                            AppStrings.reservedSuccess,
-                                          ),
+                                    } else {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) =>
+                                              NoInternetConnectionWidget(),
                                         ),
                                       );
                                     }

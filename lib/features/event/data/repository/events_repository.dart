@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
+import 'package:provision/features/home/data/repository/home_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../core/widgets/no_internet_widget.dart';
 import '../model/get_all_friends_model.dart';
 import '../model/get_all_participants_model.dart';
 
@@ -19,9 +22,9 @@ class EventsRepository {
     };
   }
 
-  static Future<List<AllParticipantsModel>> getAllParticipant() async {
+  static Future<List<AllParticipantsModel>> getAllParticipant(BuildContext context) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    final getAllParticipant = await http.get(
+    if (await HomeRepository.checkIsConnected()) {  final getAllParticipant = await http.get(
       Uri.parse(
           'https://vmi1258605.contaboserver.net/agg/api/v1/participant/allParticipants?personId=${preferences.getInt('id')}'),
       headers: requestHeaders(token: preferences.getString('token') ?? ''),
@@ -35,15 +38,20 @@ class EventsRepository {
       return allParticipants;
     } else {
       throw Exception();
+    }} else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
+      throw Exception();
     }
   }
 
-  static Future<List<AllParticipantsModel>> searchParticipant({
+  static Future<List<AllParticipantsModel>> searchParticipant(BuildContext context,{
     required String searchText,
   }) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
-    final searchParticipant = await http.get(
+    if (await HomeRepository.checkIsConnected()) {
+      final searchParticipant = await http.get(
       Uri.parse(
           'https://vmi1258605.contaboserver.net/agg/api/v1/participant/getParticipantLike?name=$searchText&personId=${preferences.getInt('id')}'),
       headers: requestHeaders(token: preferences.getString('token') ?? ''),
@@ -56,14 +64,19 @@ class EventsRepository {
       return allParticipants;
     } else {
       throw Exception();
+    }} else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
+      throw Exception();
     }
   }
 
-  static Future<AllParticipantsModel> showParticipantProfile({
+  static Future<AllParticipantsModel> showParticipantProfile(BuildContext context,{
     required int profileId,
   }) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
+    if (await HomeRepository.checkIsConnected()) {
     final searchParticipant = await http.get(
       Uri.parse(
           'https://vmi1258605.contaboserver.net/agg/api/v1/participant/ViewProfileByOthers?viewerId=${preferences.getInt('id')}&profileId=$profileId'),
@@ -76,12 +89,17 @@ class EventsRepository {
       return participantsModel;
     } else {
       throw Exception();
+    }} else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
+      throw Exception();
     }
   }
 
-  static Future<AllParticipantsModel> showMyProfile() async {
+  static Future<AllParticipantsModel> showMyProfile(BuildContext context) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
+    if (await HomeRepository.checkIsConnected()) {
     final searchParticipant = await http.get(
       Uri.parse(
           'https://vmi1258605.contaboserver.net/agg/api/v1/participant/getParticipantById?id=${preferences.getInt('id')}'),
@@ -94,12 +112,17 @@ class EventsRepository {
       return participantsModel;
     } else {
       throw Exception();
+    }} else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
+      throw Exception();
     }
   }
 
-  static Future<List<GetAllFriendsModel>> getFriendRequests() async {
+  static Future<List<GetAllFriendsModel>> getFriendRequests(BuildContext context) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
+    if (await HomeRepository.checkIsConnected()) {
     final searchParticipant = await http.get(
       Uri.parse(
           'https://vmi1258605.contaboserver.net/agg/api/v1/connections/getFriendRequests?personId=${preferences.getInt('id')}'),
@@ -113,12 +136,17 @@ class EventsRepository {
       return getAllFriends;
     } else {
       throw Exception();
+    }} else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
+      throw Exception();
     }
   }
 
-  static Future<List<GetAllFriendsModel>> getAllFriends() async {
+  static Future<List<GetAllFriendsModel>> getAllFriends(BuildContext context) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
+    if (await HomeRepository.checkIsConnected()) {
     final searchParticipant = await http.get(
       Uri.parse(
           'https://vmi1258605.contaboserver.net/agg/api/v1/connections/getFriends?personId=${preferences.getInt('id')}'),
@@ -132,186 +160,210 @@ class EventsRepository {
       return getAllFriends;
     } else {
       throw Exception();
-    }
-  }
-
-  static Future<void> sendFriendRequest({
-    required int friendId,
-  }) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-
-    final sendFriendRequest = await http.patch(
-        Uri.parse(
-            'https://vmi1258605.contaboserver.net/agg/api/v1/connections/sendFriendRequest?personId=${preferences.getInt('id')}&friendId=$friendId'),
-        headers: requestHeaders(token: preferences.getString('token') ?? ''),
-        body: json.encode(
-            {"personId": preferences.getInt('id'), "friendId": friendId}));
-    if (sendFriendRequest.statusCode == 200) {
-      log('Ok');
-    } else {
+    }} else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
       throw Exception();
     }
   }
 
-  static Future<bool> acceptFriendRequest({
+  static Future<void> sendFriendRequest(
+      {required int friendId, required BuildContext context}) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (await HomeRepository.checkIsConnected()) {
+      final sendFriendRequest = await http.patch(
+          Uri.parse(
+              'https://vmi1258605.contaboserver.net/agg/api/v1/connections/sendFriendRequest?personId=${preferences.getInt('id')}&friendId=$friendId'),
+          headers: requestHeaders(token: preferences.getString('token') ?? ''),
+          body: json.encode(
+              {"personId": preferences.getInt('id'), "friendId": friendId}));
+      if (sendFriendRequest.statusCode == 200) {
+        log('Ok');
+      } else {
+        throw Exception();
+      }
+    } else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
+    }
+  }
+
+  static Future<bool> acceptFriendRequest(
+    BuildContext context, {
     required int friendId,
   }) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
-    final sendFriendRequest = await http.patch(
-        Uri.parse(
-            'https://vmi1258605.contaboserver.net/agg/api/v1/connections/acceptFriendRequest?senderId=${preferences.getInt('id')}&receiverId=$friendId'),
-        headers: requestHeaders(token: preferences.getString('token') ?? ''),
-        body: json.encode(
-            {"senderId": preferences.getInt('id'), "receiverId": friendId}));
-    if (sendFriendRequest.statusCode == 200) {
-      return true;
+    if (await HomeRepository.checkIsConnected()) {
+      final sendFriendRequest = await http.patch(
+          Uri.parse(
+              'https://vmi1258605.contaboserver.net/agg/api/v1/connections/acceptFriendRequest?senderId=${preferences.getInt('id')}&receiverId=$friendId'),
+          headers: requestHeaders(token: preferences.getString('token') ?? ''),
+          body: json.encode(
+              {"senderId": preferences.getInt('id'), "receiverId": friendId}));
+      if (sendFriendRequest.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception();
+      }
     } else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
       throw Exception();
     }
   }
 
-  static Future<bool> rejectFriendRequest({
+  static Future<bool> rejectFriendRequest(
+    BuildContext context, {
     required int friendId,
   }) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
-    final sendFriendRequest = await http.patch(
-        Uri.parse(
-            'https://vmi1258605.contaboserver.net/agg/api/v1/connections/declineFriendRequest?personId=${preferences.getInt('id')}&friendId=$friendId'),
-        headers: requestHeaders(token: preferences.getString('token') ?? ''),
-        body: json.encode(
-            {"personId": preferences.getInt('id'), "friendId": friendId}));
-    if (sendFriendRequest.statusCode == 200) {
-      log('Ok');
-      return true;
+    if (await HomeRepository.checkIsConnected()) {
+      final sendFriendRequest = await http.patch(
+          Uri.parse(
+              'https://vmi1258605.contaboserver.net/agg/api/v1/connections/declineFriendRequest?personId=${preferences.getInt('id')}&friendId=$friendId'),
+          headers: requestHeaders(token: preferences.getString('token') ?? ''),
+          body: json.encode(
+              {"personId": preferences.getInt('id'), "friendId": friendId}));
+      if (sendFriendRequest.statusCode == 200) {
+        log('Ok');
+        return true;
+      } else {
+        throw Exception();
+      }
     } else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
       throw Exception();
     }
   }
 
-  static Future<void> removeFriendRequest({
+  static Future<void> removeFriendRequest(
+    BuildContext context, {
     required int friendId,
   }) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
-    final sendFriendRequest = await http.patch(
-        Uri.parse(
-            'https://vmi1258605.contaboserver.net/agg/api/v1/connections/removeFriendRequest?personId=${preferences.getInt('id')}&friendId=$friendId'),
-        headers: requestHeaders(token: preferences.getString('token') ?? ''),
-        body: json.encode(
-            {"personId": preferences.getInt('id'), "friendId": friendId}));
-    if (sendFriendRequest.statusCode == 200) {
-      log('Ok');
+    if (await HomeRepository.checkIsConnected()) {
+      final sendFriendRequest = await http.patch(
+          Uri.parse(
+              'https://vmi1258605.contaboserver.net/agg/api/v1/connections/removeFriendRequest?personId=${preferences.getInt('id')}&friendId=$friendId'),
+          headers: requestHeaders(token: preferences.getString('token') ?? ''),
+          body: json.encode(
+              {"personId": preferences.getInt('id'), "friendId": friendId}));
+      if (sendFriendRequest.statusCode == 200) {
+        log('Ok');
+      } else {
+        throw Exception();
+      }
     } else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
       throw Exception();
     }
   }
 
-  static Future<void> removeFriend({
+  static Future<void> removeFriend(
+    BuildContext context, {
     required int friendId,
   }) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
-    final sendFriendRequest = await http.patch(
-        Uri.parse(
-            'https://vmi1258605.contaboserver.net/agg/api/v1/connections/removeFriend?personId=${preferences.getInt('id')}&friendId=$friendId'),
-        headers: requestHeaders(token: preferences.getString('token') ?? ''),
-        body: json.encode(
-            {"personId": preferences.getInt('id'), "friendId": friendId}));
-    if (sendFriendRequest.statusCode == 200) {
-      log('Ok');
+    if (await HomeRepository.checkIsConnected()) {
+      final sendFriendRequest = await http.patch(
+          Uri.parse(
+              'https://vmi1258605.contaboserver.net/agg/api/v1/connections/removeFriend?personId=${preferences.getInt('id')}&friendId=$friendId'),
+          headers: requestHeaders(token: preferences.getString('token') ?? ''),
+          body: json.encode(
+              {"personId": preferences.getInt('id'), "friendId": friendId}));
+      if (sendFriendRequest.statusCode == 200) {
+        log('Ok');
+      } else {
+        throw Exception();
+      }
     } else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
       throw Exception();
     }
   }
 
-  static Future<bool> uploadUserImage({required File file}) async {
+  static upload(File imageFile, BuildContext context) async {
+    if (await HomeRepository.checkIsConnected()) {
+      var stream = http.ByteStream(imageFile.openRead());
+      var length = await imageFile.length();
+      var uri = Uri.parse(
+          "https://vmi1258605.contaboserver.net/agg/api/v1/participant/upload_image");
+      var request = http.MultipartRequest("POST", uri);
+      var multipartFile = http.MultipartFile('file', stream, length,
+          filename: basename(imageFile.path));
+      request.files.add(multipartFile);
+      var response = await request.send();
+      print(response.statusCode);
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+      });
+    } else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
+      throw Exception();
+    }
+  }
+
+  static Future<Uint8List> getImageDetails(BuildContext context,
+      {required String imageUrl}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    var post = http.MultipartRequest(
-        'POST',
+    if (await HomeRepository.checkIsConnected()) {
+      final getUserImage = await http.get(
         Uri.parse(
-            'https://vmi1258605.contaboserver.net/agg/api/v1/participant/upload_image'));
-    var length = await file.length();
-    var stream = http.ByteStream(file.openRead());
-
-    var multiPartFile = http.MultipartFile(
-      'file',
-      stream,
-      length,
-      filename: basename(file.path),
-    );
-    post.files.add(multiPartFile);
-    Map<String, dynamic> body = {'id': preferences.getInt('id')};
-    requestHeaders(token: preferences.getString('token') ?? '')
-        .forEach((key, value) {
-      post.headers[key] = value;
-    });
-    body.forEach((key, value) {
-      post.fields[key] = value;
-    });
-    var myRequest = await post.send();
-
-    var response = await http.Response.fromStream(myRequest);
-
-    if (response.statusCode == 200) {
-      return true;
+            'https://vmi1258605.contaboserver.net/agg/api/v1/participant/download/$imageUrl'),
+        headers: {
+          'Authorization': 'Bearer ${preferences.getString('token') ?? ''}'
+        },
+      );
+      if (getUserImage.statusCode == 200) {
+        Uint8List _imageData;
+        _imageData = getUserImage.bodyBytes;
+        return _imageData;
+      } else {
+        throw Exception('Failed to fetch image');
+      }
     } else {
-      return false;
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
+      throw Exception();
     }
   }
 
-  static upload(File imageFile) async {
-    var stream = http.ByteStream(imageFile.openRead());
-    var length = await imageFile.length();
-    var uri = Uri.parse(
-        "https://vmi1258605.contaboserver.net/agg/api/v1/participant/upload_image");
-    var request = http.MultipartRequest("POST", uri);
-    var multipartFile = http.MultipartFile('file', stream, length,
-        filename: basename(imageFile.path));
-    request.files.add(multipartFile);
-    var response = await request.send();
-    print(response.statusCode);
-    response.stream.transform(utf8.decoder).listen((value) {
-      print(value);
-    });
-  }
-
-  static Future<Uint8List> getImageDetails({required String imageUrl}) async {
+  static Future<bool> uploadImage(File imageFile, BuildContext context) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    final getUserImage = await http.get(
-      Uri.parse(
-          'https://vmi1258605.contaboserver.net/agg/api/v1/participant/download/$imageUrl'),
-      headers: {
-        'Authorization': 'Bearer ${preferences.getString('token') ?? ''}'
-      },
-    );
-    if (getUserImage.statusCode == 200) {
-      Uint8List _imageData;
-      _imageData = getUserImage.bodyBytes;
-      return _imageData;
+    if (await HomeRepository.checkIsConnected()) {
+      final url = Uri.parse(
+          'https://vmi1258605.contaboserver.net/agg/api/v1/participant/upload_image');
+      var request = http.MultipartRequest('POST', url);
+      request.fields['id'] = preferences.getInt('id').toString();
+      var pic = await http.MultipartFile.fromPath('image', imageFile.path);
+      request.files.add(pic);
+      requestHeaders(token: preferences.getString('token') ?? '')
+          .forEach((key, value) {
+        request.headers[key] = value;
+      });
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
-      throw Exception('Failed to fetch image');
-    }
-  }
-
- static Future<bool> uploadImage(File imageFile) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    final url = Uri.parse(
-        'https://vmi1258605.contaboserver.net/agg/api/v1/participant/upload_image');
-    var request = http.MultipartRequest('POST', url);
-    request.fields['id'] = preferences.getInt('id').toString();
-    var pic = await http.MultipartFile.fromPath('image', imageFile.path);
-    request.files.add(pic);
-    requestHeaders(token: preferences.getString('token') ?? '')
-        .forEach((key, value) {
-      request.headers[key] = value;
-    });
-    var response = await request.send();
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
+      throw Exception();
     }
   }
 }

@@ -27,12 +27,12 @@ class _SessionDescriptionState extends State<SessionDescription> {
   @override
   void initState() {
     HomeRepository.showParticipantProfile(
-            profileId: widget.eventDetails.speakerId)
+        context,     profileId: widget.eventDetails.speakerId)
         .then((value) => setState(() {
               speakerInfo = value;
               loading = false;
               EventsRepository.getImageDetails(
-                      imageUrl: value.image.split('/').last)
+                  context,  imageUrl: value.image.split('/').last)
                   .then((value) => setState(() {
                         _imageData = value;
                       }));

@@ -27,7 +27,7 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
   @override
   void initState() {
     BlocProvider.of<EventCubit>(context).setShowDeleteButton = false;
-    EventsRepository.getAllParticipant().then(
+    EventsRepository.getAllParticipant(context).then(
       (value) => setState(
         () {
           allParticipant = value;
@@ -105,7 +105,7 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                             BlocProvider.of<EventCubit>(context)
                                 .setShowDeleteButton = true;
                           }
-                          EventsRepository.searchParticipant(searchText: value)
+                          EventsRepository.searchParticipant(context,searchText: value)
                               .then((value) => setState(() {
                                     allParticipant = value;
                                   }));
@@ -120,7 +120,7 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                     setState(() {
                                       searchController.clear();
                                     });
-                                    EventsRepository.getAllParticipant().then(
+                                    EventsRepository.getAllParticipant(context).then(
                                       (value) => setState(
                                         () {
                                           allParticipant = value;
@@ -219,13 +219,13 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                                 ? () {
                                                     EventsRepository
                                                             .removeFriendRequest(
-                                                                friendId:
+                                                        context, friendId:
                                                                     allParticipant[
                                                                             index]
                                                                         .id)
                                                         .then(
                                                       (value) => EventsRepository
-                                                              .getAllParticipant()
+                                                              .getAllParticipant(context)
                                                           .then(
                                                         (value) => setState(
                                                           () {
@@ -241,13 +241,13 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                                             .connectionStatus ==
                                                         'SENT') {
                                                       EventsRepository.removeFriendRequest(
-                                                              friendId:
+                                                          context,     friendId:
                                                                   allParticipant[
                                                                           index]
                                                                       .id)
                                                           .then(
                                                         (value) => EventsRepository
-                                                                .getAllParticipant()
+                                                                .getAllParticipant(context)
                                                             .then(
                                                           (value) => setState(
                                                             () {
@@ -261,7 +261,7 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                                                 index]
                                                             .connectionStatus ==
                                                         'NOT_CONNECTED') {
-                                                      EventsRepository.sendFriendRequest(
+                                                      EventsRepository.sendFriendRequest(context: context,
                                                               friendId:
                                                                   allParticipant[
                                                                           index]
@@ -269,16 +269,16 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                                           .then(
                                                         (value) {
                                                           EventsRepository
-                                                                  .showMyProfile()
+                                                                  .showMyProfile(context)
                                                               .then((userInfo) {
                                                             HomeRepository.getToken(
-                                                                    userId:
+                                                                context,               userId:
                                                                         allParticipant[index]
                                                                             .id)
                                                                 .then((value) {
                                                               HomeRepository
                                                                   .sendNotifications(
-                                                                      title:
+                                                                  context,             title:
                                                                           'Connection Request',
                                                                       body:
                                                                           '${userInfo.name} send you connection request',
@@ -287,7 +287,7 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                                             });
                                                           });
                                                           return EventsRepository
-                                                                  .getAllParticipant()
+                                                                  .getAllParticipant(context)
                                                               .then(
                                                             (value) => setState(
                                                               () {
@@ -303,20 +303,20 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                         acceptFriend: () async {
                                           await EventsRepository
                                                   .acceptFriendRequest(
-                                                      friendId:
+                                              context,    friendId:
                                                           allParticipant[index]
                                                               .id)
                                               .then(
                                             (value) {
-                                              EventsRepository.showMyProfile()
+                                              EventsRepository.showMyProfile(context)
                                                   .then((userInfo) {
                                                 HomeRepository.getToken(
-                                                        userId: allParticipant[
+                                                    context,       userId: allParticipant[
                                                                 index]
                                                             .id)
                                                     .then((value) {
                                                   HomeRepository.sendNotifications(
-                                                      title:
+                                                      context,     title:
                                                           'Connection Request',
                                                       body:
                                                           '${userInfo.name} accept your connection request',
@@ -324,7 +324,7 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                                 });
                                               });
                                               return EventsRepository
-                                                      .getAllParticipant()
+                                                      .getAllParticipant(context)
                                                   .then(
                                                 (value) => setState(
                                                   () {
@@ -338,11 +338,11 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                         declineFriend: () async {
                                           await EventsRepository
                                                   .rejectFriendRequest(
-                                                      friendId:
+                                              context,     friendId:
                                                           allParticipant[index]
                                                               .id)
                                               .then((value) => EventsRepository
-                                                          .getAllParticipant()
+                                                          .getAllParticipant(context)
                                                       .then(
                                                     (value) => setState(
                                                       () {
@@ -378,7 +378,7 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
                                             setState(() {
                                               loading = true;
                                             });
-                                            EventsRepository.getAllParticipant()
+                                            EventsRepository.getAllParticipant(context)
                                                 .then(
                                               (value) => setState(
                                                 () {

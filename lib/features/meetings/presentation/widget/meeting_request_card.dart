@@ -24,13 +24,13 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
   @override
   void initState() {
     EventsRepository.getImageDetails(
-            imageUrl: widget.meetingsModel.inviterImage.split('/').last)
+        context,    imageUrl: widget.meetingsModel.inviterImage.split('/').last)
         .then((value) => setState(() {
               _inviterImageData = value;
               loading = false;
             }));
     EventsRepository.getImageDetails(
-            imageUrl: widget.meetingsModel.invitedImage.split('/').last)
+        context,  imageUrl: widget.meetingsModel.invitedImage.split('/').last)
         .then((value) => setState(() {
               _invitedImageData = value;
               loading = false;

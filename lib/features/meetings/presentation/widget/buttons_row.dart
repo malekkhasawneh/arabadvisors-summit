@@ -155,7 +155,7 @@ class _ButtonsRowState extends State<ButtonsRow> {
   Widget acceptButton() {
     return ElevatedButton(
       onPressed: () {
-        MeetingsRepository.acceptMeeting(meetingId: widget.meetingsModel.id)
+        MeetingsRepository.acceptMeeting(context,meetingId: widget.meetingsModel.id)
             .then((value) {
           if (value) {
             widget.refreshMeetingsList();
@@ -172,7 +172,7 @@ class _ButtonsRowState extends State<ButtonsRow> {
   Widget rejectButton() {
     return ElevatedButton(
       onPressed: () {
-        MeetingsRepository.rejectMeeting(meetingId: widget.meetingsModel.id)
+        MeetingsRepository.rejectMeeting(context,meetingId: widget.meetingsModel.id)
             .then((value) {
           if (value) {
             widget.refreshMeetingsList();
@@ -204,7 +204,7 @@ class _ButtonsRowState extends State<ButtonsRow> {
     return ElevatedButton(
       onPressed: () async {
         MeetingsRepository.rescheduleMeeting(
-                meetingId: widget.meetingsModel.id,
+            context,  meetingId: widget.meetingsModel.id,
                 meetingTimeId: widget.timesList
                     .firstWhere(
                         (element) => element.roomTime == timesController.text)

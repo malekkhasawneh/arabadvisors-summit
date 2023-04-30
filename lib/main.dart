@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -19,11 +17,15 @@ import 'features/connection/presentation/cubit/my_connection_cubit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseMessaging.onMessage.listen((event) {
-    log('======================================== Message ${event.notification!.title}');
-  });
-  FirebaseMessaging.instance.getToken().then(
-      (value) => log('================================== the token =  $value'));
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    announcement: true,
+    sound: true,
+    badge: true,
+    carPlay: true,
+    criticalAlert: true,
+    provisional: true,
+  );
   runApp(const MyApp());
 }
 

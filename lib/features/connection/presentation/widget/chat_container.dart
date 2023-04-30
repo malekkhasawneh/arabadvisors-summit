@@ -48,25 +48,25 @@ class _ChatContainerState extends State<ChatContainer> {
 
   @override
   void initState() {
-    EventsRepository.showMyProfile().then(
+    EventsRepository.showMyProfile(context).then(
       (value) {
         setState(
           () {
             participantsModel = value;
           },
         );
-        EventsRepository.getImageDetails(imageUrl: widget.image.split('/').last)
+        EventsRepository.getImageDetails(context,imageUrl: widget.image.split('/').last)
             .then((value) => setState(() {
                   _imageData = value;
                 }));
-        EventsRepository.getImageDetails(imageUrl: value.image.split('/').last)
+        EventsRepository.getImageDetails(context,imageUrl: value.image.split('/').last)
             .then((value) => setState(() {
                   _myImageData = value;
                 }));
       },
     );
 
-    ConnectionsRepository.getMessages(chatId: widget.chatId).then(
+    ConnectionsRepository.getMessages(chatId: widget.chatId,context: context).then(
       (value) => setState(() {
         messagesList = value;
         loading = false;
@@ -74,7 +74,7 @@ class _ChatContainerState extends State<ChatContainer> {
     );
     timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       log('=========================== Refresh');
-      ConnectionsRepository.getMessages(chatId: widget.chatId).then((value) {
+      ConnectionsRepository.getMessages(chatId: widget.chatId,context: context).then((value) {
         if (mounted) {
           setState(() {
             messagesList = value;
@@ -309,19 +309,19 @@ class _ChatContainerState extends State<ChatContainer> {
           suffixIcon: BlocProvider.of<MyConnectionCubit>(context).getHaveSuffix
               ? IconButton(
                   onPressed: () {
-                    ConnectionsRepository.sendMessage(
+                    ConnectionsRepository.sendMessage(context: context,
                             message: widget.messageController.text,
                             friendId: widget.friendId)
                         .then((value) {
                       if (value) {
-                        HomeRepository.getToken(userId: widget.friendId)
+                        HomeRepository.getToken( context,userId: widget.friendId)
                             .then((value) {
                           HomeRepository.sendNotifications(
-                              title: participantsModel!.name,
+                              context,  title: participantsModel!.name,
                               body: widget.messageController.text,
                               token: value);
                         });
-                        ConnectionsRepository.getMessages(chatId: widget.chatId)
+                        ConnectionsRepository.getMessages(chatId: widget.chatId,context: context)
                             .then(
                           (value) => setState(
                             () {

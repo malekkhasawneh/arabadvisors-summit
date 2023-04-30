@@ -285,7 +285,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                         horizontal: screenWidth * 0.03),
                     child: GestureDetector(
                       onTap: () async {
-                        await HomeRepository.goToFeedBack();
+                        await HomeRepository.goToFeedBack( context,);
                       },
                       child: Container(
                         height: screenHeight * 0.075,

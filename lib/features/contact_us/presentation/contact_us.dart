@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provision/core/resources/app_colors.dart';
 import 'package:provision/core/resources/dimentions.dart';
+import 'package:provision/core/widgets/no_internet_widget.dart';
 import 'package:provision/features/contact_us/data/repository/contact_us_repository.dart';
+import 'package:provision/features/home/data/repository/home_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/resources/app_strings.dart';
@@ -107,13 +109,23 @@ class ContactUs extends StatelessWidget {
                                     width: screenWidth * 0.6,
                                     child: GestureDetector(
                                         onTap: () async {
-                                          final Uri params = Uri(
-                                            scheme: 'tel',
-                                            path: AppStrings.contactPhone,
-                                          );
+                                          if (await HomeRepository
+                                              .checkIsConnected()) {
+                                            final Uri params = Uri(
+                                              scheme: 'tel',
+                                              path: AppStrings.contactPhone,
+                                            );
 
-                                          String url = params.toString();
-                                          await launch(url);
+                                            String url = params.toString();
+                                            await launch(url);
+                                          } else {
+                                            // ignore: use_build_context_synchronously
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        NoInternetConnectionWidget()));
+                                          }
                                         },
                                         child: const Text(
                                             AppStrings.contactPhone)))
@@ -152,13 +164,23 @@ class ContactUs extends StatelessWidget {
                                     width: screenWidth * 0.6,
                                     child: GestureDetector(
                                         onTap: () async {
-                                          final Uri params = Uri(
-                                            scheme: 'mailto',
-                                            path: AppStrings.contactUsEmail,
-                                          );
+                                          if (await HomeRepository
+                                              .checkIsConnected()) {
+                                            final Uri params = Uri(
+                                              scheme: 'mailto',
+                                              path: AppStrings.contactUsEmail,
+                                            );
 
-                                          String url = params.toString();
-                                          await launch(url);
+                                            String url = params.toString();
+                                            await launch(url);
+                                          } else {
+                                            // ignore: use_build_context_synchronously
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        NoInternetConnectionWidget()));
+                                          }
                                         },
                                         child: const Text(
                                             AppStrings.contactUsEmail)))
@@ -183,8 +205,16 @@ class ContactUs extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () async {
-                await launch(
-                    'https://www.google.com/maps?q=31.967433,35.905494');
+                if (await HomeRepository.checkIsConnected()) {
+                  await launch(
+                      'https://www.google.com/maps?q=31.967433,35.905494');
+                } else {
+                  // ignore: use_build_context_synchronously
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => NoInternetConnectionWidget()));
+                }
               },
               child: Container(
                 width: screenWidth * 0.9,
@@ -218,7 +248,8 @@ class ContactUs extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      ContactUsRepository.goToUrl(url: AppStrings.facebookUrl);
+                      ContactUsRepository.goToUrl(
+                          url: AppStrings.facebookUrl, context: context);
                     },
                     child: Image.asset(
                       Images.faceBook,
@@ -228,7 +259,8 @@ class ContactUs extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      ContactUsRepository.goToUrl(url: AppStrings.youtubeUrl);
+                      ContactUsRepository.goToUrl(
+                          url: AppStrings.youtubeUrl, context: context);
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(top: 5),
@@ -241,7 +273,8 @@ class ContactUs extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      ContactUsRepository.goToUrl(url: AppStrings.linkedInUrl);
+                      ContactUsRepository.goToUrl(
+                          url: AppStrings.linkedInUrl, context: context);
                     },
                     child: Image.asset(
                       Images.linkedIn,
@@ -251,7 +284,8 @@ class ContactUs extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      ContactUsRepository.goToUrl(url: AppStrings.twitterUrl);
+                      ContactUsRepository.goToUrl(
+                          url: AppStrings.twitterUrl, context: context);
                     },
                     child: Image.asset(
                       Images.twitter,

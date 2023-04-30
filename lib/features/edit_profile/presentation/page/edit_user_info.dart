@@ -51,32 +51,36 @@ class _EditUserInfoState extends State<EditUserInfo> {
     EditProfileRepository.showMyProfile().then(
       (userInfo) {
         setState(
-        () {
-          nameController.text = userInfo.name ?? '';
-          emailController.text = userInfo.email ?? '';
-          countryController.text = userInfo.country ?? '';
-          numberController.text = userInfo.mobileNo.startsWith('+')
-              ? userInfo.mobileNo.replaceRange(0, 4, '')
-              : userInfo.mobileNo ?? '';
-          companyController.text = userInfo.company ?? '';
-          jobController.text = userInfo.jobTitle ?? '';
-          industryController.text = userInfo.industry ?? '';
-          image = userInfo.image;
-        },
-      );
-        EditProfileRepository.getAllCountry().then((value) => setState(() {
-          allCountriesList = value;
-          BlocProvider.of<SignUpCubit>(context).setCountryCode = value
-              .firstWhere((element) => element.name == countryController.text)
-              .countryCode;
-          loading = false;
-        }));
-        EditProfileRepository.getAllCompany().then((value) => setState(() {
-          allCompanyList = value;
-        }));
-        EditProfileRepository.getAllIndustry().then((value) => setState(() {
-          allIndustryList = value;
-        }));
+          () {
+            nameController.text = userInfo.name ?? '';
+            emailController.text = userInfo.email ?? '';
+            countryController.text = userInfo.country ?? '';
+            numberController.text = userInfo.mobileNo.startsWith('+')
+                ? userInfo.mobileNo.replaceRange(0, 4, '')
+                : userInfo.mobileNo ?? '';
+            companyController.text = userInfo.company ?? '';
+            jobController.text = userInfo.jobTitle ?? '';
+            industryController.text = userInfo.industry ?? '';
+            image = userInfo.image;
+          },
+        );
+        EditProfileRepository.getAllCountry(context)
+            .then((value) => setState(() {
+                  allCountriesList = value;
+                  BlocProvider.of<SignUpCubit>(context).setCountryCode = value
+                      .firstWhere(
+                          (element) => element.name == countryController.text)
+                      .countryCode;
+                  loading = false;
+                }));
+        EditProfileRepository.getAllCompany(context)
+            .then((value) => setState(() {
+                  allCompanyList = value;
+                }));
+        EditProfileRepository.getAllIndustry(context)
+            .then((value) => setState(() {
+                  allIndustryList = value;
+                }));
       },
     );
 
@@ -310,7 +314,9 @@ class _EditUserInfoState extends State<EditUserInfo> {
                                     return;
                                   } else {
                                     if (await checkInternetConnection()) {
+                                      // ignore: use_build_context_synchronously
                                       await EditProfileRepository.editInfo(
+                                              context,
                                               name: nameController.text,
                                               email: emailController.text,
                                               mobileNumber: allCountriesList

@@ -25,7 +25,7 @@ class _InviteParticipantState extends State<InviteParticipant> {
 
   @override
   void initState() {
-    HomeRepository.getAllFriends().then(
+    HomeRepository.getAllFriends( context,).then(
       (value) => setState(
         () {
           allFriends = value;
@@ -121,7 +121,7 @@ class _InviteParticipantState extends State<InviteParticipant> {
                   height: 35,
                   child:allFriends.isNotEmpty? TextFormField(
                     onChanged: (value) {
-                      HomeRepository.getAllFriends(searchText: value).then(
+                      HomeRepository.getAllFriends( context,searchText: value).then(
                         (value) => setState(
                           () {
                             allFriends = value;

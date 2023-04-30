@@ -28,10 +28,10 @@ class _ContentWidgetState extends State<ContentWidget> {
 
   @override
   void initState() {
-    ConnectionsRepository.getAllChats().then((value) => setState(() {
+    ConnectionsRepository.getAllChats(context).then((value) => setState(() {
           chatList = value;
         }));
-    AlertRepository.getAllNotifications().then((value) => setState(() {
+    AlertRepository.getAllNotifications(context).then((value) => setState(() {
           notifications = value;
         }));
     super.initState();
@@ -93,7 +93,7 @@ class _ContentWidgetState extends State<ContentWidget> {
                                 ),
                               );
                               if (refresh) {
-                                await ConnectionsRepository.getAllChats()
+                                await ConnectionsRepository.getAllChats(context)
                                     .then((value) => setState(() {
                                           chatList = value;
                                         }));
@@ -144,22 +144,25 @@ class _ContentWidgetState extends State<ContentWidget> {
                                           )));
                             },
                             acceptFriend: () {
-                              EventsRepository.acceptFriendRequest(
+                              EventsRepository.acceptFriendRequest(context,
                                       friendId: notifications[index].objectId)
                                   .then((value) {
                                 if (value) {
-                                  EventsRepository.showMyProfile().then((userInfo) {
+                                  EventsRepository.showMyProfile(context)
+                                      .then((userInfo) {
                                     HomeRepository.getToken(
-                                        userId: notifications[index].objectId)
+                                        context,  userId:
+                                                notifications[index].objectId)
                                         .then((value) {
                                       HomeRepository.sendNotifications(
-                                          title: 'Connection Request',
+                                          context,    title: 'Connection Request',
                                           body:
-                                          '${userInfo.name} accept your connection request',
+                                              '${userInfo.name} accept your connection request',
                                           token: value);
                                     });
                                   });
-                                  return AlertRepository.getAllNotifications()
+                                  return AlertRepository.getAllNotifications(
+                                          context)
                                       .then((value) => setState(() {
                                             notifications = value;
                                           }));
@@ -167,11 +170,12 @@ class _ContentWidgetState extends State<ContentWidget> {
                               });
                             },
                             rejectFriend: () {
-                              EventsRepository.rejectFriendRequest(
+                              EventsRepository.rejectFriendRequest(context,
                                       friendId: notifications[index].objectId)
                                   .then((value) {
                                 if (value) {
-                                  return AlertRepository.getAllNotifications()
+                                  return AlertRepository.getAllNotifications(
+                                          context)
                                       .then((value) => setState(() {
                                             notifications = value;
                                           }));

@@ -30,20 +30,20 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     widget.isSameUser
-        ? EventsRepository.showMyProfile().then(
+        ? EventsRepository.showMyProfile(context).then(
             (value) {
               setState(() {
                 myProfile = value;
                 loading = false;
               });
               EventsRepository.getImageDetails(
-                      imageUrl: value.image.split('/').last)
+                  context,   imageUrl: value.image.split('/').last)
                   .then((value) => setState(() {
                         _imageData = value;
                       }));
             },
           )
-        : EventsRepository.showParticipantProfile(profileId: widget.profileId)
+        : EventsRepository.showParticipantProfile(context,profileId: widget.profileId)
             .then(
             (value) {
               setState(() {
@@ -167,21 +167,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   onPressed: () async {
                                                     await EventsRepository
                                                             .sendFriendRequest(
+                                                                context:
+                                                                    context,
                                                                 friendId:
                                                                     myProfile
                                                                         .id)
                                                         .then((value) {
                                                       EventsRepository
-                                                              .showMyProfile()
+                                                              .showMyProfile(context)
                                                           .then((userInfo) {
                                                         HomeRepository.getToken(
-                                                                userId:
+                                                            context,  userId:
                                                                     myProfile
                                                                         .id)
                                                             .then((value) {
                                                           HomeRepository
                                                               .sendNotifications(
-                                                                  title:
+                                                              context,    title:
                                                                       'Connection Request',
                                                                   body:
                                                                       '${userInfo.name} send you connection request',
@@ -190,7 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       });
                                                       return EventsRepository
                                                               .showParticipantProfile(
-                                                                  profileId: widget
+                                                          context, profileId: widget
                                                                       .profileId)
                                                           .then((value) {
                                                         setState(() {
@@ -222,12 +224,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       onPressed: () async {
                                                         await EventsRepository
                                                                 .removeFriendRequest(
-                                                                    friendId:
+                                                            context,    friendId:
                                                                         myProfile
                                                                             .id)
                                                             .then((value) =>
                                                                 EventsRepository.showParticipantProfile(
-                                                                        profileId:
+                                                                    context,   profileId:
                                                                             widget
                                                                                 .profileId)
                                                                     .then(
@@ -264,12 +266,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           onPressed: () async {
                                                             await EventsRepository
                                                                     .removeFriend(
-                                                                        friendId:
+                                                                context,     friendId:
                                                                             myProfile
                                                                                 .id)
                                                                 .then((value) =>
                                                                     EventsRepository.showParticipantProfile(
-                                                                            profileId: widget
+                                                                        context,         profileId: widget
                                                                                 .profileId)
                                                                         .then(
                                                                             (value) {
@@ -293,22 +295,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         onTap: () async {
                                                           await EventsRepository
                                                                   .acceptFriendRequest(
-                                                                      friendId:
+                                                              context,    friendId:
                                                                           myProfile
                                                                               .id)
                                                               .then((value) {
                                                             EventsRepository
-                                                                    .showMyProfile()
+                                                                    .showMyProfile(context)
                                                                 .then(
                                                                     (userInfo) {
                                                               HomeRepository.getToken(
-                                                                      userId:
+                                                                  context,           userId:
                                                                           myProfile
                                                                               .id)
                                                                   .then(
                                                                       (value) {
                                                                 HomeRepository.sendNotifications(
-                                                                    title:
+                                                                    context,       title:
                                                                         'Connection Request',
                                                                     body:
                                                                         '${userInfo.name} accept your connection request',
@@ -318,7 +320,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                             });
                                                             return EventsRepository
                                                                     .showParticipantProfile(
-                                                                        profileId:
+                                                                context,  profileId:
                                                                             widget.profileId)
                                                                 .then((value) {
                                                               setState(() {
@@ -341,12 +343,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           onTap: () async {
                                                             await EventsRepository
                                                                     .rejectFriendRequest(
-                                                                        friendId:
+                                                                context,      friendId:
                                                                             myProfile
                                                                                 .id)
                                                                 .then((value) =>
                                                                     EventsRepository.showParticipantProfile(
-                                                                            profileId: widget
+                                                                        context,   profileId: widget
                                                                                 .profileId)
                                                                         .then(
                                                                             (value) {
@@ -399,14 +401,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                               ImageSource.camera);
                                                               File file = File(
                                                                   xFile!.path);
+                                                              // ignore: use_build_context_synchronously
                                                               await EventsRepository
                                                                       .uploadImage(
-                                                                          file)
+                                                                          file,context)
                                                                   .then(
                                                                       (value) {
                                                                 if (value) {
                                                                   EventsRepository
-                                                                          .showMyProfile()
+                                                                          .showMyProfile(context)
                                                                       .then(
                                                                     (value) {
                                                                       setState(
@@ -416,7 +419,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                         loading =
                                                                             false;
                                                                       });
-                                                                      EventsRepository.getImageDetails(imageUrl: value.image.split('/').last).then((value) =>
+                                                                      EventsRepository.getImageDetails(context,imageUrl: value.image.split('/').last).then((value) =>
                                                                           setState(
                                                                               () {
                                                                             _imageData =
@@ -458,14 +461,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                               ImageSource.gallery);
                                                               File file = File(
                                                                   xFile!.path);
+                                                              // ignore: use_build_context_synchronously
                                                               await EventsRepository
                                                                       .uploadImage(
-                                                                          file)
+                                                                          file,context)
                                                                   .then(
                                                                       (value) {
                                                                 if (value) {
                                                                   EventsRepository
-                                                                          .showMyProfile()
+                                                                          .showMyProfile(context)
                                                                       .then(
                                                                     (value) {
                                                                       setState(
@@ -475,7 +479,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                         loading =
                                                                             false;
                                                                       });
-                                                                      EventsRepository.getImageDetails(imageUrl: value.image.split('/').last).then((value) =>
+                                                                      EventsRepository.getImageDetails(context,imageUrl: value.image.split('/').last).then((value) =>
                                                                           setState(
                                                                               () {
                                                                             _imageData =
