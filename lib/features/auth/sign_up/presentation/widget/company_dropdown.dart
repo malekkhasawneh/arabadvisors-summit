@@ -28,7 +28,6 @@ class CompanyDropDown extends StatefulWidget {
 class _CompanyDropDownState extends State<CompanyDropDown> {
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -88,23 +87,34 @@ class _CompanyDropDownState extends State<CompanyDropDown> {
               autofocus: true,
               controller: widget.controller,
               cursorColor: AppColors.orange,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        widget.controller.clear();
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.clear,
+                      size: 15,
+                      color: AppColors.orange,
+                    )),
                 hintText: AppStrings.select,
-                hintStyle: TextStyle(
+                hintStyle: const TextStyle(
                     color: AppColors.orange,
                     fontSize: 12,
                     fontWeight: FontWeight.bold),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: AppColors.orange,
                   ),
                 ),
-                border: OutlineInputBorder(
+                border: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: AppColors.orange,
                   ),
                 ),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: AppColors.orange,
                   ),

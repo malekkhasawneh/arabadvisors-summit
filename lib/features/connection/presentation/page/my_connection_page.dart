@@ -22,6 +22,7 @@ class _MyConnectionPageState extends State<MyConnectionPage> {
   List<AllParticipantsModel> allFriends = [];
   bool loading = true;
   TextEditingController searchController = TextEditingController();
+  String searchText = '';
 
   @override
   void initState() {

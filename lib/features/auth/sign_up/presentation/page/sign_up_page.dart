@@ -252,6 +252,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 labelName: AppStrings.country,
                                 allCountriesList: allCountriesList,
                                 isError: errorCountry,
+                                numberController: numberController,
                               ),
                               TextFieldCustomWidget(
                                 controller: numberController,
