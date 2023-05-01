@@ -317,37 +317,39 @@ class _ChatContainerState extends State<ChatContainer> {
           suffixIcon: BlocProvider.of<MyConnectionCubit>(context).getHaveSuffix
               ? IconButton(
                   onPressed: () {
-                    ConnectionsRepository.sendMessage(
-                            context: context,
-                            message: widget.messageController.text,
-                            friendId: widget.friendId)
-                        .then((value) {
-                      if (value) {
-                        HomeRepository.getToken(context,
-                                userId: widget.friendId)
-                            .then((value) {
-                          HomeRepository.sendNotifications(context,
-                              title: participantsModel!.name,
-                              body: widget.messageController.text,
-                              token: value);
-                        });
-                        ConnectionsRepository.getMessages(
-                                chatId: widget.chatId, context: context)
-                            .then(
-                          (value) => setState(
-                            () {
-                              messagesList = value;
-                              loading = false;
-                              widget.messageController.clear();
-                            },
-                          ),
-                        );
-                      } else {
-                        widget.messageController.clear();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Send failed')));
-                      }
-                    });
+               if(widget.messageController.text.trim().isNotEmpty){
+                 ConnectionsRepository.sendMessage(
+                     context: context,
+                     message: widget.messageController.text,
+                     friendId: widget.friendId)
+                     .then((value) {
+                   if (value) {
+                     HomeRepository.getToken(context,
+                         userId: widget.friendId)
+                         .then((value) {
+                       HomeRepository.sendNotifications(context,
+                           title: participantsModel!.name,
+                           body: widget.messageController.text,
+                           token: value);
+                     });
+                     ConnectionsRepository.getMessages(
+                         chatId: widget.chatId, context: context)
+                         .then(
+                           (value) => setState(
+                             () {
+                           messagesList = value;
+                           loading = false;
+                           widget.messageController.clear();
+                         },
+                       ),
+                     );
+                   } else {
+                     widget.messageController.clear();
+                     ScaffoldMessenger.of(context).showSnackBar(
+                         const SnackBar(content: Text('Send failed')));
+                   }
+                 });
+               }
                   },
                   icon: const Icon(
                     Icons.send,

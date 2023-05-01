@@ -3,8 +3,10 @@ import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:provision/core/resources/images.dart';
 import 'package:provision/features/home/data/model/all_events.dart';
 import 'package:provision/features/home/data/model/feed_back_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -291,5 +293,10 @@ class HomeRepository {
     InternetConnectionChecker internetConnectionChecker =
         InternetConnectionChecker();
     return await internetConnectionChecker.hasConnection;
+  }
+
+ static Future<Uint8List> imageToUint8List() async {
+    final ByteData imageData = await rootBundle.load(Images.defaultUserImage);
+    return imageData.buffer.asUint8List();
   }
 }

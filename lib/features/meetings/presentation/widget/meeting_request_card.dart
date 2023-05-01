@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provision/core/resources/app_colors.dart';
 import 'package:provision/core/resources/app_strings.dart';
 import 'package:provision/core/resources/images.dart';
+import 'package:provision/features/home/data/repository/home_repository.dart';
 import 'package:provision/features/meetings/data/model/all_meetings_model.dart';
 
 import '../../../event/data/repository/events_repository.dart';
@@ -19,10 +20,14 @@ class MeetingRequestCard extends StatefulWidget {
 class _MeetingRequestCardState extends State<MeetingRequestCard> {
   Uint8List? _inviterImageData;
   Uint8List? _invitedImageData;
+  Uint8List? _defaultUserImage;
   bool loading = true;
 
   @override
   void initState() {
+    HomeRepository.imageToUint8List().then((value) => setState(() {
+          _defaultUserImage = value;
+        }));
     if (widget.meetingsModel.inviterImage.isNotEmpty) {
       EventsRepository.getImageDetails(context,
               imageUrl: widget.meetingsModel.inviterImage.split('/').last)
@@ -181,7 +186,8 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                                     Radius.circular(100),
                                   ),
                                   image: DecorationImage(
-                                      image: MemoryImage(_inviterImageData!),
+                                      image: MemoryImage(_inviterImageData ??
+                                          _defaultUserImage!),
                                       fit: BoxFit.fill)),
                             )
                           : Container(
@@ -224,8 +230,8 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                                       Radius.circular(100),
                                     ),
                                     image: DecorationImage(
-                                        image: MemoryImage(
-                                            _inviterImageData ?? Uint8List(5)),
+                                        image: MemoryImage(_inviterImageData ??
+                                            _defaultUserImage!),
                                         fit: BoxFit.fill)),
                               )
                             : Container(
