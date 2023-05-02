@@ -110,7 +110,7 @@ class _ButtonsRowState extends State<ButtonsRow> {
           style: TextStyle(
               fontWeight: FontWeight.bold,
               color: AppColors.orange,
-              fontSize: 18),
+              fontSize: 14),
         ),
         SizedBox(
           height: 7,
@@ -118,7 +118,7 @@ class _ButtonsRowState extends State<ButtonsRow> {
         Text(
           AppStrings.checkMeetings,
           style: TextStyle(
-              fontWeight: FontWeight.bold, color: AppColors.pink, fontSize: 12),
+              fontWeight: FontWeight.bold, color: AppColors.pink, fontSize: 8),
         ),
       ],
     );
@@ -146,7 +146,7 @@ class _ButtonsRowState extends State<ButtonsRow> {
         Text(
           AppStrings.rejected,
           style: TextStyle(
-              fontWeight: FontWeight.bold, color: AppColors.red, fontSize: 18),
+              fontWeight: FontWeight.bold, color: AppColors.red, fontSize: 14),
         ),
       ],
     );

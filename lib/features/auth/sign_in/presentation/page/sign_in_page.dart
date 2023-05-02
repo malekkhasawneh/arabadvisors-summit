@@ -102,7 +102,7 @@ class _SignInPageState extends State<SignInPage> {
                       style: TextStyle(
                           color: AppColors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: Utilities.screenWidth! * 0.04),
+                          fontSize: Utilities.screenWidth! * 0.03),
                     ),
                     SizedBox(
                       height: Utilities.screenHeight! * 0.005,
@@ -127,7 +127,7 @@ class _SignInPageState extends State<SignInPage> {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: AppColors.white,
-                            fontSize: Utilities.screenWidth! * 0.043,
+                            fontSize: Utilities.screenWidth! * 0.033,
                             decoration: TextDecoration.underline,
                           ),
                         ),

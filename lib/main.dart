@@ -71,6 +71,9 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        theme: ThemeData(
+          fontFamily: 'Poppins',
+        ),
         debugShowCheckedModeBanner: false,
         onGenerateRoute: (routeSettings) => Utilities.onGenerateRoute(
           routeSettings: routeSettings,

@@ -45,7 +45,7 @@ class _ContentWidgetState extends State<ContentWidget> {
       builder: (context, state) {
         return Container(
             width: screenWidth * 0.9,
-            height: screenHeight * 0.57,
+            height: screenHeight * 0.59,
             padding: EdgeInsets.all(screenWidth * 0.05),
             decoration: BoxDecoration(
               color: AppColors.white,

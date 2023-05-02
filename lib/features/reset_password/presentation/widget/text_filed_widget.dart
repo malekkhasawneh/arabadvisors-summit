@@ -41,7 +41,7 @@ class TextFiledWidget extends StatelessWidget {
           filled: true,
           fillColor: Colors.white,
           hintText: hintText,
-          hintStyle: const TextStyle(fontSize: 14),
+          hintStyle: const TextStyle(fontSize: 10),
           contentPadding: const EdgeInsets.only(
               left: 7,
               top: 15),

@@ -74,18 +74,19 @@ class _IndustryDropDownState extends State<IndustryDropDown> {
               hintStyle: !widget.isFromEdit
                   ? const TextStyle(
                       color: AppColors.orange,
-                      fontSize: 12,
+                  fontSize: 10,
                       fontWeight: FontWeight.bold)
                   : const TextStyle(color: AppColors.black),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.only(
                 left: 7,
-                top: 5,
+                top: 0,
               ),
             ),
             //selectedItem: "",
             showSearchBox: true,
             searchFieldProps: TextFieldProps(
+              style: const TextStyle(fontSize: 12),
               autofocus: true,
               controller: widget.controller,
               cursorColor: AppColors.orange,

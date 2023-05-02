@@ -82,7 +82,7 @@ class TitleAndInputWidget extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: AppColors.white,
-                    fontSize: 12,
+                    fontSize: 8,
                     decoration: TextDecoration.underline,
                   ),
                 ),

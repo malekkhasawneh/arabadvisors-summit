@@ -127,7 +127,7 @@ class _MessageInfoListTileState extends State<MessageInfoListTile> {
                           ],
                           color: AppColors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 16),
+                          fontSize:12),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,7 +137,7 @@ class _MessageInfoListTileState extends State<MessageInfoListTile> {
                           style: const TextStyle(
                             color: AppColors.grey,
                             fontWeight: FontWeight.bold,
-                            fontSize: 12,
+                            fontSize: 8,
                           ),
                         ),
                         const SizedBox(
@@ -187,7 +187,7 @@ class _MessageInfoListTileState extends State<MessageInfoListTile> {
                                 ? 'Accepted'
                                 : 'Rejected',
                             style: TextStyle(
-                                fontSize: 12,
+                                fontSize:8,
                                 color: widget.status == 'ACCEPTED'
                                     ? AppColors.black
                                     : AppColors.red),

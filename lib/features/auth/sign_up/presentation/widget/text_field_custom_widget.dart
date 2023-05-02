@@ -67,7 +67,7 @@ class _TextFieldCustomWidgetState extends State<TextFieldCustomWidget> {
                               : '',
                           style: const TextStyle(
                             color: AppColors.white,
-                            fontSize: 10,
+                            fontSize: 8.5,
                           ),
                         ),
                       ]),
@@ -105,6 +105,7 @@ class _TextFieldCustomWidgetState extends State<TextFieldCustomWidget> {
                     }
                   });
                 },
+                style: const TextStyle(fontSize: 14),
                 obscureText: widget.hideText,
                 validator: widget.validator,
                 controller: widget.controller,

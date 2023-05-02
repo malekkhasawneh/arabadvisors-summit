@@ -107,7 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           margin: EdgeInsets.only(
                             left: screenWidth * 0.075,
                             top: screenHeight * 0.01,
-                            bottom: screenHeight * 0.05,
+                            bottom: screenHeight * 0.03,
                           ),
                           width: screenWidth * 0.85,
                           child: ListView(
@@ -118,7 +118,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   AppStrings.signUp,
                                   style: TextStyle(
                                     color: AppColors.white,
-                                    fontSize: 24,
+                                    fontSize:20,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

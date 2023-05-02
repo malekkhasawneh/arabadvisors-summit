@@ -72,3 +72,9 @@ flutter:
     - images/linked_in_icon.png
     - images/app_svg_logo.svg
     - images/splash_svg_logo.svg
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: fonts_assets\Poppins-Regular.ttf
+          weight: 900
+          style: normal

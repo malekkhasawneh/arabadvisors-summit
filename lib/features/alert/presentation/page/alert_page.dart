@@ -45,7 +45,7 @@ final int userId;
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: AppColors.white,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     ),
                   ),

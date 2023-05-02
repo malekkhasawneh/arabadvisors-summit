@@ -35,7 +35,7 @@ class ConfirmCustomDialog extends StatelessWidget {
                     style: TextStyle(
                       color: AppColors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 22,
+                      fontSize: 18,
                     ),
                   ),
                   const SizedBox(
@@ -57,7 +57,7 @@ class ConfirmCustomDialog extends StatelessWidget {
                       style: TextStyle(
                         color: AppColors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: 14,
                       ),
                     ),
                   ),

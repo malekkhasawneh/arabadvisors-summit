@@ -50,7 +50,7 @@ class _TabsRowState extends State<TabsRow> {
                                 AppStrings.notification
                             ? AppColors.orange
                             : AppColors.black,
-                        fontSize: 16,
+                        fontSize: 12,
                       ),
                     ),
                   ),
@@ -75,7 +75,7 @@ class _TabsRowState extends State<TabsRow> {
                                   AppStrings.messages
                               ? AppColors.orange
                               : AppColors.black,
-                          fontSize: 16,
+                          fontSize: 12,
                         ),
                       ),
                     ),

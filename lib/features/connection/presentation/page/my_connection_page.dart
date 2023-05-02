@@ -85,7 +85,7 @@ class _MyConnectionPageState extends State<MyConnectionPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: AppColors.white,
-                          fontSize: 20,
+                          fontSize: 16,
                         ),
                       ),
                     ),

@@ -136,7 +136,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                                 'User Informations',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: screenWidth * 0.043,
+                                    fontSize: screenWidth * 0.033,
                                     fontWeight: FontWeight.bold),
                               ),
                             );
@@ -181,7 +181,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                                 'Connections',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: screenWidth * 0.043,
+                                    fontSize: screenWidth * 0.033,
                                     fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -226,7 +226,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                                 'Meetings',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: screenWidth * 0.043,
+                                    fontSize: screenWidth * 0.033,
                                     fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -270,7 +270,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                                 'Contact Us',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: screenWidth * 0.043,
+                                    fontSize: screenWidth * 0.033,
                                     fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -307,7 +307,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                               'FeedBack',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: screenWidth * 0.043,
+                                  fontSize: screenWidth * 0.033,
                                   fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -353,7 +353,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                               'Logout',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: screenWidth * 0.043,
+                                  fontSize: screenWidth * 0.033,
                                   fontWeight: FontWeight.bold),
                             ),
                           ],

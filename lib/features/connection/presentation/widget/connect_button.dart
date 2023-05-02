@@ -36,7 +36,7 @@ class ConnectButton extends StatelessWidget {
                   onPressed: acceptButton,
                   child: const Text(
                     AppStrings.message,
-                    style: TextStyle(color: AppColors.white, fontSize: 10),
+                    style: TextStyle(color: AppColors.white, fontSize: 6),
                   )),
             ),
           ],

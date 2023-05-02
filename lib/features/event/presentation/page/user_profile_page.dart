@@ -145,7 +145,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Text(
                                   myProfile.name,
                                   style: const TextStyle(
-                                      fontSize: 22,
+                                      fontSize:18,
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -381,7 +381,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       child: Text(
                                                         'Change profile image',
                                                         style: TextStyle(
-                                                            fontSize: 14),
+                                                            fontSize: 10),
                                                       ),
                                                     ),
                                                     content: SizedBox(
@@ -521,7 +521,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         child: const Text(
                                           'change profile picture',
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 8,
                                             color: AppColors.orange,
                                             decoration:
                                                 TextDecoration.underline,
@@ -548,7 +548,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 const Text(
                                   'Personal Info',
                                   style: TextStyle(
-                                      fontSize: 22,
+                                      fontSize: 18,
                                       color: AppColors.white,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -573,7 +573,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             'Email     ',
                                             style: TextStyle(
                                                 color: AppColors.black,
-                                                fontSize: 18,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           SizedBox(
@@ -582,7 +582,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               myProfile.email,
                                               style: const TextStyle(
                                                   color: AppColors.orange,
-                                                  fontSize: 15,
+                                                  fontSize: 11,
                                                   fontWeight: FontWeight.bold),
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -598,14 +598,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                             'phone   ',
                                             style: TextStyle(
                                                 color: AppColors.black,
-                                                fontSize: 18,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           Text(
                                             myProfile.mobileNo,
                                             style: const TextStyle(
                                                 color: AppColors.orange,
-                                                fontSize: 15,
+                                                fontSize: 11,
                                                 fontWeight: FontWeight.bold),
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -629,7 +629,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           const Text(
                             'Professional Info',
                             style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 18,
                                 color: AppColors.white,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -654,7 +654,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       'Company   ',
                                       style: TextStyle(
                                           color: AppColors.black,
-                                          fontSize: 16,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(
@@ -663,7 +663,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         myProfile.company,
                                         style: const TextStyle(
                                             color: AppColors.orange,
-                                            fontSize: 15,
+                                            fontSize: 11,
                                             fontWeight: FontWeight.bold),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -676,10 +676,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Row(
                                   children: [
                                     const Text(
-                                      'Job title     ',
+                                      'Job title        ',
                                       style: TextStyle(
                                           color: AppColors.black,
-                                          fontSize: 16,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(
@@ -688,7 +688,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         myProfile.jobTitle,
                                         style: const TextStyle(
                                             color: AppColors.orange,
-                                            fontSize: 15,
+                                            fontSize: 11,
                                             fontWeight: FontWeight.bold),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -701,10 +701,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Row(
                                   children: [
                                     const Text(
-                                      'Country     ',
+                                      'Country        ',
                                       style: TextStyle(
                                           color: AppColors.black,
-                                          fontSize: 16,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(
@@ -713,7 +713,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         myProfile.country,
                                         style: const TextStyle(
                                             color: AppColors.orange,
-                                            fontSize: 15,
+                                            fontSize: 11,
                                             fontWeight: FontWeight.bold),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -726,10 +726,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Row(
                                   children: [
                                     const Text(
-                                      'Industry     ',
+                                      'Industry        ',
                                       style: TextStyle(
                                           color: AppColors.black,
-                                          fontSize: 16,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(
@@ -738,7 +738,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         myProfile.industry,
                                         style: const TextStyle(
                                             color: AppColors.orange,
-                                            fontSize: 15,
+                                            fontSize: 11,
                                             fontWeight: FontWeight.bold),
                                         overflow: TextOverflow.ellipsis,
                                       ),

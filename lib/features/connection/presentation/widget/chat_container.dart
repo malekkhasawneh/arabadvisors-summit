@@ -282,7 +282,7 @@ class _ChatContainerState extends State<ChatContainer> {
         style: const TextStyle(
           color: AppColors.black,
           fontWeight: FontWeight.bold,
-          fontSize: 16,
+          fontSize: 12,
         ),
       ),
       subtitle: Text(
@@ -290,7 +290,7 @@ class _ChatContainerState extends State<ChatContainer> {
         style: const TextStyle(
           color: AppColors.blue,
           fontWeight: FontWeight.bold,
-          fontSize: 12,
+          fontSize: 8,
         ),
       ),
     );
@@ -313,7 +313,7 @@ class _ChatContainerState extends State<ChatContainer> {
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 5),
           hintText: AppStrings.writeMessage,
-          hintStyle: const TextStyle(color: AppColors.orange, fontSize: 10),
+          hintStyle: const TextStyle(color: AppColors.orange, fontSize:6),
           suffixIcon: BlocProvider.of<MyConnectionCubit>(context).getHaveSuffix
               ? IconButton(
                   onPressed: () {

@@ -117,7 +117,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: AppColors.white,
-                      fontSize: 22,
+                      fontSize: 18,
                     ),
                   ),
                 ),

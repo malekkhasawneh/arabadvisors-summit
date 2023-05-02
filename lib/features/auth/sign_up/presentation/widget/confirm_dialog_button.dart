@@ -27,7 +27,7 @@ class ConfirmDialogButton extends StatelessWidget {
           AppStrings.ok,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 16,
+            fontSize:12,
           ),
         ),
       ),

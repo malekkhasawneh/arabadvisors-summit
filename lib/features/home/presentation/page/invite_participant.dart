@@ -100,7 +100,7 @@ class _InviteParticipantState extends State<InviteParticipant> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: AppColors.white,
-                      fontSize: 20,
+                      fontSize:16,
                     ),
                   ),
                 ),

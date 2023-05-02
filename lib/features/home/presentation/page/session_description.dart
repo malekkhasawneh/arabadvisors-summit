@@ -90,7 +90,7 @@ class _SessionDescriptionState extends State<SessionDescription> {
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: AppColors.white,
-                              fontSize: 22,
+                              fontSize:18,
                             ),
                           ),
                         ),
@@ -156,7 +156,7 @@ class _SessionDescriptionState extends State<SessionDescription> {
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.orange,
-                                          fontSize: 22,
+                                          fontSize: 18,
                                         ),
                                       ),
                                     ),

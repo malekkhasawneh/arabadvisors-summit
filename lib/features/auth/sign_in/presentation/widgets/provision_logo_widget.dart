@@ -23,7 +23,7 @@ class ProVisionLogoWidget extends StatelessWidget {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: AppColors.white,
-              fontSize: Utilities.screenWidth! * 0.031,
+              fontSize: Utilities.screenWidth! * 0.021,
             ),
           ),
         ),

@@ -79,37 +79,38 @@ class _CountryDropDownState extends State<CountryDropDown> {
             showSelectedItems: true,
             items: [...widget.allCountriesList.map((e) => e.name).toList()],
             dropdownSearchDecoration: InputDecoration(
-
               hintText: widget.isFromEdit ? widget.hintText : AppStrings.select,
               hintStyle: !widget.isFromEdit
                   ? const TextStyle(
                       color: AppColors.orange,
-                      fontSize: 12,
+                  fontSize: 10,
                       fontWeight: FontWeight.bold)
                   : const TextStyle(color: AppColors.black),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.only(
                 left: 7,
-                top: 5,
+                top: 0,
               ),
             ),
             //selectedItem: "",
             showSearchBox: true,
             searchFieldProps: TextFieldProps(
+              style: const TextStyle(fontSize: 12),
               autofocus: true,
               controller: widget.controller,
               cursorColor: AppColors.orange,
-              decoration:  InputDecoration(      suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      widget.controller.clear();
-                    });
-                  },
-                  icon: const Icon(
-                    Icons.clear,
-                    size: 15,
-                    color: AppColors.orange,
-                  )),
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        widget.controller.clear();
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.clear,
+                      size: 15,
+                      color: AppColors.orange,
+                    )),
                 hintText: AppStrings.select,
                 hintStyle: const TextStyle(
                     color: AppColors.orange,

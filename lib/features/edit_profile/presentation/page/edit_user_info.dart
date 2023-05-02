@@ -136,7 +136,7 @@ class _EditUserInfoState extends State<EditUserInfo> {
                                     AppStrings.signUp,
                                     style: TextStyle(
                                       color: AppColors.white,
-                                      fontSize: 24,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -269,7 +269,7 @@ class _EditUserInfoState extends State<EditUserInfo> {
                                         AppStrings.resetPassword,
                                         style: TextStyle(
                                           color: AppColors.white,
-                                          fontSize: 12,
+                                          fontSize: 10,
                                           decoration: TextDecoration.underline,
                                           fontWeight: FontWeight.bold,
                                         ),

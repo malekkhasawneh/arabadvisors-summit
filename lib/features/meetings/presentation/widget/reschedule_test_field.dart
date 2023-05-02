@@ -46,7 +46,7 @@ class _RescheduleTextFieldState extends State<RescheduleTextField> {
               hintText: AppStrings.select,
               hintStyle: TextStyle(
                   color: AppColors.orange,
-                  fontSize: 12,
+                  fontSize: 8,
                   fontWeight: FontWeight.bold),
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(
@@ -63,7 +63,7 @@ class _RescheduleTextFieldState extends State<RescheduleTextField> {
                 hintText: AppStrings.select,
                 hintStyle: TextStyle(
                     color: AppColors.orange,
-                    fontSize: 12,
+                    fontSize: 8,
                     fontWeight: FontWeight.bold),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(

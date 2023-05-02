@@ -59,7 +59,7 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: AppColors.grey.withOpacity(0.7),
-                    fontSize: 16),
+                    fontSize: 12),
               ),
               Expanded(
                   child: ListTile(
@@ -130,14 +130,14 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: AppColors.grey.withOpacity(0.7),
-                            fontSize: 16),
+                            fontSize: 12),
                       ),
                       Text(
                         widget.meetingsModel.meetingDate,
                         style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: AppColors.orange,
-                            fontSize: 16),
+                            fontSize: 12),
                       ),
                     ],
                   ),
@@ -151,14 +151,14 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: AppColors.grey.withOpacity(0.7),
-                            fontSize: 16),
+                            fontSize: 12),
                       ),
                       Text(
                         widget.meetingsModel.meetingTime,
                         style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: AppColors.orange,
-                            fontSize: 16),
+                            fontSize: 12),
                       ),
                     ],
                   ),
@@ -170,7 +170,7 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: AppColors.grey.withOpacity(0.7),
-                        fontSize: 16),
+                        fontSize: 12),
                   ),
                 ),
                 Row(
@@ -267,7 +267,7 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: AppColors.grey.withOpacity(0.7),
-                            fontSize: 16),
+                            fontSize: 12),
                       ),
                       SizedBox(
                         width: 150,
@@ -276,7 +276,7 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: AppColors.orange,
-                            fontSize: 16,
+                            fontSize: 12,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),

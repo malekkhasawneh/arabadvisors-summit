@@ -60,12 +60,12 @@ class _TimesDropDownState extends State<TimesDropDown> {
               hintText: AppStrings.select,
               hintStyle: TextStyle(
                   color: AppColors.orange,
-                  fontSize: 12,
+                  fontSize: 10,
                   fontWeight: FontWeight.bold),
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(
                 left: 7,
-                top: 7,
+                top: 2,
               ),
             ),
             showSearchBox: true,
@@ -76,7 +76,7 @@ class _TimesDropDownState extends State<TimesDropDown> {
                 hintText: AppStrings.select,
                 hintStyle: TextStyle(
                     color: AppColors.orange,
-                    fontSize: 12,
+                    fontSize: 10,
                     fontWeight: FontWeight.bold),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
