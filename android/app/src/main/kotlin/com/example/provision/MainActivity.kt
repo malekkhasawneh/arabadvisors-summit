@@ -1,4 +1,4 @@
-package com.provision.arabadvisorssummit
+package com.provision.arabadvisorsummit
 
 import io.flutter.embedding.android.FlutterActivity
 
