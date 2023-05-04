@@ -43,14 +43,14 @@ class UserInfoWidget extends StatelessWidget {
                 style: const TextStyle(
                     color: AppColors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize:12),
+                    fontSize:14),
               ),
               subtitle: Text(
                 'Work @$companyName',
                 style: const TextStyle(
                   color: AppColors.grey,
                   fontWeight: FontWeight.bold,
-                  fontSize:8,
+                  fontSize:10,
                 ),
               ),
             ),

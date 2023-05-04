@@ -26,5 +26,6 @@ class Images {
   static const String linkedIn = '${rootName}linked_in_icon.png';
   static const String appSvgLogo = '${rootName}app_svg_logo.svg';
   static const String splashSvgLogo = '${rootName}splash_svg_logo.svg';
+  static const String serviceUnAvailable = '${rootName}service_unavailable.json';
 
 }
