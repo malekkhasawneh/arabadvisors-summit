@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart' as date_format;
 import 'package:provision/core/resources/app_colors.dart';
 import 'package:provision/core/resources/images.dart';
 import 'package:provision/features/event/data/model/get_all_participants_model.dart';
@@ -230,9 +231,23 @@ class _ChatContainerState extends State<ChatContainer> {
                                           ),
                                           borderRadius:
                                               BorderRadius.circular(7)),
-                                      child: Text(
-                                        messagesList[index].message,
-                                        textAlign: TextAlign.left,
+                                      child: RichText(
+                                        text: TextSpan(
+                                          text: messagesList[index].message,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: AppColors.black,
+                                          ),
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text:
+                                                  '      ${date_format.DateFormat('hh:mm a').format(messagesList[index].timestamp)}',
+                                              style: const TextStyle(
+                                                fontSize: 8,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -313,43 +328,43 @@ class _ChatContainerState extends State<ChatContainer> {
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 5),
           hintText: AppStrings.writeMessage,
-          hintStyle: const TextStyle(color: AppColors.orange, fontSize:6),
+          hintStyle: const TextStyle(color: AppColors.orange, fontSize: 6),
           suffixIcon: BlocProvider.of<MyConnectionCubit>(context).getHaveSuffix
               ? IconButton(
                   onPressed: () {
-               if(widget.messageController.text.trim().isNotEmpty){
-                 ConnectionsRepository.sendMessage(
-                     context: context,
-                     message: widget.messageController.text,
-                     friendId: widget.friendId)
-                     .then((value) {
-                   if (value) {
-                     HomeRepository.getToken(context,
-                         userId: widget.friendId)
-                         .then((value) {
-                       HomeRepository.sendNotifications(context,
-                           title: participantsModel!.name,
-                           body: widget.messageController.text,
-                           token: value);
-                     });
-                     ConnectionsRepository.getMessages(
-                         chatId: widget.chatId, context: context)
-                         .then(
-                           (value) => setState(
-                             () {
-                           messagesList = value;
-                           loading = false;
-                           widget.messageController.clear();
-                         },
-                       ),
-                     );
-                   } else {
-                     widget.messageController.clear();
-                     ScaffoldMessenger.of(context).showSnackBar(
-                         const SnackBar(content: Text('Send failed')));
-                   }
-                 });
-               }
+                    if (widget.messageController.text.trim().isNotEmpty) {
+                      ConnectionsRepository.sendMessage(
+                              context: context,
+                              message: widget.messageController.text,
+                              friendId: widget.friendId)
+                          .then((value) {
+                        if (value) {
+                          HomeRepository.getToken(context,
+                                  userId: widget.friendId)
+                              .then((value) {
+                            HomeRepository.sendNotifications(context,
+                                title: participantsModel!.name,
+                                body: widget.messageController.text,
+                                token: value);
+                          });
+                          ConnectionsRepository.getMessages(
+                                  chatId: widget.chatId, context: context)
+                              .then(
+                            (value) => setState(
+                              () {
+                                messagesList = value;
+                                loading = false;
+                                widget.messageController.clear();
+                              },
+                            ),
+                          );
+                        } else {
+                          widget.messageController.clear();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Send failed')));
+                        }
+                      });
+                    }
                   },
                   icon: const Icon(
                     Icons.send,

@@ -1,7 +1,7 @@
 name: provision
 description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.0+14
+version: 1.0.0+15
 environment:
   sdk: '>=2.19.6 <3.0.0'
 dependencies:
@@ -39,6 +39,7 @@ dependencies:
   firebase: ^9.0.3
   firebase_messaging: ^14.4.1
   firebase_core: ^2.10.0
+  intl: ^0.18.1
 
 
 dev_dependencies:
