@@ -310,7 +310,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             child: const Text(
                                               'change profile picture',
                                               style: TextStyle(
-                                                fontSize: 8,
+                                                fontSize: 10,
                                                 color: AppColors.orange,
                                                 decoration:
                                                     TextDecoration.underline,
