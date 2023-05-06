@@ -36,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 myProfile = value;
                 loading = false;
               });
-            if(value.image.isNotEmpty){
+              if (value.image.isNotEmpty) {
                 EventsRepository.getImageDetails(context,
                         imageUrl: value.image.split('/').last)
                     .then((value) => setState(() {
@@ -45,7 +45,8 @@ class _ProfilePageState extends State<ProfilePage> {
               }
             },
           )
-        : EventsRepository.showParticipantProfile(context,profileId: widget.profileId)
+        : EventsRepository.showParticipantProfile(context,
+                profileId: widget.profileId)
             .then(
             (value) {
               setState(() {
@@ -140,14 +141,185 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(
-                                  left: !widget.isSameUser ? 15 : 0,
+                                  left: !widget.isSameUser ? 15 : 15,
                                 ),
-                                child: Text(
-                                  myProfile.name,
-                                  style: const TextStyle(
-                                      fontSize:18,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      myProfile.name,
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    widget.isSameUser
+                                        ? GestureDetector(
+                                            onTap: () async {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (_) => AlertDialog(
+                                                        title: const Center(
+                                                          child: Text(
+                                                            'Change profile image',
+                                                            style: TextStyle(
+                                                                fontSize: 10),
+                                                          ),
+                                                        ),
+                                                        content: SizedBox(
+                                                          height: 50,
+                                                          width: 50,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceAround,
+                                                            children: [
+                                                              GestureDetector(
+                                                                onTap:
+                                                                    () async {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                  XFile? xFile =
+                                                                      await ImagePicker().pickImage(
+                                                                          source:
+                                                                              ImageSource.camera);
+                                                                  File file =
+                                                                      File(xFile!
+                                                                          .path);
+                                                                  // ignore: use_build_context_synchronously
+                                                                  await EventsRepository.uploadImage(
+                                                                          file,
+                                                                          context)
+                                                                      .then(
+                                                                          (value) {
+                                                                    if (value) {
+                                                                      EventsRepository.showMyProfile(
+                                                                              context)
+                                                                          .then(
+                                                                        (value) {
+                                                                          setState(
+                                                                              () {
+                                                                            myProfile =
+                                                                                value;
+                                                                            loading =
+                                                                                false;
+                                                                          });
+                                                                          if (value
+                                                                              .image
+                                                                              .isNotEmpty) {
+                                                                            EventsRepository.getImageDetails(context, imageUrl: value.image.split('/').last).then((value) =>
+                                                                                setState(() {
+                                                                                  _imageData = value;
+                                                                                }));
+                                                                          }
+                                                                        },
+                                                                      );
+                                                                    }
+                                                                  });
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(10),
+                                                                  decoration: BoxDecoration(
+                                                                      border: Border.all(
+                                                                          color: AppColors
+                                                                              .orange),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              100)),
+                                                                  child:
+                                                                      const Icon(
+                                                                    Icons
+                                                                        .camera_alt_outlined,
+                                                                    color: AppColors
+                                                                        .orange,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              GestureDetector(
+                                                                onTap:
+                                                                    () async {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                  XFile? xFile =
+                                                                      await ImagePicker().pickImage(
+                                                                          source:
+                                                                              ImageSource.gallery);
+                                                                  File file =
+                                                                      File(xFile!
+                                                                          .path);
+                                                                  // ignore: use_build_context_synchronously
+                                                                  await EventsRepository.uploadImage(
+                                                                          file,
+                                                                          context)
+                                                                      .then(
+                                                                          (value) {
+                                                                    if (value) {
+                                                                      EventsRepository.showMyProfile(
+                                                                              context)
+                                                                          .then(
+                                                                        (value) {
+                                                                          setState(
+                                                                              () {
+                                                                            myProfile =
+                                                                                value;
+                                                                            loading =
+                                                                                false;
+                                                                          });
+                                                                          if (value
+                                                                              .image
+                                                                              .isNotEmpty) {
+                                                                            EventsRepository.getImageDetails(context, imageUrl: value.image.split('/').last).then((value) =>
+                                                                                setState(() {
+                                                                                  _imageData = value;
+                                                                                }));
+                                                                          }
+                                                                        },
+                                                                      );
+                                                                    }
+                                                                  });
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(10),
+                                                                  decoration: BoxDecoration(
+                                                                      border: Border.all(
+                                                                          color: AppColors
+                                                                              .orange),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              100)),
+                                                                  child:
+                                                                      const Icon(
+                                                                    Icons.image,
+                                                                    color: AppColors
+                                                                        .orange,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ));
+                                            },
+                                            child: const Text(
+                                              'change profile picture',
+                                              style: TextStyle(
+                                                fontSize: 8,
+                                                color: AppColors.orange,
+                                                decoration:
+                                                    TextDecoration.underline,
+                                              ),
+                                              textAlign: TextAlign.left,
+                                            ),
+                                          )
+                                        : const SizedBox()
+                                  ],
                                 ),
                               ),
                               !widget.isSameUser
@@ -176,16 +348,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                         .id)
                                                         .then((value) {
                                                       EventsRepository
-                                                              .showMyProfile(context)
+                                                              .showMyProfile(
+                                                                  context)
                                                           .then((userInfo) {
                                                         HomeRepository.getToken(
-                                                            context,  userId:
+                                                                context,
+                                                                userId:
                                                                     myProfile
                                                                         .id)
                                                             .then((value) {
                                                           HomeRepository
                                                               .sendNotifications(
-                                                              context,    title:
+                                                                  context,
+                                                                  title:
                                                                       'Connection Request',
                                                                   body:
                                                                       '${userInfo.name} send you connection request',
@@ -194,7 +369,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       });
                                                       return EventsRepository
                                                               .showParticipantProfile(
-                                                          context, profileId: widget
+                                                                  context,
+                                                                  profileId: widget
                                                                       .profileId)
                                                           .then((value) {
                                                         setState(() {
@@ -226,12 +402,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       onPressed: () async {
                                                         await EventsRepository
                                                                 .removeFriendRequest(
-                                                            context,    friendId:
+                                                                    context,
+                                                                    friendId:
                                                                         myProfile
                                                                             .id)
                                                             .then((value) =>
                                                                 EventsRepository.showParticipantProfile(
-                                                                    context,   profileId:
+                                                                        context,
+                                                                        profileId:
                                                                             widget
                                                                                 .profileId)
                                                                     .then(
@@ -268,12 +446,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           onPressed: () async {
                                                             await EventsRepository
                                                                     .removeFriend(
-                                                                context,     friendId:
+                                                                        context,
+                                                                        friendId:
                                                                             myProfile
                                                                                 .id)
                                                                 .then((value) =>
                                                                     EventsRepository.showParticipantProfile(
-                                                                        context,         profileId: widget
+                                                                            context,
+                                                                            profileId: widget
                                                                                 .profileId)
                                                                         .then(
                                                                             (value) {
@@ -297,22 +477,26 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         onTap: () async {
                                                           await EventsRepository
                                                                   .acceptFriendRequest(
-                                                              context,    friendId:
+                                                                      context,
+                                                                      friendId:
                                                                           myProfile
                                                                               .id)
                                                               .then((value) {
                                                             EventsRepository
-                                                                    .showMyProfile(context)
+                                                                    .showMyProfile(
+                                                                        context)
                                                                 .then(
                                                                     (userInfo) {
                                                               HomeRepository.getToken(
-                                                                  context,           userId:
+                                                                      context,
+                                                                      userId:
                                                                           myProfile
                                                                               .id)
                                                                   .then(
                                                                       (value) {
                                                                 HomeRepository.sendNotifications(
-                                                                    context,       title:
+                                                                    context,
+                                                                    title:
                                                                         'Connection Request',
                                                                     body:
                                                                         '${userInfo.name} accept your connection request',
@@ -322,7 +506,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                             });
                                                             return EventsRepository
                                                                     .showParticipantProfile(
-                                                                context,  profileId:
+                                                                        context,
+                                                                        profileId:
                                                                             widget.profileId)
                                                                 .then((value) {
                                                               setState(() {
@@ -345,12 +530,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           onTap: () async {
                                                             await EventsRepository
                                                                     .rejectFriendRequest(
-                                                                context,      friendId:
+                                                                        context,
+                                                                        friendId:
                                                                             myProfile
                                                                                 .id)
                                                                 .then((value) =>
                                                                     EventsRepository.showParticipantProfile(
-                                                                        context,   profileId: widget
+                                                                            context,
+                                                                            profileId: widget
                                                                                 .profileId)
                                                                         .then(
                                                                             (value) {
@@ -369,166 +556,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     ],
                                                   ),
                                                 )
-                                  : Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 7, top: 7),
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          showDialog(
-                                              context: context,
-                                              builder: (_) => AlertDialog(
-                                                    title: const Center(
-                                                      child: Text(
-                                                        'Change profile image',
-                                                        style: TextStyle(
-                                                            fontSize: 10),
-                                                      ),
-                                                    ),
-                                                    content: SizedBox(
-                                                      height: 50,
-                                                      width: 50,
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceAround,
-                                                        children: [
-                                                          GestureDetector(
-                                                            onTap: () async {
-                                                              Navigator.pop(
-                                                                  context);
-                                                              XFile? xFile =
-                                                                  await ImagePicker()
-                                                                      .pickImage(
-                                                                          source:
-                                                                              ImageSource.camera);
-                                                              File file = File(
-                                                                  xFile!.path);
-                                                              // ignore: use_build_context_synchronously
-                                                              await EventsRepository
-                                                                      .uploadImage(
-                                                                          file,context)
-                                                                  .then(
-                                                                      (value) {
-                                                                if (value) {
-                                                                  EventsRepository
-                                                                          .showMyProfile(context)
-                                                                      .then(
-                                                                    (value) {
-                                                                      setState(
-                                                                          () {
-                                                                        myProfile =
-                                                                            value;
-                                                                        loading =
-                                                                            false;
-                                                                      });
-                                                                  if(value.image.isNotEmpty){
-                                                                    EventsRepository.getImageDetails(context, imageUrl: value.image.split('/').last).then((value) =>
-                                                                            setState(() {
-                                                                              _imageData = value;
-                                                                            }));
-                                                                      }
-                                                                    },
-                                                                  );
-                                                                }
-                                                              });
-                                                            },
-                                                            child: Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(10),
-                                                              decoration: BoxDecoration(
-                                                                  border: Border.all(
-                                                                      color: AppColors
-                                                                          .orange),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              100)),
-                                                              child: const Icon(
-                                                                Icons
-                                                                    .camera_alt_outlined,
-                                                                color: AppColors
-                                                                    .orange,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          GestureDetector(
-                                                            onTap: () async {
-                                                              Navigator.pop(
-                                                                  context);
-                                                              XFile? xFile =
-                                                                  await ImagePicker()
-                                                                      .pickImage(
-                                                                          source:
-                                                                              ImageSource.gallery);
-                                                              File file = File(
-                                                                  xFile!.path);
-                                                              // ignore: use_build_context_synchronously
-                                                              await EventsRepository
-                                                                      .uploadImage(
-                                                                          file,context)
-                                                                  .then(
-                                                                      (value) {
-                                                                if (value) {
-                                                                  EventsRepository
-                                                                          .showMyProfile(context)
-                                                                      .then(
-                                                                    (value) {
-                                                                      setState(
-                                                                          () {
-                                                                        myProfile =
-                                                                            value;
-                                                                        loading =
-                                                                            false;
-                                                                      });
-                                                                  if(value.image.isNotEmpty){
-                                                                    EventsRepository.getImageDetails(context,imageUrl: value.image.split('/').last).then((value) =>
-                                                                        setState(
-                                                                                () {
-                                                                              _imageData =
-                                                                                  value;
-                                                                            }));
-                                                                  }
-                                                                    },
-                                                                  );
-                                                                }
-                                                              });
-                                                            },
-                                                            child: Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(10),
-                                                              decoration: BoxDecoration(
-                                                                  border: Border.all(
-                                                                      color: AppColors
-                                                                          .orange),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              100)),
-                                                              child: const Icon(
-                                                                Icons.image,
-                                                                color: AppColors
-                                                                    .orange,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ));
-                                        },
-                                        child: const Text(
-                                          'change profile picture',
-                                          style: TextStyle(
-                                            fontSize: 8,
-                                            color: AppColors.orange,
-                                            decoration:
-                                                TextDecoration.underline,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                  : const SizedBox(),
                             ],
                           )
                         ],
