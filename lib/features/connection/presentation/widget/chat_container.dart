@@ -328,7 +328,7 @@ class _ChatContainerState extends State<ChatContainer> {
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 5),
           hintText: AppStrings.writeMessage,
-          hintStyle: const TextStyle(color: AppColors.orange, fontSize: 6),
+          hintStyle: const TextStyle(color: AppColors.orange, fontSize: 9),
           suffixIcon: BlocProvider.of<MyConnectionCubit>(context).getHaveSuffix
               ? IconButton(
                   onPressed: () {

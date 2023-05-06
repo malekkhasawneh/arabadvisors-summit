@@ -193,7 +193,7 @@ class _MessageInfoListTileState extends State<MessageInfoListTile> {
                         child: Text(
                           widget.status == 'ACCEPTED' ? 'Accepted' : 'Rejected',
                           style: TextStyle(
-                              fontSize: 8,
+                              fontSize: 9,fontWeight: FontWeight.bold,
                               color: widget.status == 'ACCEPTED'
                                   ? AppColors.black
                                   : AppColors.red),
@@ -215,7 +215,7 @@ class _MessageInfoListTileState extends State<MessageInfoListTile> {
                                 style: ElevatedButton.styleFrom(
                                     padding: EdgeInsets.zero,
                                     backgroundColor: AppColors.orange),
-                                child: const Text('view'),
+                                child: const Text('view',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
                               ),
                             )
                           : const SizedBox(),

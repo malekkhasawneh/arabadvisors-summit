@@ -25,6 +25,7 @@ class ContentWidget extends StatefulWidget {
 class _ContentWidgetState extends State<ContentWidget> {
   List<GetAllChats> chatList = [];
   List<NotificationsModel> notifications = [];
+  bool loading = true;
 
   @override
   initState() {
@@ -33,14 +34,19 @@ class _ContentWidgetState extends State<ContentWidget> {
   }
 
   changeValue() {
+    setState(() {
+      loading = true;
+    });
     if (BlocProvider.of<AlertCubit>(context).getSelectedTabName ==
         AppStrings.messages) {
       ConnectionsRepository.getAllChats(context).then((value) => setState(() {
             chatList = value;
+            loading = false;
           }));
     } else {
       AlertRepository.getAllNotifications(context).then((value) => setState(() {
             notifications = value;
+            loading = false;
           }));
     }
   }
@@ -51,7 +57,7 @@ class _ContentWidgetState extends State<ContentWidget> {
     double screenHeight = MediaQuery.of(context).size.height;
     return BlocConsumer<AlertCubit, AlertState>(
       listener: (context, state) {
-         if (state is AlertLoaded) {
+        if (state is AlertLoaded) {
           changeValue();
         }
       },
@@ -74,130 +80,146 @@ class _ContentWidgetState extends State<ContentWidget> {
             ),
             child: BlocProvider.of<AlertCubit>(context).getSelectedTabName ==
                     AppStrings.messages
-                ? chatList.isEmpty
+                ? loading
                     ? const Center(
-                        child: Text(
-                          AppStrings.noData,
-                          style: TextStyle(
-                            color: AppColors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: CircularProgressIndicator(
+                          color: AppColors.orange,
                         ),
                       )
-                    : ListView.builder(
-                        padding: EdgeInsets.zero,
-                        itemCount: chatList.length,
-                        itemBuilder: (context, index) {
-                          return MessageInfoListTile(
-                            companyName: chatList[index].company,
-                            userName: chatList[index].name,
-                            imagePath: chatList[index].image,
-                            acceptButton: () async {
-                              bool refresh = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => MessagesPage(
-                                    friendId: chatList[index].friendId,
-                                    chatId: chatList[index].id,
-                                    name: chatList[index].name,
-                                    company: chatList[index].company,
-                                    image: chatList[index].image,
-                                  ),
-                                ),
+                    : chatList.isEmpty
+                        ? const Center(
+                            child: Text(
+                              AppStrings.noData,
+                              style: TextStyle(
+                                color: AppColors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        : ListView.builder(
+                            padding: EdgeInsets.zero,
+                            itemCount: chatList.length,
+                            itemBuilder: (context, index) {
+                              return MessageInfoListTile(
+                                companyName: chatList[index].company,
+                                userName: chatList[index].name,
+                                imagePath: chatList[index].image,
+                                acceptButton: () async {
+                                  bool refresh = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => MessagesPage(
+                                        friendId: chatList[index].friendId,
+                                        chatId: chatList[index].id,
+                                        name: chatList[index].name,
+                                        company: chatList[index].company,
+                                        image: chatList[index].image,
+                                      ),
+                                    ),
+                                  );
+                                  if (refresh) {
+                                    // ignore: use_build_context_synchronously
+                                    await ConnectionsRepository.getAllChats(
+                                            context)
+                                        .then((value) => setState(() {
+                                              chatList = value;
+                                            }));
+                                  }
+                                },
+                                lastMessage: chatList[index].lastMessage,
+                                isRed: chatList[index].read,
+                                viewInvite: () {},
+                                acceptFriend: () {},
+                                rejectFriend: () {},
                               );
-                              if (refresh) {
-                                // ignore: use_build_context_synchronously
-                                await ConnectionsRepository.getAllChats(context)
-                                    .then((value) => setState(() {
-                                          chatList = value;
-                                        }));
-                              }
-                            },
-                            lastMessage: chatList[index].lastMessage,
-                            isRed: chatList[index].read,
-                            viewInvite: () {},
-                            acceptFriend: () {},
-                            rejectFriend: () {},
-                          );
-                        })
-                : notifications.isEmpty
+                            })
+                : loading
                     ? const Center(
-                        child: Text(
-                          AppStrings.noData,
-                          style: TextStyle(
-                            color: AppColors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: CircularProgressIndicator(
+                          color: AppColors.orange,
                         ),
                       )
-                    : ListView.builder(
-                        padding: EdgeInsets.zero,
-                        itemCount: notifications.length,
-                        itemBuilder: (context, index) {
-                          return MessageInfoListTile(
-                            companyName: notifications[index].companyName,
-                            userName: notifications[index].name,
-                            imagePath: notifications[index].photoUrl,
-                            acceptButton: () {},
-                            lastMessage:
-                                notifications[index].type == 'CONNECTION'
-                                    ? 'Connection Request'
-                                    : 'Meeting Request',
-                            isNotification: true,
-                            status: notifications[index].status,
-                            type: notifications[index].type,
-                            viewInvite: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => MeetingPage(
-                                            userId: widget.userId,
-                                            meetingId:
-                                                notifications[index].objectId,
-                                            isViewOneMeeting: true,
-                                          )));
-                            },
-                            acceptFriend: () {
-                              EventsRepository.acceptFriendRequest(context,
-                                      friendId: notifications[index].objectId)
-                                  .then((value) {
-                                if (value) {
-                                  EventsRepository.showMyProfile(context)
-                                      .then((userInfo) {
-                                    HomeRepository.getToken(context,
-                                            userId:
-                                                notifications[index].objectId)
-                                        .then((value) {
-                                      HomeRepository.sendNotifications(context,
-                                          title: 'Connection Request',
-                                          body:
-                                              '${userInfo.name} accept your connection request',
-                                          token: value);
-                                    });
+                    : notifications.isEmpty
+                        ? const Center(
+                            child: Text(
+                              AppStrings.noData,
+                              style: TextStyle(
+                                color: AppColors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        : ListView.builder(
+                            padding: EdgeInsets.zero,
+                            itemCount: notifications.length,
+                            itemBuilder: (context, index) {
+                              return MessageInfoListTile(
+                                companyName: notifications[index].companyName,
+                                userName: notifications[index].name,
+                                imagePath: notifications[index].photoUrl,
+                                acceptButton: () {},
+                                lastMessage:
+                                    notifications[index].type == 'CONNECTION'
+                                        ? 'Connection Request'
+                                        : 'Meeting Request',
+                                isNotification: true,
+                                status: notifications[index].status,
+                                type: notifications[index].type,
+                                viewInvite: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => MeetingPage(
+                                                userId: widget.userId,
+                                                meetingId: notifications[index]
+                                                    .objectId,
+                                                isViewOneMeeting: true,
+                                              )));
+                                },
+                                acceptFriend: () {
+                                  EventsRepository.acceptFriendRequest(context,
+                                          friendId:
+                                              notifications[index].objectId)
+                                      .then((value) {
+                                    if (value) {
+                                      EventsRepository.showMyProfile(context)
+                                          .then((userInfo) {
+                                        HomeRepository.getToken(context,
+                                                userId: notifications[index]
+                                                    .objectId)
+                                            .then((value) {
+                                          HomeRepository.sendNotifications(
+                                              context,
+                                              title: 'Connection Request',
+                                              body:
+                                                  '${userInfo.name} accept your connection request',
+                                              token: value);
+                                        });
+                                      });
+                                      return AlertRepository
+                                              .getAllNotifications(context)
+                                          .then((value) => setState(() {
+                                                notifications = value;
+                                              }));
+                                    }
                                   });
-                                  return AlertRepository.getAllNotifications(
-                                          context)
-                                      .then((value) => setState(() {
-                                            notifications = value;
-                                          }));
-                                }
-                              });
-                            },
-                            rejectFriend: () {
-                              EventsRepository.rejectFriendRequest(context,
-                                      friendId: notifications[index].objectId)
-                                  .then((value) {
-                                if (value) {
-                                  return AlertRepository.getAllNotifications(
-                                          context)
-                                      .then((value) => setState(() {
-                                            notifications = value;
-                                          }));
-                                }
-                              });
-                            },
-                          );
-                        }));
+                                },
+                                rejectFriend: () {
+                                  EventsRepository.rejectFriendRequest(context,
+                                          friendId:
+                                              notifications[index].objectId)
+                                      .then((value) {
+                                    if (value) {
+                                      return AlertRepository
+                                              .getAllNotifications(context)
+                                          .then((value) => setState(() {
+                                                notifications = value;
+                                              }));
+                                    }
+                                  });
+                                },
+                              );
+                            }));
       },
     );
   }
