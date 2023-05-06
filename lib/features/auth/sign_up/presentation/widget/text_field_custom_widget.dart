@@ -124,7 +124,8 @@ class _TextFieldCustomWidgetState extends State<TextFieldCustomWidget> {
                   //errorText: '',
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.only(left: 7, top: 6),
+                  contentPadding: EdgeInsets.only(
+                      left: 7, top: widget.errorValidation ? 23 : 6),
                   focusedBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: Colors.white),
                     borderRadius: BorderRadius.circular(10),
