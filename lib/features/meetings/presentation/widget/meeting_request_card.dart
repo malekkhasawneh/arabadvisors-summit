@@ -25,7 +25,7 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
 
   @override
   void initState() {
-    HomeRepository.imageToUint8List().then((value) => setState(() {
+   HomeRepository.imageToUint8List().then((value) => setState(() {
           _defaultUserImage = value;
         }));
     if (widget.meetingsModel.inviterImage.isNotEmpty) {

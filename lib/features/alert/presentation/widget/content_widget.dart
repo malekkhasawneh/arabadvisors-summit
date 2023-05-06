@@ -27,21 +27,34 @@ class _ContentWidgetState extends State<ContentWidget> {
   List<NotificationsModel> notifications = [];
 
   @override
-  void initState() {
-    ConnectionsRepository.getAllChats(context).then((value) => setState(() {
-          chatList = value;
-        }));
-    AlertRepository.getAllNotifications(context).then((value) => setState(() {
-          notifications = value;
-        }));
+  initState() {
+    changeValue();
     super.initState();
+  }
+
+  changeValue() {
+    if (BlocProvider.of<AlertCubit>(context).getSelectedTabName ==
+        AppStrings.messages) {
+      ConnectionsRepository.getAllChats(context).then((value) => setState(() {
+            chatList = value;
+          }));
+    } else {
+      AlertRepository.getAllNotifications(context).then((value) => setState(() {
+            notifications = value;
+          }));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    return BlocBuilder<AlertCubit, AlertState>(
+    return BlocConsumer<AlertCubit, AlertState>(
+      listener: (context, state) {
+         if (state is AlertLoaded) {
+          changeValue();
+        }
+      },
       builder: (context, state) {
         return Container(
             width: screenWidth * 0.9,
@@ -93,6 +106,7 @@ class _ContentWidgetState extends State<ContentWidget> {
                                 ),
                               );
                               if (refresh) {
+                                // ignore: use_build_context_synchronously
                                 await ConnectionsRepository.getAllChats(context)
                                     .then((value) => setState(() {
                                           chatList = value;
@@ -150,12 +164,12 @@ class _ContentWidgetState extends State<ContentWidget> {
                                 if (value) {
                                   EventsRepository.showMyProfile(context)
                                       .then((userInfo) {
-                                    HomeRepository.getToken(
-                                        context,  userId:
+                                    HomeRepository.getToken(context,
+                                            userId:
                                                 notifications[index].objectId)
                                         .then((value) {
-                                      HomeRepository.sendNotifications(
-                                          context,    title: 'Connection Request',
+                                      HomeRepository.sendNotifications(context,
+                                          title: 'Connection Request',
                                           body:
                                               '${userInfo.name} accept your connection request',
                                           token: value);

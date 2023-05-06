@@ -1,3 +1,4 @@
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provision/core/resources/app_colors.dart';
@@ -53,8 +54,7 @@ class _TimesDropDownState extends State<TimesDropDown> {
                 widget.controller.text = val!;
               });
             },
-            mode: Mode.BOTTOM_SHEET,
-            showSelectedItems: true,
+
             items: [...widget.timesList.map((e) => e.roomTime).toList()],
             dropdownSearchDecoration: const InputDecoration(
               hintText: AppStrings.select,

@@ -28,10 +28,10 @@ dependencies:
   path_provider: ^2.0.13
   cached_network_image: ^3.2.3
   flutter_bloc: ^8.0.1
-  dropdown_button2: ^2.0.0
   jwt_decoder: ^2.0.1
   toast: ^0.3.0
-  dropdown_search: ^3.0.1
+  dropdown_search:
+    path: ./dropdown_search
   flutter_keyboard_visibility: ^5.4.0
   image_picker: ^0.8.7+3
   flutter_svg: ^2.0.5
