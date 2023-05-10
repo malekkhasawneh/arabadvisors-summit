@@ -44,8 +44,7 @@ class _ChatContainerState extends State<ChatContainer> {
   bool loading = true;
   Timer? timer;
   AllParticipantsModel? participantsModel;
-  Uint8List? _imageData;
-  Uint8List? _myImageData;
+  String image = '';
 
   @override
   void initState() {
@@ -56,20 +55,7 @@ class _ChatContainerState extends State<ChatContainer> {
             participantsModel = value;
           },
         );
-        if (widget.image.isNotEmpty) {
-          EventsRepository.getImageDetails(context,
-                  imageUrl: widget.image.split('/').last)
-              .then((value) => setState(() {
-                    _imageData = value;
-                  }));
-        }
-        if (value.image.isNotEmpty) {
-          EventsRepository.getImageDetails(context,
-                  imageUrl: value.image.split('/').last)
-              .then((value) => setState(() {
-                    _myImageData = value;
-                  }));
-        }
+        image = value.image;
       },
     );
 
@@ -154,7 +140,8 @@ class _ChatContainerState extends State<ChatContainer> {
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
-                                      child: _imageData != null &&
+                                      child: image != null &&
+                                              image.isNotEmpty &&
                                               participantsModel!.name !=
                                                   messagesList[index].name
                                           ? Container(
@@ -169,12 +156,12 @@ class _ChatContainerState extends State<ChatContainer> {
                                                     color: AppColors.grey
                                                         .withOpacity(0.4)),
                                                 image: DecorationImage(
-                                                    image: MemoryImage(
-                                                        _imageData!),
+                                                    image: NetworkImage(image),
                                                     fit: BoxFit.fill),
                                               ),
                                             )
-                                          : _myImageData != null &&
+                                          : widget.image != null &&
+                                                  widget.image.isNotEmpty &&
                                                   participantsModel!.name ==
                                                       messagesList[index].name
                                               ? Container(
@@ -189,8 +176,8 @@ class _ChatContainerState extends State<ChatContainer> {
                                                         color: AppColors.grey
                                                             .withOpacity(0.4)),
                                                     image: DecorationImage(
-                                                        image: MemoryImage(
-                                                            _myImageData!),
+                                                        image: NetworkImage(
+                                                            image),
                                                         fit: BoxFit.fill),
                                                   ),
                                                 )
@@ -268,7 +255,7 @@ class _ChatContainerState extends State<ChatContainer> {
     return ListTile(
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(100),
-        child: _imageData != null
+        child: image != null && image.isNotEmpty
             ? Container(
                 width: 45,
                 height: 45,
@@ -277,7 +264,7 @@ class _ChatContainerState extends State<ChatContainer> {
                     Radius.circular(100),
                   ),
                   image: DecorationImage(
-                      image: MemoryImage(_imageData!), fit: BoxFit.fill),
+                      image: NetworkImage(image), fit: BoxFit.fill),
                 ),
               )
             : Container(

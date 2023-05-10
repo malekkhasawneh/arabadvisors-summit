@@ -25,7 +25,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late AllParticipantsModel myProfile;
   bool loading = true;
-  Uint8List? _imageData;
+  String image = '';
 
   @override
   void initState() {
@@ -36,13 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 myProfile = value;
                 loading = false;
               });
-              if (value.image.isNotEmpty) {
-                EventsRepository.getImageDetails(context,
-                        imageUrl: value.image.split('/').last)
-                    .then((value) => setState(() {
-                          _imageData = value;
-                        }));
-              }
+             image = value.image;
             },
           )
         : EventsRepository.showParticipantProfile(context,
@@ -113,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 55,
                       child: Row(
                         children: [
-                          _imageData != null
+                          image != null && image.isNotEmpty
                               ? Container(
                                   width: 55,
                                   height: 55,
@@ -122,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         Radius.circular(100),
                                       ),
                                       image: DecorationImage(
-                                          image: MemoryImage(_imageData!),
+                                          image: NetworkImage(image),
                                           fit: BoxFit.fill)),
                                 )
                               : Container(
@@ -208,10 +202,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                           if (value
                                                                               .image
                                                                               .isNotEmpty) {
-                                                                            EventsRepository.getImageDetails(context, imageUrl: value.image.split('/').last).then((value) =>
-                                                                                setState(() {
-                                                                                  _imageData = value;
-                                                                                }));
+                                                                           setState(() {
+                                                                             image = value.image;
+                                                                           });
                                                                           }
                                                                         },
                                                                       );
@@ -272,10 +265,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                           if (value
                                                                               .image
                                                                               .isNotEmpty) {
-                                                                            EventsRepository.getImageDetails(context, imageUrl: value.image.split('/').last).then((value) =>
-                                                                                setState(() {
-                                                                                  _imageData = value;
-                                                                                }));
+                                                                          setState(() {
+                                                                            image = value.image;
+                                                                          });
                                                                           }
                                                                         },
                                                                       );

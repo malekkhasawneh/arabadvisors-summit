@@ -291,32 +291,6 @@ class EventsRepository {
     }
   }
 
-  static Future<Uint8List> getImageDetails(BuildContext context,
-      {required String imageUrl}) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    if (await HomeRepository.checkIsConnected()) {
-      final getUserImage = await http.get(
-        Uri.parse(
-            'https://vmi1258605.contaboserver.net/agg/api/v1/participant/download/$imageUrl'),
-        headers: {
-          'Authorization': 'Bearer ${preferences.getString('token') ?? ''}'
-        },
-      );
-      if (getUserImage.statusCode == 200) {
-        Uint8List _imageData;
-        _imageData = getUserImage.bodyBytes;
-        return _imageData;
-      } else {
-        throw Exception('Failed to fetch image');
-      }
-    } else {
-      // ignore: use_build_context_synchronously
-      Navigator.push(context,
-          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
-      throw Exception();
-    }
-  }
-
   static Future<bool> uploadImage(File imageFile, BuildContext context) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     if (await HomeRepository.checkIsConnected()) {

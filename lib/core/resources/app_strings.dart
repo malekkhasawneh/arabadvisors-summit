@@ -98,4 +98,5 @@ class AppStrings {
   static const String reserved = 'Reserved';
   static const String reservedSuccess = 'Successfully reserved';
   static const String inviteTitle = 'Invite Participant from my Connection';
+  static const String eventUrl = 'http://www.5gsummit.me';
 }

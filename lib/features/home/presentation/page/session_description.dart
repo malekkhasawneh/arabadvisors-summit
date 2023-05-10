@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provision/core/resources/dimentions.dart';
 import 'package:provision/core/resources/images.dart';
 import 'package:provision/features/event/presentation/page/user_profile_page.dart';
@@ -8,7 +7,6 @@ import 'package:provision/features/home/data/repository/home_repository.dart';
 
 import '../../../../core/resources/app_colors.dart';
 import '../../../event/data/model/get_all_participants_model.dart';
-import '../../../event/data/repository/events_repository.dart';
 
 class SessionDescription extends StatefulWidget {
   SessionDescription({Key? key, required this.eventDetails}) : super(key: key);
@@ -22,22 +20,16 @@ class SessionDescription extends StatefulWidget {
 class _SessionDescriptionState extends State<SessionDescription> {
   late AllParticipantsModel speakerInfo;
   bool loading = true;
-  Uint8List? _imageData;
+  String image = '';
 
   @override
   void initState() {
-    HomeRepository.showParticipantProfile(
-        context,     profileId: widget.eventDetails.speakerId)
+    HomeRepository.showParticipantProfile(context,
+            profileId: widget.eventDetails.speakerId)
         .then((value) => setState(() {
               speakerInfo = value;
               loading = false;
-            if(value.image.isNotEmpty){
-              EventsRepository.getImageDetails(
-                  context,  imageUrl: value.image.split('/').last)
-                  .then((value) => setState(() {
-                _imageData = value;
-              }));
-            }
+              image = value.image;
             }));
     super.initState();
   }
@@ -46,7 +38,8 @@ class _SessionDescriptionState extends State<SessionDescription> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return SafeArea(bottom: false,
+    return SafeArea(
+      bottom: false,
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -90,7 +83,7 @@ class _SessionDescriptionState extends State<SessionDescription> {
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: AppColors.white,
-                              fontSize:18,
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -164,9 +157,9 @@ class _SessionDescriptionState extends State<SessionDescription> {
                                 ),
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(100),
-                                  child: _imageData != null
-                                      ? Image.memory(
-                                          _imageData!,
+                                  child: image != null && image.isNotEmpty
+                                      ? Image.network(
+                                          image,
                                           width: 55,
                                           height: 55,
                                         )

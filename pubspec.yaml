@@ -74,6 +74,7 @@ flutter:
     - images/app_svg_logo.svg
     - images/splash_svg_logo.svg
     - images/service_unavailable.json
+    - images/home_leading_logo.png
   fonts:
     - family: Poppins
       fonts:

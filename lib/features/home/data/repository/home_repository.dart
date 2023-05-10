@@ -294,9 +294,4 @@ class HomeRepository {
         InternetConnectionChecker();
     return await internetConnectionChecker.hasConnection;
   }
-
- static Future<Uint8List> imageToUint8List() async {
-    final ByteData imageData = await rootBundle.load(Images.defaultUserImage);
-    return imageData.buffer.asUint8List();
-  }
 }

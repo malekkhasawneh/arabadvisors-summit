@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provision/core/resources/app_colors.dart';
-import 'package:provision/features/event/data/repository/events_repository.dart';
 
 import '../../../../core/resources/images.dart';
 import '../../../event/presentation/widget/accept_or_reject_connection_reqest.dart';
-import '../../../home/data/repository/home_repository.dart';
 
 class MessageInfoListTile extends StatefulWidget {
   MessageInfoListTile({
@@ -41,31 +38,8 @@ class MessageInfoListTile extends StatefulWidget {
 }
 
 class _MessageInfoListTileState extends State<MessageInfoListTile> {
-  Uint8List? _imageData;
-  Uint8List? _defaultUserImage;
-
-  @override
-  void initState() {
-    HomeRepository.imageToUint8List().then((value) => setState(() {
-          _defaultUserImage = value;
-        }));
-    if (widget.imagePath.isNotEmpty) {
-      EventsRepository.getImageDetails(context,
-              imageUrl: widget.imagePath.split('/').last)
-          .then(
-        (value) => setState(
-          () {
-            _imageData = value;
-          },
-        ),
-      );
-    }
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
     return Column(
       children: [
         GestureDetector(
@@ -99,7 +73,8 @@ class _MessageInfoListTileState extends State<MessageInfoListTile> {
                       border: Border.all(color: AppColors.white),
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child: _imageData != null
+                    child: widget.imagePath.isNotEmpty &&
+                            widget.imagePath != null
                         ? Container(
                             width: 45,
                             height: 45,
@@ -108,8 +83,7 @@ class _MessageInfoListTileState extends State<MessageInfoListTile> {
                                   Radius.circular(100),
                                 ),
                                 image: DecorationImage(
-                                    image: MemoryImage(
-                                        _imageData ?? _defaultUserImage!),
+                                    image: NetworkImage(widget.imagePath),
                                     fit: BoxFit.fill)),
                           )
                         : Container(
@@ -193,7 +167,8 @@ class _MessageInfoListTileState extends State<MessageInfoListTile> {
                         child: Text(
                           widget.status == 'ACCEPTED' ? 'Accepted' : 'Rejected',
                           style: TextStyle(
-                              fontSize: 9,fontWeight: FontWeight.bold,
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold,
                               color: widget.status == 'ACCEPTED'
                                   ? AppColors.black
                                   : AppColors.red),
@@ -215,7 +190,12 @@ class _MessageInfoListTileState extends State<MessageInfoListTile> {
                                 style: ElevatedButton.styleFrom(
                                     padding: EdgeInsets.zero,
                                     backgroundColor: AppColors.orange),
-                                child: const Text('view',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
+                                child: const Text(
+                                  'view',
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             )
                           : const SizedBox(),

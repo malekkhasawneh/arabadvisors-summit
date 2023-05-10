@@ -18,33 +18,6 @@ class MeetingRequestCard extends StatefulWidget {
 }
 
 class _MeetingRequestCardState extends State<MeetingRequestCard> {
-  Uint8List? _inviterImageData;
-  Uint8List? _invitedImageData;
-  Uint8List? _defaultUserImage;
-  bool loading = true;
-
-  @override
-  void initState() {
-   HomeRepository.imageToUint8List().then((value) => setState(() {
-          _defaultUserImage = value;
-        }));
-    if (widget.meetingsModel.inviterImage.isNotEmpty) {
-      EventsRepository.getImageDetails(context,
-              imageUrl: widget.meetingsModel.inviterImage.split('/').last)
-          .then((value) => setState(() {
-                _inviterImageData = value;
-                loading = false;
-              }));
-    }
-    if (widget.meetingsModel.invitedImage.isNotEmpty) {
-      EventsRepository.getImageDetails(context,
-              imageUrl: widget.meetingsModel.invitedImage.split('/').last)
-          .then((value) => setState(() {
-                _invitedImageData = value;
-              }));
-    }
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +38,7 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                   child: ListTile(
                 leading: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
-                  child: _inviterImageData != null
+                  child: widget.meetingsModel.inviterImage != null && widget.meetingsModel.inviterImage.isNotEmpty
                       ? Container(
                           width: 40,
                           height: 40,
@@ -74,7 +47,7 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                                 Radius.circular(100),
                               ),
                               image: DecorationImage(
-                                  image: MemoryImage(_inviterImageData!),
+                                  image: NetworkImage(widget.meetingsModel.inviterImage),
                                   fit: BoxFit.fill)),
                         )
                       : Container(
@@ -177,7 +150,7 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                   children: [
                     Expanded(
                         child: ListTile(
-                      leading: _inviterImageData != null
+                      leading: widget.meetingsModel.inviterImage != null && widget.meetingsModel.invitedImage.isNotEmpty
                           ? Container(
                               width: 40,
                               height: 40,
@@ -186,8 +159,7 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                                     Radius.circular(100),
                                   ),
                                   image: DecorationImage(
-                                      image: MemoryImage(_inviterImageData ??
-                                          _defaultUserImage!),
+                                      image: NetworkImage(widget.meetingsModel.inviterImage),
                                       fit: BoxFit.fill)),
                             )
                           : Container(
@@ -221,7 +193,7 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                         child: ListTile(
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: _invitedImageData != null
+                        child: widget.meetingsModel.invitedImage != null &&widget.meetingsModel.invitedImage.isNotEmpty
                             ? Container(
                                 width: 40,
                                 height: 40,
@@ -230,8 +202,7 @@ class _MeetingRequestCardState extends State<MeetingRequestCard> {
                                       Radius.circular(100),
                                     ),
                                     image: DecorationImage(
-                                        image: MemoryImage(_inviterImageData ??
-                                            _defaultUserImage!),
+                                        image: NetworkImage(widget.meetingsModel.invitedImage),
                                         fit: BoxFit.fill)),
                               )
                             : Container(

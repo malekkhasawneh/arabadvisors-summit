@@ -24,23 +24,6 @@ class UserInfoWidget extends StatefulWidget {
 }
 
 class _UserInfoWidgetState extends State<UserInfoWidget> {
-  Uint8List? _imageData;
-
-  @override
-  void initState() {
-    if (widget.imagePath.isNotEmpty) {
-      EventsRepository.getImageDetails(context,
-              imageUrl: widget.imagePath.split('/').last)
-          .then(
-        (value) => setState(
-          () {
-            _imageData = value;
-          },
-        ),
-      );
-    }
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +59,8 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
-                  child: _imageData != null
-                      ? Image.memory(_imageData!)
+                  child: widget.imagePath != null && widget.imagePath.isNotEmpty
+                      ? Image.network(widget.imagePath)
                       : Image.asset(Images.defaultUserImage),
                 ),
               ),
