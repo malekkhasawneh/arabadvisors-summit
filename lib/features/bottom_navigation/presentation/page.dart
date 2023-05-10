@@ -47,7 +47,8 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return SafeArea(bottom: false,
+    return SafeArea(
+      bottom: false,
       child: WillPopScope(
         onWillPop: () async {
           return false;
@@ -72,7 +73,12 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                             ? Icons.arrow_back
                             : Icons.arrow_back_ios),
                       )
-                    : const SizedBox(),
+                    : IconButton(
+                        onPressed: () {},
+                        icon: Image.asset(
+                          Images.homeLeadingLogo,
+                        ),
+                      ),
             backgroundColor: AppColors.transparent,
             elevation: 0,
             actions: [
@@ -285,7 +291,9 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                         horizontal: screenWidth * 0.03),
                     child: GestureDetector(
                       onTap: () async {
-                        await HomeRepository.goToFeedBack( context,);
+                        await HomeRepository.goToFeedBack(
+                          context,
+                        );
                       },
                       child: Container(
                         height: screenHeight * 0.075,
@@ -378,7 +386,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
               iconSize: screenWidth * 0.007,
               type: BottomNavigationBarType.fixed,
               currentIndex: currentIndex,
-              selectedItemColor: AppColors.blue,
+              selectedItemColor: AppColors.orange,
               elevation: 0,
               onTap: (index) {
                 setState(() {

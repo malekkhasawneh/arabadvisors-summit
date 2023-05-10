@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provision/core/resources/app_colors.dart';
 import 'package:provision/core/resources/dimentions.dart';
@@ -36,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 myProfile = value;
                 loading = false;
               });
-             image = value.image;
+              image = value.image;
             },
           )
         : EventsRepository.showParticipantProfile(context,
@@ -97,6 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
             : Container(
                 margin: EdgeInsets.only(
                     top: safeAreaPadding +
+                        5 +
                         (!widget.isSameUser
                             ? defaultAppBarHeight + safeAreaPadding
                             : 25)),
@@ -202,9 +202,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                           if (value
                                                                               .image
                                                                               .isNotEmpty) {
-                                                                           setState(() {
-                                                                             image = value.image;
-                                                                           });
+                                                                            setState(() {
+                                                                              image = value.image;
+                                                                            });
                                                                           }
                                                                         },
                                                                       );
@@ -265,9 +265,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                           if (value
                                                                               .image
                                                                               .isNotEmpty) {
-                                                                          setState(() {
-                                                                            image = value.image;
-                                                                          });
+                                                                            setState(() {
+                                                                              image = value.image;
+                                                                            });
                                                                           }
                                                                         },
                                                                       );
