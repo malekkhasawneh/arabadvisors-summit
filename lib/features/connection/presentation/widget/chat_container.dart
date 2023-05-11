@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as date_format;
 import 'package:provision/core/resources/app_colors.dart';
@@ -48,7 +47,7 @@ class _ChatContainerState extends State<ChatContainer> {
 
   @override
   void initState() {
-    EventsRepository.showMyProfile(context).then(
+    EventsRepository.showParticipantProfile(context,profileId: widget.friendId).then(
       (value) {
         setState(
           () {
@@ -140,10 +139,11 @@ class _ChatContainerState extends State<ChatContainer> {
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
-                                      child: image != null &&
-                                              image.isNotEmpty &&
-                                              participantsModel!.name !=
-                                                  messagesList[index].name
+                                      child: messagesList[index].image !=
+                                                  null &&
+                                              messagesList[index]
+                                                  .image
+                                                  .isNotEmpty
                                           ? Container(
                                               width: 25,
                                               height: 25,
@@ -156,49 +156,28 @@ class _ChatContainerState extends State<ChatContainer> {
                                                     color: AppColors.grey
                                                         .withOpacity(0.4)),
                                                 image: DecorationImage(
-                                                    image: NetworkImage(image),
+                                                    image: NetworkImage(
+                                                        messagesList[index]
+                                                            .image),
                                                     fit: BoxFit.fill),
                                               ),
                                             )
-                                          : widget.image != null &&
-                                                  widget.image.isNotEmpty &&
-                                                  participantsModel!.name ==
-                                                      messagesList[index].name
-                                              ? Container(
-                                                  width: 25,
-                                                  height: 25,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                      Radius.circular(100),
-                                                    ),
-                                                    border: Border.all(
-                                                        color: AppColors.grey
-                                                            .withOpacity(0.4)),
-                                                    image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            image),
-                                                        fit: BoxFit.fill),
+                                          : Container(
+                                              width: 25,
+                                              height: 25,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                    Radius.circular(100),
                                                   ),
-                                                )
-                                              : Container(
-                                                  width: 25,
-                                                  height: 25,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                              .all(
-                                                        Radius.circular(100),
-                                                      ),
-                                                      border: Border.all(
-                                                          color: AppColors.grey
-                                                              .withOpacity(
-                                                                  0.4)),
-                                                      image: const DecorationImage(
-                                                          image: AssetImage(Images
-                                                              .defaultUserImage),
-                                                          fit: BoxFit.fill)),
-                                                ),
+                                                  border: Border.all(
+                                                      color: AppColors.grey
+                                                          .withOpacity(0.4)),
+                                                  image: const DecorationImage(
+                                                      image: AssetImage(Images
+                                                          .defaultUserImage),
+                                                      fit: BoxFit.fill)),
+                                            ),
                                     ),
                                     const SizedBox(
                                       width: 5,

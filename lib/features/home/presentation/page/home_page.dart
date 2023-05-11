@@ -33,8 +33,8 @@ class _HomePageState extends State<HomePage> {
     HomeRepository.getTimes(
       context,
     ).then(
-          (value) => setState(
-            () {
+      (value) => setState(
+        () {
           timeList = value;
           loading = false;
         },
@@ -43,16 +43,16 @@ class _HomePageState extends State<HomePage> {
     HomeRepository.getEventsDetails(
       context,
     ).then(
-          (value) => setState(
-            () {
+      (value) => setState(
+        () {
           eventList = value;
           loading = false;
         },
       ),
     );
     HomeRepository.saveToken(context).then((value) => setState(() {
-      loading = false;
-    }));
+          loading = false;
+        }));
     super.initState();
   }
 
@@ -77,167 +77,167 @@ class _HomePageState extends State<HomePage> {
         ),
         child: loading
             ? const Center(
-          child: CircularProgressIndicator(
-            color: AppColors.orange,
-          ),
-        )
-            : eventList.isEmpty
-            ? const Center(
-          child: Text(AppStrings.noData),
-        )
-            : Container(
-          margin: EdgeInsets.only(
-              top: safePadding + 15,
-              left: screenWidth * 0.05,
-              right: screenWidth * 0.05,
-              bottom: 0),
-          width: screenWidth * 0.9,
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: double.infinity,
-                height: screenHeight*0.5,
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
-                      image: AssetImage(
-                        Images.homePageLogo,
-                      )),
-                  borderRadius: BorderRadius.circular(
-                    10,
-                  ),
-                ),
-              ),
-              Center(
-                child: Container(
-                  margin: const EdgeInsets.only(top: 15),
-                  width: screenWidth * 0.9,
-                  child: const Text(
-                    AppStrings.reserve,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.white,
-                      fontSize: 18,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              TimesDropDown(
-                controller: timeController,
-                labelName: AppStrings.homeTime,
-                timesList: timeList,
-              ),
-              TitleAndInputForSignUpWidget(
-                controller: participantNameController,
-                labelName: AppStrings.invite,
-                suffix: const Icon(
-                  Icons.add,
-                  size: 15,
+                child: CircularProgressIndicator(
                   color: AppColors.orange,
                 ),
-                onTap: () async {
-                  AllParticipantsModel participant =
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const InviteParticipant(),
-                    ),
-                  );
-                  if (participant != null) {
-                    setState(() {
-                      participantId = participant.id;
-                      participantNameController.text =
-                          participant.name;
-                    });
-                  } else {
-                    setState(() {
-                      participantId = 0;
-                      participantNameController.text = '';
-                    });
-                  }
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 9),
-                child: Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.orange,
-                    ),
-                    onPressed: () {
-                      if (timeController.text.isEmpty ||
-                          participantId == 0) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'Please make sure to fill out the fields'),
+              )
+            : eventList.isEmpty
+                ? const Center(
+                    child: Text(AppStrings.noData),
+                  )
+                : Container(
+                    margin: EdgeInsets.only(
+                        top: safePadding,
+                        left: screenWidth * 0.05,
+                        right: screenWidth * 0.05,
+                        bottom: 0),
+                    width: screenWidth * 0.9,
+                    child: ListView(
+                      padding: EdgeInsets.zero,
+                      children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: screenHeight * 0.5,
+                          decoration: BoxDecoration(
+                            image: const DecorationImage(
+                                image: AssetImage(
+                              Images.homePageLogo,
+                            )),
+                            borderRadius: BorderRadius.circular(
+                              10,
+                            ),
                           ),
-                        );
-                      } else {
-                        HomeRepository.checkIsConnected()
-                            .then((value) {
-                          if (value) {
-                            HomeRepository.scheduleMeeting(context,
-                                timeId: timeList
-                                    .firstWhere((element) =>
-                                element.roomTime ==
-                                    timeController.text)
-                                    .id,
-                                friendId: participantId)
-                                .then((value) {
-                              if (value) {
-                                EventsRepository.showMyProfile(
-                                    context)
-                                    .then((userInfo) {
-                                  HomeRepository.getToken(context,
-                                      userId: participantId)
-                                      .then((value) {
-                                    HomeRepository.sendNotifications(
-                                        context,
-                                        title: 'Meeting Request',
-                                        body:
-                                        '${userInfo.name} send you meeting request',
-                                        token: value);
-                                  });
-                                });
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      AppStrings.reservedSuccess,
-                                    ),
-                                  ),
-                                );
-                              }
-                            });
-                          } else {
-                            Navigator.push(
+                        ),
+                        Center(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 15),
+                            width: screenWidth * 0.9,
+                            child: const Text(
+                              AppStrings.reserve,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.white,
+                                fontSize: 18,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        TimesDropDown(
+                          controller: timeController,
+                          labelName: AppStrings.homeTime,
+                          timesList: timeList,
+                        ),
+                        TitleAndInputForSignUpWidget(
+                          controller: participantNameController,
+                          labelName: AppStrings.invite,
+                          suffix: const Icon(
+                            Icons.add,
+                            size: 15,
+                            color: AppColors.orange,
+                          ),
+                          onTap: () async {
+                            AllParticipantsModel participant =
+                                await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) =>
-                                    NoInternetConnectionWidget(),
+                                builder: (_) => const InviteParticipant(),
                               ),
                             );
-                          }
-                        });
-                      }
-                    },
-                    child: const Text(
-                      AppStrings.reserved,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                            if (participant != null) {
+                              setState(() {
+                                participantId = participant.id;
+                                participantNameController.text =
+                                    participant.name;
+                              });
+                            } else {
+                              setState(() {
+                                participantId = 0;
+                                participantNameController.text = '';
+                              });
+                            }
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 9),
+                          child: Center(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.orange,
+                              ),
+                              onPressed: () {
+                                if (timeController.text.isEmpty ||
+                                    participantId == 0) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Please make sure to fill out the fields'),
+                                    ),
+                                  );
+                                } else {
+                                  HomeRepository.checkIsConnected()
+                                      .then((value) {
+                                    if (value) {
+                                      HomeRepository.scheduleMeeting(context,
+                                              timeId: timeList
+                                                  .firstWhere((element) =>
+                                                      element.roomTime ==
+                                                      timeController.text)
+                                                  .id,
+                                              friendId: participantId)
+                                          .then((value) {
+                                        if (value) {
+                                          EventsRepository.showMyProfile(
+                                                  context)
+                                              .then((userInfo) {
+                                            HomeRepository.getToken(context,
+                                                    userId: participantId)
+                                                .then((value) {
+                                              HomeRepository.sendNotifications(
+                                                  context,
+                                                  title: 'Meeting Request',
+                                                  body:
+                                                      '${userInfo.name} send you meeting request',
+                                                  token: value);
+                                            });
+                                          });
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                AppStrings.reservedSuccess,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      });
+                                    } else {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) =>
+                                              NoInternetConnectionWidget(),
+                                        ),
+                                      );
+                                    }
+                                  });
+                                }
+                              },
+                              child: const Text(
+                                AppStrings.reserved,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
