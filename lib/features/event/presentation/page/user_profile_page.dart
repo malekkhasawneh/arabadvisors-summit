@@ -12,10 +12,15 @@ import '../../../home/data/repository/home_repository.dart';
 import '../../data/model/get_all_participants_model.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({Key? key, this.isSameUser = true, required this.profileId})
+  ProfilePage(
+      {Key? key,
+      this.isSameUser = true,
+      this.showLeading = false,
+      required this.profileId})
       : super(key: key);
   bool isSameUser;
   final int profileId;
+  final bool showLeading;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -62,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: !widget.isSameUser
+        leading: !widget.isSameUser || widget.showLeading
             ? IconButton(
                 onPressed: () {
                   Navigator.pop(context, true);
@@ -97,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 margin: EdgeInsets.only(
                     top: safeAreaPadding +
                         5 +
-                        (!widget.isSameUser
+                        (!widget.isSameUser || widget.showLeading
                             ? defaultAppBarHeight + safeAreaPadding
                             : 25)),
                 child: Column(

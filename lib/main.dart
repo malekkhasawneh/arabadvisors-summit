@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provision/core/helpers/shared_preferences_helper.dart';
 import 'package:provision/core/resources/utilities.dart';
 import 'package:provision/features/auth/sign_in/presentation/cubit/sign_in_cubit.dart';
 import 'package:provision/features/auth/sign_up/presentation/cubit/sign_up_cubit.dart';
@@ -18,6 +19,7 @@ import 'features/connection/presentation/cubit/my_connection_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferencesHelper().initialize();
   await Firebase.initializeApp();
   await FirebaseMessaging.instance.requestPermission(
     alert: true,

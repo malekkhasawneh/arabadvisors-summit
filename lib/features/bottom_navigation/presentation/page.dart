@@ -11,6 +11,7 @@ import 'package:provision/features/connection/presentation/page/my_connection_pa
 import 'package:provision/features/edit_profile/presentation/page/edit_user_info.dart';
 import 'package:provision/features/event/presentation/page/user_profile_page.dart';
 import 'package:provision/features/home/data/repository/home_repository.dart';
+import 'package:provision/features/home/presentation/page/agenda_page.dart';
 import 'package:provision/features/meetings/presentation/page/meeting_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,6 +33,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
   bool connectionPage = false;
   bool meetingsPage = false;
   bool contactUs = false;
+  bool agenda = false;
   int userID = 0;
 
   @override
@@ -58,7 +60,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             leading:
-                editProfilePage || connectionPage || meetingsPage || contactUs
+                editProfilePage || connectionPage || meetingsPage || contactUs || agenda
                     ? IconButton(
                         onPressed: () {
                           setState(() {
@@ -67,6 +69,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                             connectionPage = false;
                             meetingsPage = false;
                             contactUs = false;
+                            agenda = false;
                           });
                         },
                         icon: Icon(Platform.isAndroid
@@ -135,6 +138,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                                   meetingsPage = false;
                                   connectionPage = false;
                                   contactUs = false;
+                                  agenda = false;
                                 });
                                 Scaffold.of(context).closeEndDrawer();
                               },
@@ -170,6 +174,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                               connectionPage = true;
                               meetingsPage = false;
                               contactUs = false;
+                              agenda = false;
                             });
                             Scaffold.of(context).closeEndDrawer();
                           },
@@ -200,6 +205,52 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                     padding: EdgeInsets.symmetric(
                         vertical: screenHeight * 0.01,
                         horizontal: screenWidth * 0.03),
+                    child: Container(
+                      height: screenHeight * 0.075,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.0),
+                        //color: select?WHITE_V1:MAIN_COLOR,
+                      ),
+                      padding: EdgeInsets.all(screenWidth * 0.01),
+                      child: Builder(builder: (context) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              editProfilePage = false;
+                              connectionPage = false;
+                              meetingsPage = false;
+                              contactUs = false;
+                              agenda = true;
+                            });
+                            Scaffold.of(context).closeEndDrawer();
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                Images.connections,
+                                width: screenWidth * 0.1,
+                                height: screenWidth * 0.1,
+                                fit: BoxFit.fill,
+                              ),
+                              SizedBox(width: screenWidth * 0.05),
+                              Text(
+                                'Agenda',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: screenWidth * 0.033,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: screenHeight * 0.01,
+                        horizontal: screenWidth * 0.03),
                     child: Builder(builder: (context) {
                       return GestureDetector(
                         onTap: () {
@@ -208,6 +259,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                             connectionPage = false;
                             meetingsPage = true;
                             contactUs = false;
+                            agenda = false;
                           });
                           Scaffold.of(context).closeEndDrawer();
                         },
@@ -253,6 +305,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                             connectionPage = false;
                             meetingsPage = false;
                             contactUs = true;
+                            agenda = false;
                           });
                           Scaffold.of(context).closeEndDrawer();
                         },
@@ -378,6 +431,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
             goToConnection: connectionPage,
             goToMeetingsPage: meetingsPage,
             goToContactUs: contactUs,
+            goToAgenda: agenda,
           )[currentIndex],
           bottomNavigationBar: SizedBox(
             height: 55 + MediaQuery.of(context).padding.bottom,
@@ -395,6 +449,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                   connectionPage = false;
                   meetingsPage = false;
                   contactUs = false;
+                  agenda = false;
                 });
               },
               unselectedLabelStyle: const TextStyle(
@@ -468,11 +523,13 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
     return preferences.getInt('id') ?? 0;
   }
 
-  List<Widget> pages(
-      {required bool getToEdit,
-      required bool goToConnection,
-      required bool goToMeetingsPage,
-      required bool goToContactUs}) {
+  List<Widget> pages({
+    required bool getToEdit,
+    required bool goToConnection,
+    required bool goToMeetingsPage,
+    required bool goToContactUs,
+    required bool goToAgenda,
+  }) {
     return [
       getToEdit
           ? EditUserInfo()
@@ -485,7 +542,9 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                     )
                   : goToContactUs
                       ? const ContactUs()
-                      : const HomePage(),
+                      : goToAgenda
+                          ? const AgendaPage()
+                          : const HomePage(),
       getToEdit
           ? EditUserInfo()
           : goToConnection
@@ -497,7 +556,9 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                     )
                   : goToContactUs
                       ? const ContactUs()
-                      : const ParticipantInEventPage(),
+                      : goToAgenda
+                          ? const AgendaPage()
+                          : const ParticipantInEventPage(),
       getToEdit
           ? EditUserInfo()
           : goToConnection
@@ -509,9 +570,11 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                     )
                   : goToContactUs
                       ? const ContactUs()
-                      : AlertPage(
-                          userId: userID,
-                        ),
+                      : goToAgenda
+                          ? const AgendaPage()
+                          : AlertPage(
+                              userId: userID,
+                            ),
       getToEdit
           ? EditUserInfo()
           : goToConnection
@@ -523,10 +586,12 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                     )
                   : goToContactUs
                       ? const ContactUs()
-                      : ProfilePage(
-                          profileId: 0,
-                          isSameUser: true,
-                        )
+                      : goToAgenda
+                          ? const AgendaPage()
+                          : ProfilePage(
+                              profileId: 0,
+                              isSameUser: true,
+                            )
     ];
   }
 }

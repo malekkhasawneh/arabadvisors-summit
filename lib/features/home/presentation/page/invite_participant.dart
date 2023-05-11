@@ -25,7 +25,9 @@ class _InviteParticipantState extends State<InviteParticipant> {
 
   @override
   void initState() {
-    HomeRepository.getAllFriends( context,).then(
+    HomeRepository.getAllFriends(
+      context,
+    ).then(
       (value) => setState(
         () {
           allFriends = value;
@@ -60,7 +62,8 @@ class _InviteParticipantState extends State<InviteParticipant> {
                     industry: '',
                     connectionStatus: '',
                     image: '',
-                    chatId: 0));
+                    chatId: 0,
+                    isModerator: false));
           },
           icon: Icon(
             Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
@@ -100,7 +103,7 @@ class _InviteParticipantState extends State<InviteParticipant> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: AppColors.white,
-                      fontSize:16,
+                      fontSize: 16,
                     ),
                   ),
                 ),
@@ -119,56 +122,61 @@ class _InviteParticipantState extends State<InviteParticipant> {
                   margin: const EdgeInsets.only(top: 5),
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: 35,
-                  child:allFriends.isNotEmpty? TextFormField(
-                    onChanged: (value) {
-                      HomeRepository.getAllFriends( context,searchText: value).then(
-                        (value) => setState(
-                          () {
-                            allFriends = value;
-                            loading = false;
+                  child: allFriends.isNotEmpty
+                      ? TextFormField(
+                          onChanged: (value) {
+                            HomeRepository.getAllFriends(context,
+                                    searchText: value)
+                                .then(
+                              (value) => setState(
+                                () {
+                                  allFriends = value;
+                                  loading = false;
+                                },
+                              ),
+                            );
                           },
-                        ),
-                      );
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.search,
-                        size: 15,
-                      ),
-                      prefixIconColor: MaterialStateColor.resolveWith(
-                          (states) => states.contains(MaterialState.focused)
-                              ? AppColors.orange
-                              : AppColors.grey),
-                      prefixIconConstraints:
-                          const BoxConstraints(minWidth: 20, maxHeight: 20),
-                      contentPadding: const EdgeInsets.only(left: 5),
-                      hintText: 'Search',
-                      hintStyle:
-                          const TextStyle(color: AppColors.grey, fontSize: 10),
-                      filled: true,
-                      fillColor: AppColors.white,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide:
-                            const BorderSide(color: AppColors.grey, width: 0.5),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: AppColors.grey, width: 0.5),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      disabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide:
-                            const BorderSide(color: AppColors.grey, width: 0.5),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide:
-                            const BorderSide(color: AppColors.grey, width: 0.5),
-                      ),
-                    ),
-                  ):const SizedBox(),
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(
+                              Icons.search,
+                              size: 15,
+                            ),
+                            prefixIconColor: MaterialStateColor.resolveWith(
+                                (states) =>
+                                    states.contains(MaterialState.focused)
+                                        ? AppColors.orange
+                                        : AppColors.grey),
+                            prefixIconConstraints: const BoxConstraints(
+                                minWidth: 20, maxHeight: 20),
+                            contentPadding: const EdgeInsets.only(left: 5),
+                            hintText: 'Search',
+                            hintStyle: const TextStyle(
+                                color: AppColors.grey, fontSize: 10),
+                            filled: true,
+                            fillColor: AppColors.white,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: const BorderSide(
+                                  color: AppColors.grey, width: 0.5),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: AppColors.grey, width: 0.5),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: const BorderSide(
+                                  color: AppColors.grey, width: 0.5),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: const BorderSide(
+                                  color: AppColors.grey, width: 0.5),
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
                 ),
                 loading
                     ? Container(

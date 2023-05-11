@@ -26,10 +26,12 @@ class ContactUs extends StatelessWidget {
               colors: [AppColors.blue, AppColors.skyBlue])),
       child: Container(
         width: screenWidth * 0.9,
-        margin:
-            EdgeInsets.only(top: defaultAppBarHeight, left: screenWidth * 0.05),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        margin: EdgeInsets.only(
+            top: defaultAppBarHeight,
+            left: screenWidth * 0.05,
+            right: screenWidth * 0.05),
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: [
             SizedBox(
               width: screenWidth * 0.9,

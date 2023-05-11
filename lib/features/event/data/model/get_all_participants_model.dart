@@ -11,6 +11,7 @@ class AllParticipantsModel {
     required this.connectionStatus,
     required this.image,
     required this.chatId,
+    required this.isModerator,
   });
 
   int id;
@@ -24,6 +25,7 @@ class AllParticipantsModel {
   String connectionStatus;
   String image;
   int chatId;
+  bool isModerator;
 
   factory AllParticipantsModel.fromJson(Map<String, dynamic> json) =>
       AllParticipantsModel(
@@ -38,5 +40,6 @@ class AllParticipantsModel {
         connectionStatus: json["connectionStatus"] ?? '',
         image: json["image"] ?? '',
         chatId: json["chatId"] ?? 0,
+        isModerator: false,
       );
 }

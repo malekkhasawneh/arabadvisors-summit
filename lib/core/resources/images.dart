@@ -28,5 +28,7 @@ class Images {
   static const String splashSvgLogo = '${rootName}splash_svg_logo.svg';
   static const String serviceUnAvailable = '${rootName}service_unavailable.json';
   static const String homeLeadingLogo = '${rootName}home_leading_logo.png';
+  static const String homePageLogo = '${rootName}home_page_logo.png';
+
 
 }
