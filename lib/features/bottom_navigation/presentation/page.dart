@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provision/core/resources/app_colors.dart';
+import 'package:provision/core/resources/app_strings.dart';
 import 'package:provision/core/resources/images.dart';
 import 'package:provision/features/auth/sign_in/presentation/page/sign_in_page.dart';
 import 'package:provision/features/connection/presentation/page/my_connection_page.dart';
@@ -77,11 +78,16 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                             : Icons.arrow_back_ios),
                       )
                     : IconButton(
-                        onPressed: () {},
-                        icon: Image.asset(
-                          Images.homeLeadingLogo,
-                        ),
-                      ),
+                    onPressed: () {
+                      HomeRepository.goToUrl(
+                        context,
+                        url: AppStrings.eventUrl,
+                      );
+                    },
+                    icon: Image.asset(
+                      Images.homeLeadingLogo,
+                    ),
+                  ),
             backgroundColor: AppColors.transparent,
             elevation: 0,
             actions: [

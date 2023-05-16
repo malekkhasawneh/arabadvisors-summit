@@ -20,22 +20,22 @@ import 'features/connection/presentation/cubit/my_connection_cubit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesHelper().initialize();
-  await Firebase.initializeApp();
-  await FirebaseMessaging.instance.requestPermission(
-    alert: true,
-    announcement: true,
-    sound: true,
-    badge: true,
-    carPlay: true,
-    criticalAlert: true,
-    provisional: true,
-  );
-  await FirebaseMessaging.instance.getToken().then((value) {
-    log('================================== Token ${value}++++');
-  });
-  FirebaseMessaging.onMessage.listen((event) {
-    log('======================================== Message');
-  });
+  //await Firebase.initializeApp();
+  // await FirebaseMessaging.instance.requestPermission(
+  //   alert: true,
+  //   announcement: true,
+  //   sound: true,
+  //   badge: true,
+  //   carPlay: true,
+  //   criticalAlert: true,
+  //   provisional: true,
+  // );
+  // await FirebaseMessaging.instance.getToken().then((value) {
+  //   log('================================== Token ${value}++++');
+  // });
+  // FirebaseMessaging.onMessage.listen((event) {
+  //   log('======================================== Message');
+  // });
   runApp(const MyApp());
 }
 
