@@ -15,7 +15,7 @@
         </intent>
     </queries>
    <application
-        android:label="ArabAdvisor's Summit"
+        android:label="Arab Advisors Group's Summit"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

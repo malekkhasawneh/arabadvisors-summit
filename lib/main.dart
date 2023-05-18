@@ -16,7 +16,7 @@ import 'package:provision/features/splash_screen/presentation/pages/splash_scree
 
 import 'features/alert/presentation/cubit/alert_cubit.dart';
 import 'features/connection/presentation/cubit/my_connection_cubit.dart';
-
+import 'features/bottom_navigation/presentation/page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesHelper().initialize();
@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         onGenerateRoute: (routeSettings) => Utilities.onGenerateRoute(
           routeSettings: routeSettings,
-          nextPage: const SplashScreen(),
+          nextPage: const MainBottomSheet(),
         ),
       ),
     );

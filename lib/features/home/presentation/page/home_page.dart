@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                             image: const DecorationImage(
                                 image: AssetImage(
                               Images.homePageLogo,
-                            )),
+                            ),),
                             borderRadius: BorderRadius.circular(
                               10,
                             ),
