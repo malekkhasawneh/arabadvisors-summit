@@ -21,7 +21,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<GetAllEvents> eventList = [];
   List<GetAllTimes> timeList = [];
   bool loading = true;
   int participantId = 0;
@@ -36,16 +35,6 @@ class _HomePageState extends State<HomePage> {
       (value) => setState(
         () {
           timeList = value;
-          loading = false;
-        },
-      ),
-    );
-    HomeRepository.getEventsDetails(
-      context,
-    ).then(
-      (value) => setState(
-        () {
-          eventList = value;
           loading = false;
         },
       ),
@@ -81,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                   color: AppColors.orange,
                 ),
               )
-            : eventList.isEmpty
+            : timeList.isEmpty
                 ? const Center(
                     child: Text(AppStrings.noData),
                   )

@@ -1,7 +1,7 @@
 name: provision
 description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.0+17
+version: 1.0.0+18
 environment:
   sdk: '>=2.19.6 <3.0.0'
 dependencies:
@@ -76,6 +76,8 @@ flutter:
     - images/service_unavailable.json
     - images/home_leading_logo.png
     - images/home_page_logo.png
+    - images/agenda_icon.png
+    - images/home_page_logo_svg.svg
   fonts:
     - family: Poppins
       fonts:

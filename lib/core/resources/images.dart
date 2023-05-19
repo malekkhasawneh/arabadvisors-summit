@@ -18,6 +18,7 @@ class Images {
   static const String userInfo = '${rootName}user_info.png';
   static const String connections = '${rootName}connections.png';
   static const String meetings = '${rootName}meetings.png';
+  static const String agenda_icon = '${rootName}agenda_icon.png';
   static const String logout = '${rootName}logout.png';
   static const String mapImage = '${rootName}map_image.png';
   static const String faceBook = '${rootName}facebook_icon.png';
@@ -29,6 +30,7 @@ class Images {
   static const String serviceUnAvailable = '${rootName}service_unavailable.json';
   static const String homeLeadingLogo = '${rootName}home_leading_logo.png';
   static const String homePageLogo = '${rootName}home_page_logo.png';
+  static const String homePageLogoSvg = '${rootName}home_page_logo_svg.svg';
 
 
 }

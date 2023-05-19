@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         onGenerateRoute: (routeSettings) => Utilities.onGenerateRoute(
           routeSettings: routeSettings,
-          nextPage: const MainBottomSheet(),
+          nextPage: const SplashScreen(),
         ),
       ),
     );

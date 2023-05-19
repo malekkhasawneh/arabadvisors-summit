@@ -227,11 +227,10 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Image.asset(
-                                Images.connections,
-                                width: screenWidth * 0.1,
-                                height: screenWidth * 0.1,
-                                fit: BoxFit.fill,
+                               Icon(
+                               Icons.calendar_month_outlined,
+                                size: screenWidth * 0.1,
+                                 color: AppColors.white,
                               ),
                               SizedBox(width: screenWidth * 0.05),
                               Text(

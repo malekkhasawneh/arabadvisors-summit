@@ -49,6 +49,7 @@ class _TimesDropDownState extends State<TimesDropDown> {
           width: MediaQuery.of(context).size.width * 0.9,
           height: 40,
           child: DropdownSearch<String>(
+            mode: Mode.BOTTOM_SHEET,
             onChanged: (val) {
               setState(() {
                 widget.controller.text = val!;
