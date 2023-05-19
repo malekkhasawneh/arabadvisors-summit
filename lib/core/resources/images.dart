@@ -24,6 +24,7 @@ class Images {
   static const String faceBook = '${rootName}facebook_icon.png';
   static const String twitter = '${rootName}twitter_icon.png';
   static const String youtube = '${rootName}youtube_icon.png';
+  static const String website = '${rootName}website_logo.png';
   static const String linkedIn = '${rootName}linked_in_icon.png';
   static const String appSvgLogo = '${rootName}app_svg_logo.svg';
   static const String splashSvgLogo = '${rootName}splash_svg_logo.svg';

@@ -251,6 +251,17 @@ class ContactUs extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       ContactUsRepository.goToUrl(
+                          url: AppStrings.websiteUrl, context: context);
+                    },
+                    child: Image.asset(
+                      Images.website,
+                      width: 30,
+                      height: 30,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      ContactUsRepository.goToUrl(
                           url: AppStrings.facebookUrl, context: context);
                     },
                     child: Image.asset(

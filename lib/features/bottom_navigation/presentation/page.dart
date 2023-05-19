@@ -15,6 +15,7 @@ import 'package:provision/features/home/presentation/page/agenda_page.dart';
 import 'package:provision/features/meetings/presentation/page/meeting_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../core/resources/app_strings.dart';
 import '../../alert/presentation/page/alert_page.dart';
 import '../../contact_us/presentation/contact_us.dart';
 import '../../event/presentation/page/participant_in_event_page.dart';
@@ -59,29 +60,37 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            leading:
-                editProfilePage || connectionPage || meetingsPage || contactUs || agenda
-                    ? IconButton(
-                        onPressed: () {
-                          setState(() {
-                            currentIndex = 0;
-                            editProfilePage = false;
-                            connectionPage = false;
-                            meetingsPage = false;
-                            contactUs = false;
-                            agenda = false;
-                          });
-                        },
-                        icon: Icon(Platform.isAndroid
-                            ? Icons.arrow_back
-                            : Icons.arrow_back_ios),
-                      )
-                    : IconButton(
-                        onPressed: () {},
-                        icon: Image.asset(
-                          Images.homeLeadingLogo,
-                        ),
-                      ),
+            leading: editProfilePage ||
+                    connectionPage ||
+                    meetingsPage ||
+                    contactUs ||
+                    agenda
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        currentIndex = 0;
+                        editProfilePage = false;
+                        connectionPage = false;
+                        meetingsPage = false;
+                        contactUs = false;
+                        agenda = false;
+                      });
+                    },
+                    icon: Icon(Platform.isAndroid
+                        ? Icons.arrow_back
+                        : Icons.arrow_back_ios),
+                  )
+                : IconButton(
+                    onPressed: () {
+                      HomeRepository.goToUrl(
+                        context,
+                        url: AppStrings.eventUrl,
+                      );
+                    },
+                    icon: Image.asset(
+                      Images.homeLeadingLogo,
+                    ),
+                  ),
             backgroundColor: AppColors.transparent,
             elevation: 0,
             actions: [
@@ -227,10 +236,10 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                               Icon(
-                               Icons.calendar_month_outlined,
+                              Icon(
+                                Icons.calendar_month_outlined,
                                 size: screenWidth * 0.1,
-                                 color: AppColors.white,
+                                color: AppColors.white,
                               ),
                               SizedBox(width: screenWidth * 0.05),
                               Text(

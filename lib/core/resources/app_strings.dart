@@ -88,7 +88,7 @@ class AppStrings {
       'https://www.linkedin.com/company/arab-advisors-group/';
   static const String twitterUrl = 'https://twitter.com/ArabAdvisors';
   static const String youtubeUrl = 'https://youtube.com/@ArabAdvisors';
-
+  static const String websiteUrl ='https://www.arabadvisors.com';
   //Home
   static const String homeTitle = 'Event Schedule';
   static const String eventsTitle = '5G Summit - 6th of June';
@@ -98,5 +98,5 @@ class AppStrings {
   static const String reserved = 'Reserved';
   static const String reservedSuccess = 'Successfully reserved';
   static const String inviteTitle = 'Invite Participant from my Connection';
-  static const String eventUrl = 'http://www.5gsummit.me';
+  static const String eventUrl = 'https://www.5gsummit.me';
 }
