@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provision/core/helpers/shared_preferences_helper.dart';
 import 'package:provision/core/resources/dimentions.dart';
@@ -58,7 +56,16 @@ class _SessionDescriptionState extends State<SessionDescription> {
               value.name = titles.first + value.name;
               moderatorsInfo.add(value);
               if (widget.eventDetails.itemId != 6) {
-                moderatorsInfo.first.isModerator = true;
+                if (moderatorsInfo.first.id != 2 &&
+                    moderatorsInfo.first.id != 7 &&
+                    moderatorsInfo.first.id != 8 &&
+                    moderatorsInfo.first.id != 9 &&
+                    moderatorsInfo.first.id != 53 &&
+                    moderatorsInfo.first.id != 54 &&
+                    moderatorsInfo.first.id != 56 &&
+                    moderatorsInfo.first.id != 59) {
+                  moderatorsInfo.first.isModerator = true;
+                }
               }
               titles.removeAt(0);
             });
