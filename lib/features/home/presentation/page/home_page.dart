@@ -8,7 +8,6 @@ import 'package:provision/features/home/presentation/widget/times_drop_down.dart
 
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_strings.dart';
-import '../../data/model/all_events.dart';
 import '../../data/model/all_times.dart';
 import '../widget/input_widget.dart';
 import 'invite_participant.dart';
@@ -32,16 +31,16 @@ class _HomePageState extends State<HomePage> {
     HomeRepository.getTimes(
       context,
     ).then(
-      (value) => setState(
-        () {
-          timeList = value;
-          loading = false;
-        },
-      ),
+      (value) {
+        setState(
+          () {
+            timeList = value;
+            loading = false;
+          },
+        );
+        HomeRepository.saveToken(context);
+      },
     );
-    HomeRepository.saveToken(context).then((value) => setState(() {
-          loading = false;
-        }));
     super.initState();
   }
 
@@ -92,9 +91,10 @@ class _HomePageState extends State<HomePage> {
                           height: screenHeight * 0.5,
                           decoration: BoxDecoration(
                             image: const DecorationImage(
-                                image: AssetImage(
-                              Images.homePageLogo,
-                            ),),
+                              image: AssetImage(
+                                Images.homePageLogo,
+                              ),
+                            ),
                             borderRadius: BorderRadius.circular(
                               10,
                             ),

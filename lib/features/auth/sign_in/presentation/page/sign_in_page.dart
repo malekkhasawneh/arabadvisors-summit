@@ -136,7 +136,7 @@ class _SignInPageState extends State<SignInPage> {
                   ],
                 ),
               ),
-              const Positioned(bottom: -15, child: ProVisionLogoWidget()),
+              const Positioned(bottom:0, child: ProVisionLogoWidget()),
             ],
           ),
         ),

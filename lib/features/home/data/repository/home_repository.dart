@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:provision/features/auth/sign_in/presentation/page/sign_in_page.dart';
 import 'package:provision/features/home/data/model/all_events.dart';
 import 'package:provision/features/home/data/model/feed_back_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../../../core/widgets/no_internet_widget.dart';
 import '../../../event/data/model/get_all_participants_model.dart';
 import '../model/all_times.dart';
@@ -63,6 +66,12 @@ class HomeRepository {
             .toList();
         return timesList;
       } else {
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => SignInPage(),
+          ),
+        );
         throw Exception(
           'Failed to get Times',
         );

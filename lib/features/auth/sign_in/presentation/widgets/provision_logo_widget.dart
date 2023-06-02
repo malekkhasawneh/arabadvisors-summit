@@ -14,25 +14,23 @@ class ProVisionLogoWidget extends StatelessWidget {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-              vertical: Utilities.screenHeight! * 0.007,
-              horizontal: Utilities.screenWidth! * 0.005),
-          child: Text(
-            AppStrings.poweredBy,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: AppColors.white,
-              fontSize: Utilities.screenWidth! * 0.021,
-            ),
+        Text(
+          AppStrings.poweredBy,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: AppColors.white,
+            fontSize: Utilities.screenWidth! * 0.021,
           ),
         ),
-        GestureDetector(
-            onTap: () async {
-              await SignInRepository.goToUrl();
-            },
-            child: Image.asset(Images.provisionLogo,
-                width: Utilities.screenWidth! * 0.35)),
+        Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: GestureDetector(
+              onTap: () async {
+                await SignInRepository.goToUrl();
+              },
+              child: Image.asset(Images.provisionLogo,
+                  width: Utilities.screenWidth! * 0.18)),
+        ),
       ],
     );
   }
