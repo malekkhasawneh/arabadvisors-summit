@@ -79,6 +79,7 @@ flutter:
     - images/agenda_icon.png
     - images/home_page_logo_svg.svg
     - images/website_logo.png
+    - images/voting_logo.png
   fonts:
     - family: Poppins
       fonts:

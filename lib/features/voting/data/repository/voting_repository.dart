@@ -1,17 +1,15 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/widgets/no_internet_widget.dart';
 import '../model/voting_model.dart';
 
 class VotingRepository {
-  static Map<String, String> requestHeaders(
-      {String token =
-          'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYWc1Z3N1bW1pdDIwMjNAZ21haWwuY29tIiwiaWF0IjoxNjg1Njg1MzAwLCJleHAiOjE2OTA4NjkzMDB9.UQ1MimhBmkhAwduGx13tJepZ1y_Y2dz8b94rWdWWbg8'}) {
+  static Map<String, String> requestHeaders({required String token}) {
     return {
       'Content-type': 'application/json',
       'Accept': 'application/json',
@@ -20,11 +18,14 @@ class VotingRepository {
   }
 
   static Future<VotingModel> getActiveForm(BuildContext context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
     if (await checkIsConnected()) {
       final get = await http.get(
-          Uri.parse(
-              'https://vmi1258605.contaboserver.net/agg/api/v1/voting/getActiveForm'),
-          headers: requestHeaders());
+        Uri.parse(
+            'https://vmi1258605.contaboserver.net/agg/api/v1/voting/getActiveForm'),
+        headers: requestHeaders(token: preferences.getString('token') ?? ''),
+      );
       if (get.statusCode == 200) {
         Map<String, dynamic> response = json.decode(get.body);
         VotingModel votingModel = VotingModel.fromJson(response);
@@ -44,11 +45,13 @@ class VotingRepository {
 
   static Future<bool> submitVote(
       BuildContext context, List<int> answers) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
     if (await checkIsConnected()) {
       final get = await http.patch(
         Uri.parse(
             'https://vmi1258605.contaboserver.net/agg/api/v1/voting/vote'),
-        headers: requestHeaders(),
+        headers: requestHeaders(token: preferences.getString('token') ?? ''),
         body: json.encode(answers),
       );
       if (get.statusCode == 200) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provision/core/resources/dimentions.dart';
 import 'package:provision/features/voting/data/repository/voting_repository.dart';
 import 'package:provision/features/voting/presentation/cubit/voting_cubit.dart';
 
@@ -21,6 +22,7 @@ class _VotingPageState extends State<VotingPage> {
   }
 
   bool _isLoading = false;
+  bool checkUnAnsweredQuestions = false;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +79,9 @@ class _VotingPageState extends State<VotingPage> {
                     ),
                     Container(
                       padding: const EdgeInsets.only(top: 15),
-                      height: screenHeight * 0.95 - (safePadding + 15),
+                      height: ((screenHeight * 0.97 - safePadding) -
+                              defaultAppBarHeight) -
+                          (55),
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
@@ -95,6 +99,12 @@ class _VotingPageState extends State<VotingPage> {
                                   color: AppColors.white,
                                   borderRadius: BorderRadius.circular(
                                     10,
+                                  ),
+                                  border: Border.all(
+                                    color: checkUnAnsweredQuestions &&
+                                            question.selectedAnswer == -1
+                                        ? AppColors.red
+                                        : AppColors.white,
                                   ),
                                 ),
                                 child: Column(
@@ -147,14 +157,20 @@ class _VotingPageState extends State<VotingPage> {
                                 if (!answersList.contains(-1)) {
                                   setState(() {
                                     _isLoading = true;
+                                    checkUnAnsweredQuestions = false;
                                   });
                                   VotingRepository.submitVote(
                                           context, answersList)
                                       .then((value) {
-                                    setState(() {
-                                      _isLoading = false;
-                                    });
                                     if (value) {
+                                      answersList.clear();
+                                      for (var question
+                                          in BlocProvider.of<VotingCubit>(
+                                                  context)
+                                              .votingModel!
+                                              .questions) {
+                                        question.selectedAnswer = -1;
+                                      }
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
@@ -173,8 +189,15 @@ class _VotingPageState extends State<VotingPage> {
                                         ),
                                       );
                                     }
+                                    setState(() {
+                                      _isLoading = false;
+                                      checkUnAnsweredQuestions = false;
+                                    });
                                   });
                                 } else {
+                                  setState(() {
+                                    checkUnAnsweredQuestions = true;
+                                  });
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text(

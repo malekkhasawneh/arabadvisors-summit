@@ -20,6 +20,7 @@ import '../../alert/presentation/page/alert_page.dart';
 import '../../contact_us/presentation/contact_us.dart';
 import '../../event/presentation/page/participant_in_event_page.dart';
 import '../../home/presentation/page/home_page.dart';
+import '../../voting/presentation/page/voting_page.dart';
 
 class MainBottomSheet extends StatefulWidget {
   const MainBottomSheet({Key? key}) : super(key: key);
@@ -35,6 +36,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
   bool meetingsPage = false;
   bool contactUs = false;
   bool agenda = false;
+  bool vote = false;
   int userID = 0;
 
   @override
@@ -64,7 +66,8 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                     connectionPage ||
                     meetingsPage ||
                     contactUs ||
-                    agenda
+                    agenda ||
+                    vote
                 ? IconButton(
                     onPressed: () {
                       setState(() {
@@ -74,6 +77,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                         meetingsPage = false;
                         contactUs = false;
                         agenda = false;
+                        vote = false;
                       });
                     },
                     icon: Icon(Platform.isAndroid
@@ -148,6 +152,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                                   connectionPage = false;
                                   contactUs = false;
                                   agenda = false;
+                                  vote = false;
                                 });
                                 Scaffold.of(context).closeEndDrawer();
                               },
@@ -184,6 +189,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                               meetingsPage = false;
                               contactUs = false;
                               agenda = false;
+                              vote = false;
                             });
                             Scaffold.of(context).closeEndDrawer();
                           },
@@ -230,6 +236,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                               meetingsPage = false;
                               contactUs = false;
                               agenda = true;
+                              vote = false;
                             });
                             Scaffold.of(context).closeEndDrawer();
                           },
@@ -268,6 +275,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                             meetingsPage = true;
                             contactUs = false;
                             agenda = false;
+                            vote = false;
                           });
                           Scaffold.of(context).closeEndDrawer();
                         },
@@ -314,6 +322,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                             meetingsPage = false;
                             contactUs = true;
                             agenda = false;
+                            vote = false;
                           });
                           Scaffold.of(context).closeEndDrawer();
                         },
@@ -384,6 +393,55 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: screenHeight * 0.01,
+                        horizontal: screenWidth * 0.03),
+                    child: Builder(builder: (context) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            editProfilePage = false;
+                            connectionPage = false;
+                            meetingsPage = false;
+                            contactUs = false;
+                            agenda = false;
+                            vote = true;
+                          });
+                          Scaffold.of(context).closeEndDrawer();
+                        },
+                        child: Container(
+                          height: screenHeight * 0.075,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            //color: select?WHITE_V1:MAIN_COLOR,
+                          ),
+                          padding: EdgeInsets.all(screenWidth * 0.01),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.how_to_vote_outlined,
+                                size: screenWidth * 0.09,
+                                color: AppColors.white,
+                              ),
+                              SizedBox(width: screenWidth * 0.05),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 12),
+                                child: Text(
+                                  'Vote',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: screenWidth * 0.033,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
                   GestureDetector(
                     onTap: () async {
                       SharedPreferences prefs =
@@ -440,6 +498,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
             goToMeetingsPage: meetingsPage,
             goToContactUs: contactUs,
             goToAgenda: agenda,
+            goToVote: vote
           )[currentIndex],
           bottomNavigationBar: SizedBox(
             height: 55 + MediaQuery.of(context).padding.bottom,
@@ -458,6 +517,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                   meetingsPage = false;
                   contactUs = false;
                   agenda = false;
+                  vote = false;
                 });
               },
               unselectedLabelStyle: const TextStyle(
@@ -537,6 +597,7 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
     required bool goToMeetingsPage,
     required bool goToContactUs,
     required bool goToAgenda,
+    required bool goToVote,
   }) {
     return [
       getToEdit
@@ -552,7 +613,9 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                       ? const ContactUs()
                       : goToAgenda
                           ? const AgendaPage()
-                          : const HomePage(),
+                          : goToVote
+                              ? const VotingPage()
+                              : const HomePage(),
       getToEdit
           ? EditUserInfo()
           : goToConnection
@@ -566,7 +629,9 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                       ? const ContactUs()
                       : goToAgenda
                           ? const AgendaPage()
-                          : const ParticipantInEventPage(),
+                          : goToVote
+                              ? const VotingPage()
+                              : const ParticipantInEventPage(),
       getToEdit
           ? EditUserInfo()
           : goToConnection
@@ -580,9 +645,11 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                       ? const ContactUs()
                       : goToAgenda
                           ? const AgendaPage()
-                          : AlertPage(
-                              userId: userID,
-                            ),
+                          : goToVote
+                              ? const VotingPage()
+                              : AlertPage(
+                                  userId: userID,
+                                ),
       getToEdit
           ? EditUserInfo()
           : goToConnection
@@ -596,10 +663,12 @@ class _MainBottomSheetState extends State<MainBottomSheet> {
                       ? const ContactUs()
                       : goToAgenda
                           ? const AgendaPage()
-                          : ProfilePage(
-                              profileId: 0,
-                              isSameUser: true,
-                            )
+                          : goToVote
+                              ? const VotingPage()
+                              : ProfilePage(
+                                  profileId: 0,
+                                  isSameUser: true,
+                                )
     ];
   }
 }

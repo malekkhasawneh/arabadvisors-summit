@@ -32,6 +32,5 @@ class Images {
   static const String homeLeadingLogo = '${rootName}home_leading_logo.png';
   static const String homePageLogo = '${rootName}home_page_logo.png';
   static const String homePageLogoSvg = '${rootName}home_page_logo_svg.svg';
-
-
+  static const String votingLogo = '${rootName}voting_logo.png';
 }
