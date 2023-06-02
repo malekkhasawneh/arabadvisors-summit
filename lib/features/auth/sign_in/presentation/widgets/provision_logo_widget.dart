@@ -25,11 +25,14 @@ class ProVisionLogoWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 12),
           child: GestureDetector(
-              onTap: () async {
-                await SignInRepository.goToUrl();
-              },
-              child: Image.asset(Images.provisionLogo,
-                  width: Utilities.screenWidth! * 0.18)),
+            onTap: () async {
+              await SignInRepository.goToUrl();
+            },
+            child: Image.asset(
+              Images.provisionLogo,
+              width: Utilities.screenWidth! * 0.24,
+            ),
+          ),
         ),
       ],
     );
