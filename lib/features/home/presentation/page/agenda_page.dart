@@ -112,66 +112,72 @@ class _AgendaPageState extends State<AgendaPage> {
                                   textAlign: TextAlign.center,
                                 ),
                               ),
-                              SizedBox(
-                                child: Column(
-                                  children: [
-                                    ...eventList.map((event) {
-                                      return GestureDetector(
-                                        onTap: event.moderatorIds.isEmpty &&
-                                                event.panelistsIds.isEmpty
-                                            ? null
-                                            : () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (_) =>
-                                                            SessionDescription(
-                                                              eventDetails:
-                                                                  event,
-                                                            )));
-                                              },
-                                        child: Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 3,
-                                              left: 5,
-                                              right: 5,
-                                              bottom: 3),
-                                          width: screenWidth * 0.9,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(7),
-                                            color: AppColors.homeCardColor,
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                event.time,
-                                                style: const TextStyle(
-                                                  color: AppColors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 10,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  horizontal: 4,
-                                                ),
-                                                child: Text(
-                                                  event.title,
+                              Container(
+                                constraints: BoxConstraints(
+                                  minHeight: 50,
+                                  maxHeight: screenHeight * 0.68,
+                                ),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      ...eventList.map((event) {
+                                        return GestureDetector(
+                                          onTap: event.moderatorIds.isEmpty &&
+                                                  event.panelistsIds.isEmpty
+                                              ? null
+                                              : () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              SessionDescription(
+                                                                eventDetails:
+                                                                    event,
+                                                              )));
+                                                },
+                                          child: Container(
+                                            margin: const EdgeInsets.only(
+                                                top: 3,
+                                                left: 5,
+                                                right: 5,
+                                                bottom: 3),
+                                            width: screenWidth * 0.9,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(7),
+                                              color: AppColors.homeCardColor,
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  event.time,
                                                   style: const TextStyle(
-                                                      color: AppColors.white,
-                                                      fontSize: 10),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                                    color: AppColors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 10,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    horizontal: 4,
+                                                  ),
+                                                  child: Text(
+                                                    event.title,
+                                                    style: const TextStyle(
+                                                        color: AppColors.white,
+                                                        fontSize: 10),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    }).toList()
-                                  ],
+                                        );
+                                      }).toList(),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],

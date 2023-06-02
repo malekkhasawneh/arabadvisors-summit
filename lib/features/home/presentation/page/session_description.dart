@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provision/core/helpers/shared_preferences_helper.dart';
 import 'package:provision/core/resources/dimentions.dart';
@@ -46,19 +48,23 @@ class _SessionDescriptionState extends State<SessionDescription> {
   }
 
   Future<void> getModeratorsInfo() async {
-    for (var speaker in (widget.eventDetails.moderatorIds.split(','))) {
-      HomeRepository.showParticipantProfile(context,
-              profileId: int.tryParse(speaker)!)
-          .then(
-        (value) {
-          setState(() {
-            value.name = titles.first + value.name;
-            moderatorsInfo.add(value);
-            moderatorsInfo.first.isModerator = true;
-            titles.removeAt(0);
-          });
-        },
-      );
+    if (widget.eventDetails.moderatorIds.isNotEmpty) {
+      for (var speaker in (widget.eventDetails.moderatorIds.split(','))) {
+        HomeRepository.showParticipantProfile(context,
+                profileId: int.tryParse(speaker)!)
+            .then(
+          (value) {
+            setState(() {
+              value.name = titles.first + value.name;
+              moderatorsInfo.add(value);
+              if (widget.eventDetails.itemId != 6) {
+                moderatorsInfo.first.isModerator = true;
+              }
+              titles.removeAt(0);
+            });
+          },
+        );
+      }
     }
   }
 
