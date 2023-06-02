@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +19,7 @@ class VotingRepository {
     };
   }
 
- static Future<VotingModel> getActiveForm(BuildContext context) async {
+  static Future<VotingModel> getActiveForm(BuildContext context) async {
     if (await checkIsConnected()) {
       final get = await http.get(
           Uri.parse(
@@ -31,6 +32,30 @@ class VotingRepository {
       } else {
         throw Exception(
           'Failed to get form',
+        );
+      }
+    } else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => NoInternetConnectionWidget()));
+      throw Exception();
+    }
+  }
+
+  static Future<bool> submitVote(
+      BuildContext context, List<int> answers) async {
+    if (await checkIsConnected()) {
+      final get = await http.patch(
+        Uri.parse(
+            'https://vmi1258605.contaboserver.net/agg/api/v1/voting/vote'),
+        headers: requestHeaders(),
+        body: json.encode(answers),
+      );
+      if (get.statusCode == 200) {
+        return get.body == 'Votes Saved';
+      } else {
+        throw Exception(
+          'Failed to add vote',
         );
       }
     } else {

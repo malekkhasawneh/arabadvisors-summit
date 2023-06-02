@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provision/features/voting/data/repository/voting_repository.dart';
 import 'package:provision/features/voting/presentation/cubit/voting_cubit.dart';
 
 import '../../../../core/resources/app_colors.dart';
+import '../../../../core/resources/app_strings.dart';
 
 class VotingPage extends StatefulWidget {
   const VotingPage({Key? key}) : super(key: key);
@@ -17,6 +19,8 @@ class _VotingPageState extends State<VotingPage> {
     BlocProvider.of<VotingCubit>(context).getActiveForm(context);
     super.initState();
   }
+
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +65,9 @@ class _VotingPageState extends State<VotingPage> {
                       width: screenWidth * 0.8,
                       height: screenHeight * 0.05,
                       child: Text(
-                        state.votingModel.title,
+                        BlocProvider.of<VotingCubit>(context)
+                            .votingModel!
+                            .title,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: AppColors.white,
@@ -69,63 +75,132 @@ class _VotingPageState extends State<VotingPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    Container(
+                      padding: const EdgeInsets.only(top: 15),
                       height: screenHeight * 0.95 - (safePadding + 15),
-                      child: ListView.builder(
-                        padding: const EdgeInsets.only(top: 15),
-                        itemCount: state.votingModel.questions.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.symmetric(vertical: 10),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            width: screenWidth,
-                            decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.circular(
-                                10,
-                              ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  state.votingModel.questions[index].question,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            ...BlocProvider.of<VotingCubit>(context)
+                                .votingModel!
+                                .questions
+                                .map((question) {
+                              return Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                width: screenWidth,
+                                decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(
+                                    10,
+                                  ),
                                 ),
-                                ...state.votingModel.questions[index].answers
-                                    .map(
-                                  (answer) {
-                                    return Transform.translate(
-                                      offset: const Offset(-15, 0),
-                                      child: Row(
-                                        children: [
-                                          Radio(
-                                            value: state
-                                                    .votingModel
-                                                    .questions[index]
-                                                    .selectedAnswer ==
-                                                answer.id,
-                                            groupValue: true,
-                                            onChanged: (_) {
-                                              setState(() {
-                                                state
-                                                    .votingModel
-                                                    .questions[index]
-                                                    .selectedAnswer = answer.id;
-                                              });
-                                            },
-                                            activeColor: AppColors.orange,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      question.question,
+                                    ),
+                                    ...question.answers.map(
+                                      (answer) {
+                                        return Transform.translate(
+                                          offset: const Offset(-15, 0),
+                                          child: Row(
+                                            children: [
+                                              Radio(
+                                                value:
+                                                    question.selectedAnswer ==
+                                                        answer.id,
+                                                groupValue: true,
+                                                onChanged: (_) {
+                                                  setState(() {
+                                                    question.selectedAnswer =
+                                                        answer.id;
+                                                  });
+                                                },
+                                                activeColor: AppColors.orange,
+                                              ),
+                                              Text(answer.answer),
+                                            ],
                                           ),
-                                          Text(answer.answer),
-                                        ],
+                                        );
+                                      },
+                                    ).toList(),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.orange,
+                              ),
+                              onPressed: () {
+                                List<int> answersList = [];
+                                for (var question
+                                    in BlocProvider.of<VotingCubit>(context)
+                                        .votingModel!
+                                        .questions) {
+                                  answersList.add(question.selectedAnswer);
+                                }
+                                if (!answersList.contains(-1)) {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+                                  VotingRepository.submitVote(
+                                          context, answersList)
+                                      .then((value) {
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                    if (value) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            'Thank you for voting',
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            'Something wrong',
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  });
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'Please make sure that all questions are answered',
                                       ),
-                                    );
-                                  },
-                                ).toList(),
-                              ],
+                                    ),
+                                  );
+                                }
+                              },
+                              child: _isLoading
+                                  ? const SizedBox(
+                                      height: 15,
+                                      width: 15,
+                                      child: CircularProgressIndicator(
+                                        color: AppColors.white,
+                                      ),
+                                    )
+                                  : const Text(
+                                      AppStrings.submit,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                             ),
-                          );
-                        },
+                          ],
+                        ),
                       ),
                     ),
                   ],

@@ -15,12 +15,8 @@ class VotingLoading extends VotingState {
 }
 
 class VotingLoaded extends VotingState {
-  VotingModel votingModel;
-
-  VotingLoaded({required this.votingModel});
-
   @override
-  List<Object> get props => [votingModel];
+  List<Object> get props => [];
 }
 
 class VotingAddInProgress extends VotingState {

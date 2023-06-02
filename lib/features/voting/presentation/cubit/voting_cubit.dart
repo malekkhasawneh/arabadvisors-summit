@@ -9,9 +9,11 @@ part 'voting_state.dart';
 class VotingCubit extends Cubit<VotingState> {
   VotingCubit() : super(VotingInitial());
 
+  VotingModel? votingModel;
+
   Future<void> getActiveForm(BuildContext context) async {
     emit(VotingLoading());
-    VotingModel votingModel = await VotingRepository.getActiveForm(context);
-    emit(VotingLoaded(votingModel: votingModel));
+    votingModel = await VotingRepository.getActiveForm(context);
+    emit(VotingLoaded());
   }
 }
