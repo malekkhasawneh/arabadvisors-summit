@@ -71,7 +71,6 @@ class _ParticipantInEventPageState extends State<ParticipantInEventPage> {
               child: Container(
                 margin: EdgeInsets.only(
                     top: safePadding+15,
-
                     left: screenWidth * 0.05,
                     right: screenWidth * 0.05,
                     bottom: 0),

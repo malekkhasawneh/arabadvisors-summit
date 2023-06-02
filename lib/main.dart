@@ -13,6 +13,8 @@ import 'package:provision/features/edit_profile/presentation/cubit/edit_profile_
 import 'package:provision/features/event/presentation/cubit/event_cubit.dart';
 import 'package:provision/features/reset_password/presentation/cubit/reset_password_cubit.dart';
 import 'package:provision/features/splash_screen/presentation/pages/splash_screen.dart';
+import 'package:provision/features/voting/presentation/cubit/voting_cubit.dart';
+import 'package:provision/features/voting/presentation/page/voting_page.dart';
 
 import 'features/alert/presentation/cubit/alert_cubit.dart';
 import 'features/connection/presentation/cubit/my_connection_cubit.dart';
@@ -71,6 +73,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<EventCubit>(
           create: (_) => EventCubit(),
         ),
+        BlocProvider<VotingCubit>(
+          create: (_) => VotingCubit(),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -79,7 +84,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         onGenerateRoute: (routeSettings) => Utilities.onGenerateRoute(
           routeSettings: routeSettings,
-          nextPage: const SplashScreen(),
+          nextPage: const VotingPage(),
         ),
       ),
     );
