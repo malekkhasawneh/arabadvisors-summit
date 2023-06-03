@@ -3,6 +3,7 @@ import 'package:provision/features/home/data/repository/home_repository.dart';
 
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_strings.dart';
+import '../../../../core/resources/dimentions.dart';
 import '../../data/model/all_events.dart';
 import 'session_description.dart';
 
@@ -115,7 +116,7 @@ class _AgendaPageState extends State<AgendaPage> {
                               Container(
                                 constraints: BoxConstraints(
                                   minHeight: 50,
-                                  maxHeight: screenHeight * 0.68,
+                                  maxHeight: screenHeight - 230,
                                 ),
                                 child: SingleChildScrollView(
                                   child: Column(
